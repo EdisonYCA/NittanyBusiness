@@ -30,4 +30,14 @@ def categories():
 For example, this is within the posts component. Here, we'll import our blueprint and the render_template method from Flask. Utilizing the ```bp.route('url')``` decorator, we can create functions to be run when the endpoint ```url``` is reached. What we'll be telling Flask here is: "when the **app/posts/** endpoint is reached, render the HTML template in **posts/index.html**." 
 
 ## templates
-The templates directory is one of the "special" directories that will go in **/app**. This directory will hold all of the html/css for our components. Each component will have another directory in the templates. For example, we may have something like **/app/buyers/** which holds all the HTML pages that will be used for the buyers component. The only exception is the main component. Which has its HTML page (index.html) without a subdirectory. **NOTE** by convention, every component in templates has an index.html. This is just the main page for that file.  
+The templates directory is one of the "special" directories that will go in **/app**. This directory will hold all of the html/css for our components. Each component will have another directory in the templates. For example, we may have something like **/app/buyers/** which holds all the HTML pages that will be used for the buyers component. The only exception is the main component. Which has its HTML page (index.html) without a subdirectory. **NOTE** by convention, every component in templates has an index.html. This is just the main page for that component. 
+
+## static
+This is the other special file in **/app** that isn't a component. It just holds all of our static files, like images. 
+
+## config
+Honestly, I'm still in debate wether we need this or not. It's just a file that is meant for configuring our Flask application.
+
+## database.db, etc... 
+TODO
+

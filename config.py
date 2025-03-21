@@ -1,2 +1,2 @@
 class Config:
-    pass
+    FLASK_ENV = 'development'

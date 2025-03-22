@@ -1,24 +1,37 @@
 {% extends 'base.html' %}
 
+<style>
+
+</style>
+
 {% block navbar_content %}
-<li class="nav-item active">
-        <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="#">Link</a>
-      </li>
-      <li class="nav-item dropdown">
-        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-          Dropdown
-        </a>
-        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-          <a class="dropdown-item" href="#">Action</a>
-          <a class="dropdown-item" href="#">Another action</a>
-          <div class="dropdown-divider"></div>
-          <a class="dropdown-item" href="#">Something else here</a>
-        </div>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link disabled" href="#">Disabled</a>
-      </li>
+    <li class="nav-item active">
+        <a class="nav-link" href="/">Home <span class="sr-only">(current)</span></a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" href="#">Contact</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" href="#">About</a>
+    </li>
+    <li class="nav-content">
+        <a class="nav-link" href="#">Sign Up</a>
+    </li>
+{% endblock %}
+
+{%  block content %}
+    <h1>Login to Nittany Business</h1>
+    <h2>Enter your details below</h2>
+    <form>
+        <div class="mb-3">
+        <label for="inputEmail" class="form-label">Email address</label>
+        <input type="email" class="form-control" id="inputEmail">
+      </div>
+      <div class="mb-3">
+        <label for="inputPassword" class="form-label">Password</label>
+        <input type="password" class="form-control" id="inputPassword">
+      </div>
+      <button type="submit" class="btn btn-primary">Submit</button>
+      <a href="#" style="color: #D33F49; padding-left: 25px">Forget Password?</a>
+    </form>
 {% endblock %}

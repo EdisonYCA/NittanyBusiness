@@ -3,7 +3,7 @@ from config import Config
 import sqlite3
 from flask import g
 
-DB_PATH = '.\\'
+DB_PATH = 'database.db'
 
 def create_app(config_class=Config):
     app = Flask(__name__)
@@ -18,6 +18,9 @@ def create_app(config_class=Config):
 
     from app.signup import bp as signup_bp
     app.register_blueprint(signup_bp, url_prefix='/signup')
+
+    from app.api.routes import api_bp
+    app.register_blueprint(api_bp, url_prefix='/api')
 
     #app teardown tells db that connection is closing - refer to flask docs for details
     @app.teardown_appcontext

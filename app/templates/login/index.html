@@ -29,7 +29,7 @@
             <div class="col">
                 <h1>Login to Nittany Business</h1>
                 <h2>Enter your details below</h2>
-                <form>
+                <form method="POST" action="{{ url_for("api.login") }}">
                     <div class="mb-3">
                         <input type="email" class="form-control" id="inputEmail" placeholder="email" name="email">
                     </div>

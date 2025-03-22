@@ -1,5 +1,9 @@
 from flask import Flask
 from config import Config
+import sqlite3
+from flask import g
+
+DB_PATH = '.\\'
 
 def create_app(config_class=Config):
     app = Flask(__name__)
@@ -15,4 +19,18 @@ def create_app(config_class=Config):
     from app.signup import bp as signup_bp
     app.register_blueprint(signup_bp, url_prefix='/signup')
 
+    #app teardown tells db that connection is closing - refer to flask docs for details
+    @app.teardown_appcontext
+    def close_db(exception):
+        db = g.pop('db', None)
+        if db is not None:
+            db.close()
+
     return app
+
+
+def get_db():
+    if 'db' not in g:
+        g.db = sqlite3.connect(DB_PATH)
+        g.db.row_factory = sqlite3.Row
+    return g.db

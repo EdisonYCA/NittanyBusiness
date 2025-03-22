@@ -1,8 +1,46 @@
 {% extends 'base.html' %}
 
-{% block content %}
-    <span class="title"><h1>{% block title %} The Login Page {% endblock %}</h1></span>
-    <div class="content">
-        <h2>This is the Login Flask blueprint</h2>
+<style>
+
+</style>
+
+{% block navbar_content %}
+    <li class="nav-item active">
+        <a class="nav-link" href="/">Home <span class="sr-only">(current)</span></a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" href="#">Contact</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" href="#">About</a>
+    </li>
+    <li class="nav-content">
+        <a class="nav-link" href="#">Sign Up</a>
+    </li>
+{% endblock %}
+
+{% block login %}
+    <div class="container text-center">
+        <div class="row">
+            <div class="col">
+                <img src="/static/Login_side.jpg" width="500" height="333" class="d-inline-block align-top"
+                     alt="stock_shop">
+            </div>
+            <div class="col">
+                <h1>Login to Nittany Business</h1>
+                <h2>Enter your details below</h2>
+                <form>
+                    <div class="mb-3">
+                        <input type="email" class="form-control" id="inputEmail" placeholder="email" name="email">
+                    </div>
+                    <div class="mb-3">
+                        <input type="password" class="form-control" id="inputPassword" placeholder="password"
+                               name="password">
+                    </div>
+                    <button type="submit" class="btn btn-primary" style="background-color: #D5B942">Log in</button>
+                    <a href="#" style="color: #D33F49; padding-left: 25px">Forget Password?</a>
+                </form>
+            </div>
+        </div>
     </div>
 {% endblock %}

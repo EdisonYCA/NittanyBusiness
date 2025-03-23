@@ -1,28 +1,38 @@
-from flask import request
-from flask import jsonify
-from flask import Blueprint
+from flask import request, redirect, url_for
 from app import get_db
+from app.api import bp
+import hashlib
+import re
 
-api_bp = Blueprint('api_bp', __name__)
 
-#login checks if email and password match any row in the database
-@api_bp.route("/users", methods=["POST"])
+def hash_password(password):
+    if not password:
+        return ""
+
+    sha256 = hashlib.new("SHA256")
+    sha256.update(password.encode())
+    hashed_password = sha256.hexdigest()
+    return hashed_password
+
+
+def validate_email(email):
+    regex = re.compile("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$")
+    return regex.match(email) is not None
+
+
+# login checks if email and password match any row in the database
+@bp.route("/users", methods=["POST"])
 def login():
-    """
-    Expects JSON: { "email": "...", "password": "..." }
-    """
+    email = request.form.get("email")
+    password = hash_password(request.form.get("password"))
 
-    data = request.get_json()
-    if not data or "email" not in data or "password" not in data:
-        return jsonify({"error": "Missing email and password"}), 400
-
-    email = data["email"]
-    password = data["password"]
+    if not validate_email(email) or not password:
+        return redirect(url_for("login.index", login_failed=True))
 
     db = get_db()
-    user = db.execute("SELECT * FROM users WHERE email = ?", [email]).fetchone()
+    user = db.execute("SELECT * FROM Users WHERE email = ?", [email]).fetchone()
 
     if user is None or user["password"] != password:
-        return jsonify({"error": "Invalid username or password"}), 401
+        return redirect(url_for("login.index", login_failed=True))
 
-    return jsonify({"message": "Logged in successfully"}), 200
+    return f"Successful Login!"

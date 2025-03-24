@@ -26,13 +26,12 @@
         {% block search %} {% endblock %}
     </div>
 </nav>
-<hr>
-<div class="login-container">
-    {% block login %} {% endblock %}
-</div>
-<div class="page-footer">
-    {% block footer %} {% endblock %}
-</div>
+<section class="main-section">
+    {% block main_content %} {% endblock %}
+</section>
+<section class="footer-section">
+    {% block footer_content %} {% endblock %}
+</section>
 <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
         integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
         crossorigin="anonymous"></script>

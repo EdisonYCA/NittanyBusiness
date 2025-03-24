@@ -1,0 +1,91 @@
+body {
+    font-family: 'Work Sans', sans-serif;
+    font-size: 1.1rem;
+}
+
+nav {
+    border-bottom: 1px solid #d3d3d3;
+}
+
+.main-section {
+    width: 100vw;
+    height: 90vh;
+    display: flex;
+}
+
+.footer-section {
+    color: white;
+    width: 100vw;
+    height: 27vh;
+    background-color: #041E42;
+}
+
+.footer-container {
+    width: 100%;
+    background-color: #041E42;
+}
+
+.content-container {
+    width: 100vw;
+    height: 100vh;
+}
+
+.login-img-container {
+    width: 50%;
+    height: 100%;
+    background-color: #D5B942;
+}
+
+.img-non-logo {
+    width: 80%;
+    height: 80%;
+}
+
+.center {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.login-form-container {
+    width: 50%;
+    height: 100%;
+}
+
+.btn-primary {
+    font-size: 1.2rem;
+    padding: 0.5rem 2rem 0.5rem 2rem;
+    margin-top: 1rem;
+    background-color: #041E42;
+    border: none;
+}
+
+.btn-primary:hover {
+    background-color: #818181;
+}
+
+.form-control {
+    font-size: 1rem;
+    padding: 0.5rem;
+}
+
+.form-container {
+    color: #474747;
+    padding: 3rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+form {
+    margin-top: 10px;
+}
+
+.text-center {
+    padding-top: 10px;
+}
+
+.col a {
+    color: white;
+}

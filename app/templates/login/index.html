@@ -19,37 +19,32 @@
     </li>
 {% endblock %}
 
-{% block login %}
-    <div class="content-container">
-        <section class="login-section">
-            <div class="login-img-container center">
-                <img src="/static/img/pppointed.svg" height="800px" width="800px" class="img"
-                     alt="a dashed arrow with curves">
-            </div>
-            <div class="login-form-container center">
-                <div class="form-container">
-                    <h1>Login to NittanyBusiness</h1>
-                    <h5>Enter your details below</h5>
-                    <form>
-                        <div class="mb-3">
-                            <label for="exampleInputEmail1" class="form-label">Email address</label>
-                            <input type="email" class="form-control" id="exampleInputEmail1"
-                                   aria-describedby="emailHelp" placeholder="myemail@example.com">
-                        </div>
-                        <div class="mb-3">
-                            <label for="exampleInputPassword1" class="form-label">Password</label>
-                            <input placeholder="examplepass123!" class="form-control" id="exampleInputPassword1">
-                        </div>
-                        <button type="submit" class="btn btn-primary">Log In</button>
-                    </form>
+{% block main_content %}
+    <div class="login-img-container center">
+        <img src="/static/img/pppointed.svg" class="img-non-logo"
+             alt="a dashed arrow with curves">
+    </div>
+    <div class="login-form-container center">
+        <div class="form-container">
+            <h1>Login to NittanyBusiness</h1>
+            <h5>Enter your details below</h5>
+            <form>
+                <div class="mb-3">
+                    <label for="exampleInputEmail1" class="form-label">Email address</label>
+                    <input type="email" class="form-control" id="exampleInputEmail1"
+                           aria-describedby="emailHelp" placeholder="youremail@example.com">
                 </div>
-            </div>
-        </section>
-        <section class="footer-section">
-        </section>
+                <div class="mb-3">
+                    <label for="exampleInputPassword1" class="form-label">Password</label>
+                    <input placeholder="examplepass123!" class="form-control" id="exampleInputPassword1">
+                </div>
+                <button type="submit" class="btn btn-primary">Log In</button>
+            </form>
+        </div>
+    </div>
 {% endblock %}
 
-{% block footer %}
+{% block footer_content %}
     <div class="container text-center">
         <div class="row">
             <div class="col">

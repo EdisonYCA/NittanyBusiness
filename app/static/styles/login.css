@@ -23,3 +23,63 @@
     height: 100vh;
     background-color: red;
 }
+
+.login-img-container {
+    width: 50%;
+    height: 100%;
+    background-color: #D5B942;
+}
+
+.img-non-logo {
+    width: 80%;
+    height: 80%;
+}
+
+.center {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.login-form-container {
+    width: 50%;
+    height: 100%;
+}
+
+.btn-primary {
+    font-size: 1.2rem;
+    padding: 0.5rem 2rem 0.5rem 2rem;
+    margin-top: 1rem;
+    background-color: #041E42;
+    border: none;
+}
+
+.btn-primary:hover {
+    background-color: #818181;
+}
+
+.form-control {
+    font-size: 1rem;
+    padding: 0.5rem;
+}
+
+.form-container {
+    color: #474747;
+    padding: 3rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+form {
+    margin-top: 10px;
+}
+
+.text-center {
+    padding-top: 10px;
+}
+
+.col a {
+    color: white;
+}

@@ -7,7 +7,7 @@
           integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
           crossorigin="anonymous">
     <link rel="stylesheet" href="/static/styles/global.css">
-    {%  block style %} {% endblock %}
+    {% block style %} {% endblock %}
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Text:ital@0;1&family=Work+Sans:ital,wght@0,100..900;1,100..900&display=swap"
@@ -29,9 +29,6 @@
 </nav>
 <section class="main-section">
     {% block main_content %} {% endblock %}
-</section>
-<section class="footer-section">
-    {% block footer_content %} {% endblock %}
 </section>
 <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
         integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"

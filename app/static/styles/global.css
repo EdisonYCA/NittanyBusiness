@@ -13,13 +13,6 @@ nav {
     display: flex;
 }
 
-.footer-section {
-    color: white;
-    width: 100vw;
-    height: 27vh;
-    background-color: #041E42;
-}
-
 .footer-container {
     width: 100%;
     background-color: #041E42;

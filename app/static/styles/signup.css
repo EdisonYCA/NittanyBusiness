@@ -1,0 +1,19 @@
+.center {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.signup-form-container {
+    width: 50%;
+    height: 100%;
+}
+
+.form-container {
+    color: #474747;
+    padding: 3rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}

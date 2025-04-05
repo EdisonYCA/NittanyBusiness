@@ -6,7 +6,7 @@
 
 {% block navbar_content %}
     <li class="nav-item active">
-        <a class="nav-link" href="/">Home <span class="sr-only">(current)</span></a>
+        <a class="nav-link" href="{{ url_for("main.index") }}">Home <span class="sr-only">(current)</span></a>
     </li>
     <li class="nav-item">
         <a class="nav-link" href="#">Contact</a>
@@ -14,8 +14,8 @@
     <li class="nav-item">
         <a class="nav-link" href="#">About</a>
     </li>
-    <li class="nav-content">
-        <a class="nav-link" href="#">Sign Up</a>
+    <li class="nav-content active">
+        <a class="nav-link" href="{{ url_for("signup.index") }}">Sign Up</a>
     </li>
 {% endblock %}
 

@@ -3,3 +3,12 @@
     color:#474747;
     border:none;
 }
+
+.category {
+
+}
+
+.dropdown:hover > .dropdown-menu {
+    display:block;
+    margin-top: .125em;
+}

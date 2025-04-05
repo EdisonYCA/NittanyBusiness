@@ -5,9 +5,36 @@
     align-items: center;
 }
 
+.flex {
+    display: flex;
+}
+
+.flex-reverse {
+    flex-direction: column;
+}
+
+.w-full {
+    width: 100vw;
+}
+
+.h-full {
+    height: 100vh;
+}
+
+
+.red {
+    background-color: red;
+}
+
 .signup-form-container {
     width: 50%;
     height: 100%;
+}
+
+.signup-img-container {
+    width: 50%;
+    height: 100%;
+    background-color: #D5B942;
 }
 
 .form-container {

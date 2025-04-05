@@ -10,5 +10,9 @@
 
 .dropdown:hover > .dropdown-menu {
     display:block;
-    margin-top: .125em;
+    margin-top: 0.15em;
+}
+
+ul >li {
+    list-style-type: none;
 }

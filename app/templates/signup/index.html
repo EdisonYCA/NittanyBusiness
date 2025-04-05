@@ -1,4 +1,4 @@
-{%  extends 'base.html' %}
+{% extends 'base.html' %}
 
 {% block style %}
     <link rel="stylesheet" href="{{ url_for('static', filename='styles/signup.css') }}">
@@ -15,45 +15,97 @@
         <a class="nav-link" href="#">About</a>
     </li>
     <li class="nav-content">
-        <a class="nav-link" href="#">Sign Up</a>
+        <a class="nav-link" href="{{ url_for("login.index") }}">Log In</a>
     </li>
 {% endblock %}
 
 {% block main_content %}
-    <ul class="nav nav-tabs" id="myTab" role="tablist">
-        <li class="nav-item" role="presentation">
-            <button class="nav-link active" id="buyer-tab" data-bs-toggle="tab" data-bs-target="#buyer-tab-pane" type="button" role="tab" aria-controls="buyer-tab-pane" aria-selected="true">Buyer Signup</button>
-        </li>
-        <li class="nav-item" role="presentation">
-            <button class="nav-link" id="seller-tab" data-bs-toggle="tab" data-bs-target="#seller-tab-pane" type="button" role="tab" aria-controls="seller-tab-pane" aria-selected="false">Seller Signup</button>
-        </li>
-    </ul>
-    <div class="tab-content" id="myTabContent">
-        <div class="tab-pane show active" id="buyer-tab-pane" role="tabpanel" aria-labelledby="buyer-tab" tabindex="0">
-            <div class="mb-3">
-                <label for="emailInput" class="form-label">Email</label>
-                <input name="email" type="email" class="form-control" id="emailInput"
-                        aria-describedby="emailHelp" placeholder="youremail@example.com">
-            </div>
-            <div class="mb-3">
-                <label for="passwordInput" class="form-label">Password</label>
-                <input name="password" type="password" class="form-control" id="passwordInput"
-                       placeholder="examplepass123!">
-            </div>
-            <div class="mb-3">
-                <label for="passwordConfInput" class="form-label">Confirm Password</label>
-                <input name="passwordConf" type="password" class="form-control" id="passwordConfInput"
-                       placeholder="examplepass123!">
-            </div>
-            <div class="mb-3">
-                <label for="businessNameInput" class="form-label">Business Name</label>
-                <input name="businessName" class="form-control" id="businessNameInput"
-                       placeholder="samplebusinessname">
-            </div>
-        </div>
-        <div class="tab-pane" id="seller-tab-pane" role="tabpanel" aria-labelledby="seller-tab" tabindex="0">
-            This should have different input fields for sellers
+    <div class="signup-img-container center">
+        <img src="/static/img/pppointed.svg" class="img-non-logo"
+             alt="a dashed arrow with curves">
+    </div>
+
+    <div class="center">
+        <div class="form-container">
+            <h1>Sign up for NittanyBusiness</h1>
+            <h5>Enter your details below</h5>
+            <form>
+                <div class="mb-3">
+                    <label for="exampleInputEmail1" class="form-label">Email address</label>
+                    <input name="email" type="email" class="form-control" id="exampleInputEmail1"
+                           aria-describedby="emailHelp" placeholder="youremail@example.com">
+                </div>
+                <div class="mb-3">
+                    <label for="exampleInputPassword1" class="form-label">Password</label>
+                    <input type="password" name="password" placeholder="examplepass123!"
+                           class="form-control"
+                           id="exampleInputPassword1">
+                </div>
+                <div class="mb-3">
+                    <label for="passwordConfInput" class="form-label">Confirm Password</label>
+                    <input name="passwordConf" type="password" class="form-control" id="passwordConfInput"
+                           placeholder="examplepass123!">
+                </div>
+                <div class="mb-3">
+                    <label for="businessNameInput" class="form-label">Business Name</label>
+                    <input name="businessName" class="form-control" id="businessNameInput"
+                           placeholder="NittanyBusiness LLC">
+                </div>
+                <div class="mb-3">
+                    <label for="accountTypeInput" class="form-label">Account Type</label>
+                    <select class="form-control" id="accountTypeInput" name="accountType">
+                        <option value="seller">Seller</option>
+                        <option value="buyer">Buyer</option>
+                    </select>
+                </div>
+
+                <button type="submit" class="btn btn-primary">Sign Up</button>
+            </form>
         </div>
     </div>
 
+
+
 {% endblock %}
+
+{#{% block main_content %}#}
+{#    <ul class="nav nav-tabs" id="myTab" role="tablist">#}
+{#        <li class="nav-item" role="presentation">#}
+{#            <button class="nav-link active" id="buyer-tab" data-bs-toggle="tab" data-bs-target="#buyer-tab-pane"#}
+{#                    type="button" role="tab" aria-controls="buyer-tab-pane" aria-selected="true">Buyer Signup#}
+{#            </button>#}
+{#        </li>#}
+{#        <li class="nav-item" role="presentation">#}
+{#            <button class="nav-link" id="seller-tab" data-bs-toggle="tab" data-bs-target="#seller-tab-pane"#}
+{#                    type="button" role="tab" aria-controls="seller-tab-pane" aria-selected="false">Seller Signup#}
+{#            </button>#}
+{#        </li>#}
+{#    </ul>#}
+{#    <div class="tab-content" id="myTabContent">#}
+{#        <div class="tab-pane show active" id="buyer-tab-pane" role="tabpanel" aria-labelledby="buyer-tab" tabindex="0">#}
+{#            <div class="mb-3">#}
+{#                <label for="emailInput" class="form-label">Email</label>#}
+{#                <input name="email" type="email" class="form-control" id="emailInput"#}
+{#                       aria-describedby="emailHelp" placeholder="youremail@example.com">#}
+{#            </div>#}
+{#            <div class="mb-3">#}
+{#                <label for="passwordInput" class="form-label">Password</label>#}
+{#                <input name="password" type="password" class="form-control" id="passwordInput"#}
+{#                       placeholder="examplepass123!">#}
+{#            </div>#}
+{#            <div class="mb-3">#}
+{#                <label for="passwordConfInput" class="form-label">Confirm Password</label>#}
+{#                <input name="passwordConf" type="password" class="form-control" id="passwordConfInput"#}
+{#                       placeholder="examplepass123!">#}
+{#            </div>#}
+{#            <div class="mb-3">#}
+{#                <label for="businessNameInput" class="form-label">Business Name</label>#}
+{#                <input name="businessName" class="form-control" id="businessNameInput"#}
+{#                       placeholder="samplebusinessname">#}
+{#            </div>#}
+{#        </div>#}
+{#        <div class="tab-pane" id="seller-tab-pane" role="tabpanel" aria-labelledby="seller-tab" tabindex="0">#}
+{#            This should have different input fields for sellers#}
+{#        </div>#}
+{#    </div>#}
+{#{% endblock %}#}

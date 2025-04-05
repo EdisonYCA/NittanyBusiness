@@ -13,16 +13,26 @@ def table_exists(table_name, connection):
     return cursor.fetchone() is not None
 
 
-def process_product_price(price):
-    # remove $ and , from input rows
-    price = price.replace('$', '')
-    price = price.replace(',', '')
-    try:
-        #mult by 100 for int storage
-        price_db = int(float(price) * 100)
-    except ValueError:
-        raise ValueError(f"Invalid price format: {price}")
-    return price_db
+def drop_tables(conn, table_names):
+    cursor = conn.cursor()
+
+    # Disable foreign key constraints temporarily if needed.
+    cursor.execute("PRAGMA foreign_keys = OFF;")
+
+    for table in table_names:
+        cursor.execute(f"DROP TABLE IF EXISTS {table};")
+        print(f"Table {table} dropped (if it existed).")
+
+    # Re-enable foreign key constraints.
+    cursor.execute("PRAGMA foreign_keys = ON;")
+
+    conn.commit()
+
+# sanitizes whole column of dataframe
+def sanitize_price_column(price):
+    cleaned_price = price.str.replace(r'[\$,]', '', regex=True)
+    return (cleaned_price.astype(float) * 100).astype(int)
+
 
 def init_db():
     db_path = "..//database.db"
@@ -151,7 +161,7 @@ def init_db():
         CREATE TABLE IF NOT EXISTS Reviews (
             order_id INTEGER PRIMARY KEY,
             review_desc TEXT NOT NULL,
-            rating INTEGER NOT NULL,
+            rate INTEGER NOT NULL,
             FOREIGN KEY(order_id) REFERENCES Orders(order_id)
             );
         """)
@@ -175,15 +185,16 @@ def init_db():
             #dev team agrees on SHA 256 hashing
             df['password'] = df['password'].apply(lambda pwd: hashlib.sha256(pwd.encode('utf-8)')).hexdigest())
         if table_name == "Product_Listings":
-            row["Product_Price"] = process_product_price(df["Product_Price"])
-        else:
-            continue
+            df['Product_Price'] = sanitize_price_column(df['Product_Price'])
+        # else:
+        #     continue
 
         try:
+            df.columns = df.columns.str.strip()
             df.to_sql(table_name, connection, if_exists='append', index=False)
-            print("Inserted data into table '{table_name}'.")
+            print(f"Inserted data into table '{table_name}'.")
         except Exception as e:
-            #print(f"Skipping {file}: {e}")
+            print(f"Skipping {file}: {e}")
             pass
 
 
@@ -192,4 +203,24 @@ def init_db():
     print("Database initialized.")
 
 if __name__ == '__main__':
+
+    tables_to_drop = [
+        'Users',
+        'helpdesk',
+        'requests',
+        'buyers',
+        'credit_cards',
+        'address',
+        'zipcode_info',
+        'sellers',
+        'categories',
+        'product_listings',
+        'orders',
+        'Reviews'
+    ]
+    db_path = "..//database.db"
+    connection = sqlite3.connect(db_path)
+    #table dropping on startup is for testing purposes - remove in production
+    #drop_tables(connection, tables_to_drop)
+
     init_db()

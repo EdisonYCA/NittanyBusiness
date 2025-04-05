@@ -1,12 +1,12 @@
 {% extends 'base.html' %}
 
-<style>
-
-</style>
+{% block style %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/login.css') }}">
+{% endblock %}
 
 {% block navbar_content %}
     <li class="nav-item active">
-        <a class="nav-link" href="/">Home <span class="sr-only">(current)</span></a>
+        <a class="nav-link" href="{{ url_for("main.index") }}">Home <span class="sr-only">(current)</span></a>
     </li>
     <li class="nav-item">
         <a class="nav-link" href="#">Contact</a>
@@ -14,33 +14,36 @@
     <li class="nav-item">
         <a class="nav-link" href="#">About</a>
     </li>
-    <li class="nav-content">
-        <a class="nav-link" href="#">Sign Up</a>
+    <li class="nav-content active">
+        <a class="nav-link" href="{{ url_for("signup.index") }}">Sign Up</a>
     </li>
 {% endblock %}
 
-{% block login %}
-    <div class="container text-center">
-        <div class="row">
-            <div class="col">
-                <img src="/static/Login_side.jpg" width="500" height="333" class="d-inline-block align-top"
-                     alt="stock_shop">
-            </div>
-            <div class="col">
-                <h1>Login to Nittany Business</h1>
-                <h2>Enter your details below</h2>
-                <form>
-                    <div class="mb-3">
-                        <input type="email" class="form-control" id="inputEmail" placeholder="email" name="email">
-                    </div>
-                    <div class="mb-3">
-                        <input type="password" class="form-control" id="inputPassword" placeholder="password"
-                               name="password">
-                    </div>
-                    <button type="submit" class="btn btn-primary" style="background-color: #D5B942">Log in</button>
-                    <a href="#" style="color: #D33F49; padding-left: 25px">Forget Password?</a>
-                </form>
-            </div>
+{% block main_content %}
+    <div class="login-img-container center">
+        <img src="/static/img/pppointed.svg" class="img-non-logo"
+             alt="a dashed arrow with curves">
+    </div>
+    <div class="login-form-container center">
+        <div class="form-container">
+            <h1>Login to NittanyBusiness</h1>
+            <h5>Enter your details below</h5>
+            <form method="POST" action="{{ url_for("api.login") }}">
+                <div class="mb-3">
+                    <label for="exampleInputEmail1" class="form-label">Email address</label>
+                    <input name="email" type="email" class="form-control" id="exampleInputEmail1"
+                           aria-describedby="emailHelp" placeholder="youremail@example.com">
+                </div>
+                <div class="mb-3">
+                    <label for="exampleInputPassword1" class="form-label">Password</label>
+                    <input type="password" name="password" placeholder="examplepass123!" class="form-control"
+                           id="exampleInputPassword1">
+                </div>
+                {% if login_failed %}
+                    <p style="color: red;">Please enter a valid email address and password.</p>
+                {% endif %}
+                <button type="submit" class="btn btn-primary">Log In</button>
+            </form>
         </div>
     </div>
 {% endblock %}

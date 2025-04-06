@@ -54,7 +54,10 @@ def signup():
         return redirect(url_for("signup.index", signup_failed=True))
     #match password
     if newPassword != confirmPassowrd:
-        return redirect(url_for("signup.index", password_match_faile=True))
+        return redirect(url_for("signup.index", password_match_failed=True))
+
+    if len(newPassword) < 8 or not any(char.isupper() for char in newPassword):
+        return redirect(url_for("signup.index", password_match_failed=True))
 
     db = get_db()
 

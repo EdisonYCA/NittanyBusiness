@@ -42,11 +42,12 @@ def complete_requests():
     finally:
         db.close()
 
-    return f"Request #{req_id} marked complete"
+    return redirect(url_for('helpdesk.index'))
+     # return f"Request #{req_id} marked complete"
 
 
 # this grabs the requests for the helpdesk
-@bp.route('/get_active_requests', methods=['POST'])
+@bp.route('/get_active_requests')
 def get_active_requests():
     db = get_db()
     db.row_factory = sqlite3.Row
@@ -55,10 +56,9 @@ def get_active_requests():
     # status 0 is incomplete, 1 is complete
     cursor.execute("SELECT * FROM requests WHERE request_status = 0")
     rows = cursor.fetchall()
-    requests = [dict(row) for row in rows]
     db.close()
 
-    return jsonify(requests)
+    return render_template('helpdesk/index.html', result=rows)
 
 
 # login checks if email and password match any row in the database

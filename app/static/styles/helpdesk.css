@@ -1,0 +1,13 @@
+.container {
+    display:flex;
+    flex-direction: column;
+}
+
+.submit-container {
+    min-height: 15vh;
+    text-align: center;
+}
+
+.table-container {
+
+}

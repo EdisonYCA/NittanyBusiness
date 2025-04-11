@@ -2,7 +2,13 @@ import pandas as pd
 import sqlite3
 import os
 import hashlib
+import sys
 from glob import glob
+
+SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
+PROJECT_ROOT = os.path.abspath(os.path.join(SCRIPT_DIR, '..'))
+sys.path.append(PROJECT_ROOT)
+from config import Config
 
 def table_exists(table_name, connection):
     cursor = connection.cursor()
@@ -35,7 +41,8 @@ def sanitize_price_column(price):
 
 
 def init_db():
-    db_path = "..//database.db"
+    # db path can be pointed to config, but db_utils will need to be integrated into modules.
+    db_path = Config.DB_PATH
     connection = sqlite3.connect(db_path)
     cursor = connection.cursor()
 
@@ -166,10 +173,15 @@ def init_db():
             );
         """)
 
-    static_backup = ".\\static_backup\\"
-    csv_files = glob(os.path.join(static_backup, "*.csv"))
+    # this filepath works only when calling the script from CLI
+    # static_backup = ".\\static_backup\\"
+    # csv_files = glob(os.path.join(static_backup, "*.csv"))
 
-    print(f"Found {len(csv_files)} CSV files(s) in {static_backup}.......................")
+    SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
+    STATIC_BACKUP_DIR = os.path.join(SCRIPT_DIR, 'static_backup')
+    csv_files = glob(os.path.join(STATIC_BACKUP_DIR, '*.csv'))
+
+    print(f"Found {len(csv_files)} CSV files(s) in {STATIC_BACKUP_DIR}.......................")
 
     for file in csv_files:
         print(f"Processing {file}")
@@ -204,23 +216,24 @@ def init_db():
 
 if __name__ == '__main__':
 
-    tables_to_drop = [
-        'Users',
-        'helpdesk',
-        'requests',
-        'buyers',
-        'credit_cards',
-        'address',
-        'zipcode_info',
-        'sellers',
-        'categories',
-        'product_listings',
-        'orders',
-        'Reviews'
-    ]
-    db_path = "..//database.db"
-    connection = sqlite3.connect(db_path)
-    #table dropping on startup is for testing purposes - remove in production
-    #drop_tables(connection, tables_to_drop)
+    # uncomment when testing database changes - wipes DB each time
+    # tables_to_drop = [
+    #     'Users',
+    #     'helpdesk',
+    #     'requests',
+    #     'buyers',
+    #     'credit_cards',
+    #     'address',
+    #     'zipcode_info',
+    #     'sellers',
+    #     'categories',
+    #     'product_listings',
+    #     'orders',
+    #     'Reviews'
+    # ]
+    # db_path = "..//database.db"
+    # connection = sqlite3.connect(db_path)
+    # #table dropping on startup is for testing purposes - remove in production
+    # drop_tables(connection, tables_to_drop)
 
     init_db()

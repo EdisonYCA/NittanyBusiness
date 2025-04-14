@@ -18,11 +18,27 @@
 
 {% block main_content %}
     <div class="container">
-        <div class="submit-container">
-            <form method="post" action="{{ url_for("api.complete_requests") }}">
+        <div class="insert-container">
+            <form method="post">
                 <div class="input-label">
-                    <label for="request_id">Request ID</label>
-                    <input id="request_id" name="request_id">
+                    <label for="sender_email">Sender Email</label>
+                    <input id="sender_email" name="sender_email">
+                </div>
+                <div class="input-label">
+                    <label for="helpdesk_email">Helpdesk Email</label>
+                    <input id="helpdesk_email" name="helpdesk_email">
+                </div>
+                <div class="select-label">
+                    <label for="request_category">Request Category</label>
+                    <select name="request_category" id="request_category">
+                        <option value="ChangeID">Change ID</option>
+                        <option value="MarketAnalysis">Market Analysis</option>
+                        <option value="AddCategory">Add Category</option>
+                    </select>
+                </div>
+                <div class="textarea-label">
+                    <label for="request_description">Request Description</label>
+                    <textarea id="request_description" name="request_description" rows="5"></textarea>
                 </div>
                 <div class="submit-button-container">
                     <input type="submit" id="submit-change" value="Mark Complete">

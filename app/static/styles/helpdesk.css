@@ -4,10 +4,46 @@
 }
 
 .submit-container {
-    min-height: 15vh;
-    text-align: center;
 }
 
 .table-container {
+
+}
+
+.insert-container {
+    width: 75%;
+}
+
+.input-label > label, input {
+    display: block;
+}
+
+input {
+    margin-bottom: 10px;
+}
+
+.select-label > label, select {
+    display: block;
+}
+
+select {
+    margin-bottom: 10px;
+}
+
+.textarea-label > label, textarea {
+    display: block;
+}
+
+textarea {
+    margin-bottom: 10px;
+    width: 50%;
+}
+
+.insert-container {
+    display:flex;
+    flex-direction: column;
+}
+
+.submit-button-container {
 
 }

@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+
+{% block style %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/helpdesk.css') }}">
+{% endblock %}
+
+{% block navbar_content %}
+    <li class="nav-item active">
+        <a class="nav-link" href="{{ url_for("main.index") }}">Home <span class="sr-only">(current)</span></a>
+    </li>
+    <li class="nav-item dropdown active">
+        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            Actions
+        </a>
+        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+              <a class="dropdown-item" href="{{ url_for("helpdesk.addcategory") }}">Add Category</a>
+              <a class="dropdown-item" href="#">Not Implemented</a>
+              <a class="dropdown-item" href="#">Not Implemented</a>
+        </div>
+    </li>
+    <li class="nav-item active">
+        <a class="nav-link" href="{{ url_for("helpdesk.index") }}">Complete Request
+            <span class="sr-only">(current)</span></a>
+    </li>
+    <li class="nav-item active">
+        <a class="nav-link" href="{{ url_for("helpdesk.claim") }}">Claim Request
+            <span class="sr-only">(current)</span></a>
+    </li>
+    <li class="nav-item active">
+        <a class="nav-link" href="{{ url_for("helpdesk.view") }}">View Your Requests
+            <span class="sr-only">(current)</span></a>
+    </li>
+{% endblock %}

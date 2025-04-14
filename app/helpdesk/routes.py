@@ -16,8 +16,21 @@ def index():
 
     return render_template('helpdesk/index.html', result=rows)
 
-@bp.route('/request')
-def request():
+@bp.route('/claim')
+def claim():
+    db = get_db()
+    db.row_factory = sqlite3.Row
+    cursor = db.cursor()
+
+    # status 0 is incomplete, 1 is complete
+    cursor.execute("SELECT * FROM requests WHERE (request_status = 0) & (helpdesk_staff_email = 'helpdeskteam@nittybiz.com')")
+    rows = cursor.fetchall()
+    db.close()
+
+    return render_template('helpdesk/claim.html', result=rows)
+
+@bp.route('/view')
+def view():
     db = get_db()
     db.row_factory = sqlite3.Row
     cursor = db.cursor()
@@ -27,4 +40,8 @@ def request():
     rows = cursor.fetchall()
     db.close()
 
-    return render_template('helpdesk/request.html', result=rows)
+    return render_template('helpdesk/view.html', result=rows)
+
+@bp.route('/addcategory')
+def addcategory():
+    return render_template('helpdesk/addcategory.html')

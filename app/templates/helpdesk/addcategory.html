@@ -1,0 +1,16 @@
+{% extends 'helpdesk/base.html' %}
+
+{% block main_content %}
+    <div class="addcat-container">
+        <form method="post">
+            <div class="input-label">
+                <label for="category_name">Category Name</label>
+                <input id="category_name" name="category_name">
+            </div>
+            <div class="input-label">
+                <label for="parent_category_name">Parent Category Name</label>
+                <input id="parent_category_name" name="parent_category_name">
+            </div>
+        </form>
+    </div>
+{% endblock %}

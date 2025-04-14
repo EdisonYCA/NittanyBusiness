@@ -10,8 +10,11 @@
 
 }
 
-.insert-container {
-    width: 75%;
+.addcat-container {
+    display:flex;
+    justify-content: center;
+    align-items:center;
+    width:100%;
 }
 
 .input-label > label, input {
@@ -20,23 +23,6 @@
 
 input {
     margin-bottom: 10px;
-}
-
-.select-label > label, select {
-    display: block;
-}
-
-select {
-    margin-bottom: 10px;
-}
-
-.textarea-label > label, textarea {
-    display: block;
-}
-
-textarea {
-    margin-bottom: 10px;
-    width: 50%;
 }
 
 .insert-container {

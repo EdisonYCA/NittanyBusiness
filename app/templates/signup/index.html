@@ -62,7 +62,11 @@
                 <p style="color: red;">Please enter a valid email address and password.</p>
                 {% endif %}
                 {% if password_match_failed %}
-                <p style="color: red;">Passwords do not match!.</p>
+                    <p style="color: red;">Passwords do not match! </p>
+                {% endif %}
+                {% if password_requirements %}
+                    <p style = "color: red;">Password doesn't meet requirements!.</p>
+                    <p style="color: red;">Passwords must have at least 1 capital and longer than 8 characters! </p></p>
                 {% endif %}
                 {% if signup_exists %}
                     <p style="color: red;">This email is already registered. Try logging in instead!</p>

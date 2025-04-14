@@ -1,10 +1,12 @@
 from flask import Flask
 from config import Config
+import os
+import subprocess
 import sqlite3
 from flask import g
+from config import Config
 
-DB_PATH = 'database.db'
-
+DB_PATH = Config.DB_PATH
 
 def create_app(config_class=Config):
     app = Flask(__name__)
@@ -23,6 +25,9 @@ def create_app(config_class=Config):
     from app.api import bp as api_bp
     app.register_blueprint(api_bp, url_prefix='/api')
 
+    from app.helpdesk import bp as helpdesk_bp
+    app.register_blueprint(helpdesk_bp, url_prefix='/helpdesk')
+
     # app teardown tells db that connection is closing - refer to flask docs for details
     @app.teardown_appcontext
     def close_db(exception):
@@ -32,9 +37,16 @@ def create_app(config_class=Config):
 
     return app
 
-
+# will create db from backup if db is not found.
 def get_db():
     if 'db' not in g:
+        if not os.path.exists(DB_PATH):
+            script_path = os.path.join(os.path.dirname(__file__), '..', 'db_utils', 'db_init.py')
+            try:
+                subprocess.run(['python', script_path], check=True)
+            except subprocess.CalledProcessError as e:
+                print(f"Failed to run population script: {e}")
+                raise
         g.db = sqlite3.connect(DB_PATH)
         g.db.row_factory = sqlite3.Row
     return g.db

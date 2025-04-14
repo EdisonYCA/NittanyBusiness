@@ -3,7 +3,7 @@
 {% block main_content %}
     <div class="container">
         <div class="submit-container">
-            <form method="post" action="{{ url_for("api.complete_requests") }}">
+            <form method="post"> <!-- Add action here -->
                 <div class="input-label">
                     <label for="request_id">Request ID to Claim</label>
                     <input id="request_id" name="request_id">

@@ -2,7 +2,7 @@
 
 {% block main_content %}
     <div class="addcat-container">
-        <form method="post">
+        <form method="post"> <!-- Add Action here -->
             <div class="input-label">
                 <label for="category_name">Category Name</label>
                 <input id="category_name" name="category_name">
@@ -10,6 +10,9 @@
             <div class="input-label">
                 <label for="parent_category_name">Parent Category Name</label>
                 <input id="parent_category_name" name="parent_category_name">
+            </div>
+            <div class="submit-button-container">
+                <input type="submit" id="submit-change" value="Add Category">
             </div>
         </form>
     </div>

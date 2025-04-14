@@ -1,0 +1,18 @@
+.category-button {
+    background:none;
+    color:#474747;
+    border:none;
+}
+
+.category-container {
+
+}
+
+.dropdown:hover > .dropdown-menu {
+    display:block;
+    margin-top: 0.15em;
+}
+
+ul >li {
+    list-style-type: none;
+}

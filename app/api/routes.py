@@ -1,5 +1,7 @@
+import sqlite3
+
 from click import confirm
-from flask import request, redirect, url_for, render_template
+from flask import request, redirect, url_for, render_template, jsonify
 from app import get_db
 from app.api import bp
 import hashlib
@@ -22,6 +24,41 @@ def validate_email(email):
 
     regex = re.compile("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$")
     return regex.match(email) is not None
+
+
+# this endpoint sets a request to inactive
+@bp.route('/complete_request', methods=['POST'])
+def complete_requests():
+    req_id = request.form.get("request_id")
+
+    db = get_db()
+    db.row_factory = sqlite3.Row
+    cursor = db.cursor()
+
+    # status 0 is incomplete, 1 is complete - id must be passed as 1 element tuple
+    try:
+        cursor.execute("UPDATE requests SET request_status = 1 WHERE request_id = ?", (req_id,))
+        db.commit()
+    finally:
+        db.close()
+
+    return f"Request #{req_id} marked complete"
+
+
+# this grabs the requests for the helpdesk
+@bp.route('/get_active_requests', methods=['POST'])
+def get_active_requests():
+    db = get_db()
+    db.row_factory = sqlite3.Row
+    cursor = db.cursor()
+
+    # status 0 is incomplete, 1 is complete
+    cursor.execute("SELECT * FROM requests WHERE request_status = 0")
+    rows = cursor.fetchall()
+    requests = [dict(row) for row in rows]
+    db.close()
+
+    return jsonify(requests)
 
 
 # login checks if email and password match any row in the database

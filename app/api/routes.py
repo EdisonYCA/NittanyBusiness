@@ -64,14 +64,14 @@ def get_active_requests():
 # login checks if email and password match any row in the database
 @bp.route("/users", methods=["POST"])
 def login():
-    email = request.form.get("email")
+    emailS = request.form.get("email")
     password = hash_password(request.form.get("password"))
 
-    if not validate_email(email) or not password:
+    if not validate_email(emailS) or not password:
         return redirect(url_for("login.index", login_failed=True))
 
     db = get_db()
-    user = db.execute("SELECT * FROM Users WHERE email = ?", [email]).fetchone()
+    user = db.execute("SELECT * FROM Users WHERE email = ?", [emailS]).fetchone()
 
     if user is None or user["password"] != password:
         return redirect(url_for("login.index", login_failed=True))
@@ -88,10 +88,14 @@ def signup():
     accountType = request.form.get("accountType")
 
     if not validate_email(newEmail) or not newPassword or not confirmPassowrd:
+    #if not newPassword or not confirmPassowrd:
         return redirect(url_for("signup.index", signup_failed=True))
     #match password
     if newPassword != confirmPassowrd:
-        return redirect(url_for("signup.index", password_match_faile=True))
+        return redirect(url_for("signup.index", password_match_failed=True))
+
+    if len(newPassword) < 8 or not any(char.isupper() for char in newPassword):
+        return redirect(url_for("signup.index", password_requirements=True))
 
     db = get_db()
 
@@ -110,7 +114,7 @@ def signup():
         if accountType == "seller":
             return render_template("signup/seller.html", email=newEmail)
         elif accountType == "buyer":
-            return render_template("signup/buyer.html", email=newEmail)
+            return render_template("profile/buyerProfile.html", email=newEmail)
         else:
             return redirect(url_for("signup.index", signup_failed=True))
 
@@ -118,3 +122,5 @@ def signup():
     except Exception as e:
         print(f"Database Error: {e}")
         return redirect(url_for("signup.index", signup_failed=True))
+
+

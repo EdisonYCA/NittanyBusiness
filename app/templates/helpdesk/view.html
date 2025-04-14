@@ -1,19 +1,6 @@
 {% extends 'helpdesk/base.html' %}
 
 {% block main_content %}
-    <div class="container">
-        <div class="submit-container">
-            <form method="post" action="{{ url_for("api.complete_requests") }}">
-                <div class="input-label">
-                    <label for="request_id">Request ID to Complete</label>
-                    <input id="request_id" name="request_id">
-                </div>
-                <div class="submit-button-container">
-                    <input type="submit" id="submit-change" value="Mark Complete">
-                </div>
-            </form>
-        </div>
-
         <div class="table-container">
             <div class="card-body">
                 <h2 class="card-title">Helpdesk Requests</h2>

@@ -9,17 +9,19 @@
         <a class="nav-link" href="{{ url_for("main.index") }}">Home <span class="sr-only">(current)</span></a>
     </li>
     <li class="nav-item active">
-        <a class="nav-link" href="{{ url_for("helpdesk.index") }}">Complete Request <span class="sr-only">(current)</span></a>
+        <a class="nav-link" href="{{ url_for("helpdesk.index") }}">Complete Request
+            <span class="sr-only">(current)</span></a>
     </li>
     <li class="nav-item active">
-        <a class="nav-link" href="{{ url_for("helpdesk.request") }}">Insert Request <span class="sr-only">(current)</span></a>
+        <a class="nav-link" href="{{ url_for("helpdesk.request") }}">Insert Request
+            <span class="sr-only">(current)</span></a>
     </li>
 {% endblock %}
 
 {% block main_content %}
     <div class="container">
         <div class="insert-container">
-            <form method="post">
+            <form method="post"> <!-- Put action here once backend done for this method -->
                 <div class="input-label">
                     <label for="sender_email">Sender Email</label>
                     <input id="sender_email" name="sender_email">
@@ -41,7 +43,7 @@
                     <textarea id="request_description" name="request_description" rows="5"></textarea>
                 </div>
                 <div class="submit-button-container">
-                    <input type="submit" id="submit-change" value="Mark Complete">
+                    <input type="submit" id="submit-change" value="Create Request">
                 </div>
             </form>
         </div>

@@ -10,6 +10,7 @@ PROJECT_ROOT = os.path.abspath(os.path.join(SCRIPT_DIR, '..'))
 sys.path.append(PROJECT_ROOT)
 from config import Config
 
+
 def table_exists(table_name, connection):
     cursor = connection.cursor()
     cursor.execute("""

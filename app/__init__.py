@@ -1,8 +1,5 @@
 from flask import Flask
 from config import Config
-import os
-import subprocess
-import sqlite3
 from flask import g
 from config import Config
 
@@ -37,16 +34,7 @@ def create_app(config_class=Config):
 
     return app
 
-# will create db from backup if db is not found.
+#trying to bypass import issues during refactoring
 def get_db():
-    if 'db' not in g:
-        if not os.path.exists(DB_PATH):
-            script_path = os.path.join(os.path.dirname(__file__), '..', 'db_utils', 'db_init.py')
-            try:
-                subprocess.run(['python', script_path], check=True)
-            except subprocess.CalledProcessError as e:
-                print(f"Failed to run population script: {e}")
-                raise
-        g.db = sqlite3.connect(DB_PATH)
-        g.db.row_factory = sqlite3.Row
-    return g.db
+    from app.api.db_util import get_db as _get_db
+    return _get_db()

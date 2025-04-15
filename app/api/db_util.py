@@ -4,36 +4,26 @@ import os
 import hashlib
 import sys
 from glob import glob
-
-SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
-PROJECT_ROOT = os.path.abspath(os.path.join(SCRIPT_DIR, '..'))
-sys.path.append(PROJECT_ROOT)
+from flask import g
 from config import Config
 
+DB_PATH = Config.DB_PATH
 
-def table_exists(table_name, connection):
-    cursor = connection.cursor()
-    cursor.execute("""
-        SELECT name FROM sqlite_master 
-        WHERE type='table' AND name=?
-    """, (table_name,))
-    return cursor.fetchone() is not None
+# will create db from backup if db is not found.
+def get_db():
+    if 'db' not in g:
+        if not os.path.exists(DB_PATH):
+            script_path = os.path.join(os.path.dirname(__file__), '..', 'db_utils', 'db_init.py')
+            try:
+                init_db()
+                # subprocess.run(['python', script_path], check=True)
+            except Exception as e:
+                print(f"Failed to run population script: {e}")
+                raise
+        g.db = sqlite3.connect(DB_PATH)
+        g.db.row_factory = sqlite3.Row
+    return g.db
 
-
-def drop_tables(conn, table_names):
-    cursor = conn.cursor()
-
-    # Disable foreign key constraints temporarily if needed.
-    cursor.execute("PRAGMA foreign_keys = OFF;")
-
-    for table in table_names:
-        cursor.execute(f"DROP TABLE IF EXISTS {table};")
-        print(f"Table {table} dropped (if it existed).")
-
-    # Re-enable foreign key constraints.
-    cursor.execute("PRAGMA foreign_keys = ON;")
-
-    conn.commit()
 
 # sanitizes whole column of dataframe
 def sanitize_price_column(price):
@@ -46,7 +36,6 @@ def init_db():
     db_path = Config.DB_PATH
     connection = sqlite3.connect(db_path)
     cursor = connection.cursor()
-
 
     cursor.execute("""
         CREATE TABLE IF NOT EXISTS Users (
@@ -174,15 +163,8 @@ def init_db():
             );
         """)
 
-    # this filepath works only when calling the script from CLI
-    # static_backup = ".\\static_backup\\"
-    # csv_files = glob(os.path.join(static_backup, "*.csv"))
-
-    SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
-    STATIC_BACKUP_DIR = os.path.join(SCRIPT_DIR, 'static_backup')
-    csv_files = glob(os.path.join(STATIC_BACKUP_DIR, '*.csv'))
-
-    print(f"Found {len(csv_files)} CSV files(s) in {STATIC_BACKUP_DIR}.......................")
+    csv_files = glob(os.path.join(Config.STATIC_BACKUP_PATH, '*.csv'))
+    print(f"Found {len(csv_files)} CSV file(s) in {Config.STATIC_BACKUP_PATH}...")
 
     for file in csv_files:
         print(f"Processing {file}")
@@ -195,7 +177,7 @@ def init_db():
         #     continue
 
         if table_name == "Users":
-            #dev team agrees on SHA 256 hashing
+            # dev team agrees on SHA 256 hashing
             df['password'] = df['password'].apply(lambda pwd: hashlib.sha256(pwd.encode('utf-8)')).hexdigest())
         if table_name == "Product_Listings":
             df['Product_Price'] = sanitize_price_column(df['Product_Price'])
@@ -210,31 +192,6 @@ def init_db():
             print(f"Skipping {file}: {e}")
             pass
 
-
     connection.commit()
     connection.close()
     print("Database initialized.")
-
-if __name__ == '__main__':
-
-    # uncomment when testing database changes - wipes DB each time
-    # tables_to_drop = [
-    #     'Users',
-    #     'helpdesk',
-    #     'requests',
-    #     'buyers',
-    #     'credit_cards',
-    #     'address',
-    #     'zipcode_info',
-    #     'sellers',
-    #     'categories',
-    #     'product_listings',
-    #     'orders',
-    #     'Reviews'
-    # ]
-    # db_path = "..//database.db"
-    # connection = sqlite3.connect(db_path)
-    # #table dropping on startup is for testing purposes - remove in production
-    # drop_tables(connection, tables_to_drop)
-
-    init_db()

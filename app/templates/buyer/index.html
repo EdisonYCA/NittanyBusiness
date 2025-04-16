@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+
+{% block style %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/buyer.css') }}">
+{% endblock %}
+
+{% block navbar_content %}
+    <li class="nav-item active">
+        <a class="nav-link" href="{{ url_for("main.index") }}">Home <span class="sr-only">(current)</span></a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" href="#">About</a>
+    </li>
+    <li class="nav-item active">
+        <a class="nav-link" href="{{ url_for("login.index") }}">Profile</a>
+    </li>
+    <li class="nav-item active">
+        <a class="nav-link" href="{{ url_for("signup.index") }}">Nav Link</a>
+    </li>
+{% endblock %}
+<button class="btn btn-primary" data-bs-toggle="offcanvas" data-bs-target="#sidebarMenu">
+    Open Sidebar
+</button>
+{% block main_content %}
+    <div>
+
+    </div>
+{% endblock %}

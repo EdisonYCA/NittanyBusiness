@@ -8,6 +8,7 @@ from config import Config
 
 DB_PATH = Config.DB_PATH
 
+
 def create_app(config_class=Config):
     app = Flask(__name__)
     app.config.from_object(config_class)
@@ -28,6 +29,9 @@ def create_app(config_class=Config):
     from app.helpdesk import bp as helpdesk_bp
     app.register_blueprint(helpdesk_bp, url_prefix='/helpdesk')
 
+    from app.buyer import bp as buyer_bp
+    app.register_blueprint(buyer_bp, url_prefix='/buyer')
+
     # app teardown tells db that connection is closing - refer to flask docs for details
     @app.teardown_appcontext
     def close_db(exception):
@@ -36,6 +40,7 @@ def create_app(config_class=Config):
             db.close()
 
     return app
+
 
 # will create db from backup if db is not found.
 def get_db():

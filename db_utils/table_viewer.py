@@ -48,7 +48,7 @@ def print_contents(table_name):
     connection.close()
 
 if __name__ == '__main__':
-    table_name = "Users"
+    table_name = "Address"
     print_names()
     print_schema(table_name)
     print_contents(table_name)

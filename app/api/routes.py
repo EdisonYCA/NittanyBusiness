@@ -1,7 +1,7 @@
 import sqlite3
 
 from click import confirm
-from flask import request, redirect, url_for, render_template, jsonify
+from flask import request, redirect, url_for, render_template, jsonify, session
 from app import get_db
 from app.api import bp
 import hashlib
@@ -84,14 +84,15 @@ def login():
 def signup():
     newEmail = request.form.get("email")
     newPassword = request.form.get("password")
-    confirmPassowrd = request.form.get("passwordConf")
+    confirmPassword = request.form.get("passwordConf")
     accountType = request.form.get("accountType")
+    businessName = request.form.get("businessName")
 
-    if not validate_email(newEmail) or not newPassword or not confirmPassowrd:
-    #if not newPassword or not confirmPassowrd:
+    if not validate_email(newEmail) or not newPassword or not confirmPassword:
         return redirect(url_for("signup.index", signup_failed=True))
-    #match password
-    if newPassword != confirmPassowrd:
+
+    # Match passwords
+    if newPassword != confirmPassword:
         return redirect(url_for("signup.index", password_match_failed=True))
 
     if len(newPassword) < 8 or not any(char.isupper() for char in newPassword):
@@ -105,22 +106,90 @@ def signup():
         if existing_user is not None:
             return redirect(url_for("signup.index", signup_exists=True))
 
-        # Insert new user into the database
+        # Insert the new user into the Users table
         hashed_password = hash_password(newPassword)
         db.execute("INSERT INTO Users (email, password) VALUES (?, ?)", [newEmail, hashed_password])
         db.commit()
 
-        # Render different templates based on accountType
+        # Insert into the relevant table based on the account type
         if accountType == "seller":
-            return render_template("signup/seller.html", email=newEmail)
+            return render_template("signup/seller.html", email=newEmail, businessName=businessName)
         elif accountType == "buyer":
-            return render_template("profile/buyerProfile.html", email=newEmail)
+            return render_template("profile/buyerProfile.html", email=newEmail, businessName=businessName)
         else:
             return redirect(url_for("signup.index", signup_failed=True))
-
 
     except Exception as e:
         print(f"Database Error: {e}")
         return redirect(url_for("signup.index", signup_failed=True))
 
+@bp.route('/signupSeller', methods=['POST'])
+def signupSeller():
+    email = session.get('email')  # Retrieve the email stored in the session
+    street_num = request.form.get('street_num')
+    street_name = request.form.get('street_name')
+    zipcode = request.form.get('zipcode')
+    city = request.form.get('city')
+    state = request.form.get('state')
+    bank_routing_number = request.form.get('bank_routing_number')
+    bank_account_number = request.form.get('bank_account_number')
 
+    db = get_db()
+    try:
+        # Insert Address and Zipcode_Info
+        address_id = f"{street_num}_{street_name}_{zipcode}"  # Generate address ID
+        db.execute("INSERT INTO Address (address_id, street_num, street_name, zipcode) VALUES (?, ?, ?, ?)",
+                   [address_id, street_num, street_name, zipcode])
+        db.execute("INSERT INTO Zipcode_Info (zipcode, city, state) VALUES (?, ?, ?)",
+                   [zipcode, city, state])
+
+        # Insert Seller Information
+        db.execute("""
+                INSERT INTO Sellers (email, business_name, business_address_id, bank_routing_number, bank_account_number, balance)
+                VALUES (?, ?, ?, ?, ?, ?)
+            """, [email, session.get('businessName'), address_id, bank_routing_number, bank_account_number, 0.0])
+
+        db.commit()
+        return redirect(url_for("profile.index", success=True))  # Redirect to a success page
+    except Exception as e:
+        print(f"Seller Details Error: {e}")
+        return redirect(url_for("profile.index", profile_failed=True))  # Redirect in case of failure
+
+
+
+@bp.route('/signupBuyer', methods=['POST'])
+def signupBuyer():
+    def submit_buyer_details():
+        email = session.get('email')
+        street_num = request.form.get('street_num')
+        street_name = request.form.get('street_name')
+        zipcode = request.form.get('zipcode')
+        city = request.form.get('city')
+        state = request.form.get('state')
+        credit_card_num = request.form.get('credit_card_num')
+        card_type = request.form.get('card_type')
+        expire_month = request.form.get('expire_month')
+        expire_year = request.form.get('expire_year')
+        security_code = request.form.get('security_code')
+
+        db = get_db()
+        try:
+            # Insert Address and Zipcode_Info
+            address_id = f"{street_num}_{street_name}_{zipcode}"
+            db.execute("INSERT INTO Address (address_id, street_num, street_name, zipcode) VALUES (?, ?, ?, ?)",
+                       [address_id, street_num, street_name, zipcode])
+            db.execute("INSERT INTO Zipcode_Info (zipcode, city, state) VALUES (?, ?, ?)", [zipcode, city, state])
+
+            # Insert Buyer and Credit Card
+            db.execute("INSERT INTO Buyers (email, business_name, buyer_address_id) VALUES (?, ?, ?)",
+                       [email, session.get('businessName'), address_id])
+            db.execute("""
+                INSERT INTO Credit_Cards (credit_card_num, card_type, expire_month, expire_year, security_code, owner_email)
+                VALUES (?, ?, ?, ?, ?, ?)
+            """, [credit_card_num, card_type, expire_month, expire_year, security_code, email])
+
+            db.commit()
+            return redirect(url_for("profile.index", success=True))  # Redirect to a success page
+        except Exception as e:
+            print(f"Buyer Details Error: {e}")
+            return redirect(url_for("profile.index", profile_failed=True))  # Redirect in case of failure

@@ -28,6 +28,9 @@ def create_app(config_class=Config):
     from app.helpdesk import bp as helpdesk_bp
     app.register_blueprint(helpdesk_bp, url_prefix='/helpdesk')
 
+    from app.profile import bp as profile_bp
+    app.register_blueprint(profile_bp, url_prefix='/profile')
+
     # app teardown tells db that connection is closing - refer to flask docs for details
     @app.teardown_appcontext
     def close_db(exception):

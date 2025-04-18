@@ -115,7 +115,7 @@ def signup():
         if accountType == "seller":
             return render_template("signup/seller.html", email=newEmail, businessName=businessName)
         elif accountType == "buyer":
-            return render_template("profile/buyerProfile.html", email=newEmail, businessName=businessName)
+            return render_template("profile/buyer.html", email=newEmail, businessName=businessName)
         else:
             return redirect(url_for("signup.index", signup_failed=True))
 
@@ -159,7 +159,6 @@ def signupSeller():
 
 @bp.route('/signupBuyer', methods=['POST'])
 def signupBuyer():
-    def submit_buyer_details():
         email = session.get('email')
         street_num = request.form.get('street_num')
         street_name = request.form.get('street_name')

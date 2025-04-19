@@ -1,0 +1,64 @@
+div {
+    border:2px solid black;
+}
+
+.listing-container {
+    display:flex;
+    margin:auto;
+    width:75%;
+    flex-direction: column;
+}
+
+.listing-header {
+    display:flex;
+    justify-content: center;
+}
+
+.listing-details-container {
+    display:flex;
+    flex-direction: row;
+    min-height: 50vh;
+}
+
+.product-image {
+    flex-grow: 1
+}
+
+.detail-container {
+    flex-grow: 3;
+    display: flex;
+    flex-direction: column;
+}
+
+.description-container {
+    flex-grow: 5;
+}
+
+.seller-container {
+    flex-grow: 1;
+    align-content: center;
+
+}
+
+.logistic-container, .order-container {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: row;
+}
+
+.order-container {
+    align-items: center;
+    justify-content: center;
+}
+
+.quantity, .price {
+    align-content: center;
+    flex-grow: 1;
+}
+
+input {
+    text-align: center;
+}
+h1 {
+    text-align: center;
+}

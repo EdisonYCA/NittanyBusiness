@@ -28,6 +28,9 @@ def create_app(config_class=Config):
     from app.product import bp as product_bp
     app.register_blueprint(product_bp, url_prefix='/product')
 
+    from app.checkout import bp as checkout_bp
+    app.register_blueprint(checkout_bp, url_prefix='/checkout')
+
     # app teardown tells db that connection is closing - refer to flask docs for details
     @app.teardown_appcontext
     def close_db(exception):

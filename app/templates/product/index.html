@@ -50,7 +50,7 @@
                     </div>
                 </div>
                 <div class="order-container">
-                    <form method="post">
+                    <form method="POST" action="{{ url_for("checkout.index") }}">
                         <label for="order_quantity"></label>
                         <input type="number" min="1" max="{{ product_quantity }}" id="order_quantity" name="order_quantity" value="1">
                         <input type="submit" value="Order">

@@ -1,7 +1,3 @@
-div {
-    border:2px solid black;
-}
-
 .listing-container {
     display:flex;
     margin:auto;
@@ -12,6 +8,7 @@ div {
 .listing-header {
     display:flex;
     justify-content: center;
+    border:2px solid black;
 }
 
 .listing-details-container {
@@ -21,23 +18,30 @@ div {
 }
 
 .product-image {
-    flex-grow: 1
+    flex-grow: 1;
+    border-left:2px solid black;
+    border-bottom:2px solid black;
+
 }
 
 .detail-container {
     flex-grow: 3;
     display: flex;
     flex-direction: column;
+    border-left:2px solid black;
+    border-right:2px solid black;
+    border-bottom:2px solid black;
 }
 
 .description-container {
     flex-grow: 5;
+    border-bottom:2px solid black;
 }
 
 .seller-container {
     flex-grow: 1;
     align-content: center;
-
+    border-bottom:2px solid black;
 }
 
 .logistic-container, .order-container {
@@ -54,6 +58,7 @@ div {
 .quantity, .price {
     align-content: center;
     flex-grow: 1;
+    border-bottom:2px solid black;
 }
 
 input {

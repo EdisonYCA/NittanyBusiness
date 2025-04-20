@@ -241,7 +241,7 @@
       <workItem from="1743869505288" duration="8015000" />
       <workItem from="1744659232341" duration="4573000" />
       <workItem from="1744765645927" duration="7336000" />
-      <workItem from="1745149943747" duration="5479000" />
+      <workItem from="1745149943747" duration="7846000" />
     </task>
     <task id="LOCAL-00001" summary="Made frontend look better, but is missing backend merge.">
       <option name="closed" value="true" />
@@ -323,7 +323,7 @@
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/NittanyBusiness$db_init.coverage" NAME="db_init Coverage Results" MODIFIED="1744660702492" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/db_utils" />
     <SUITE FILE_PATH="coverage/NittanyBusiness$table_viewer.coverage" NAME="table_viewer Coverage Results" MODIFIED="1742779770265" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/db_utils" />
-    <SUITE FILE_PATH="coverage/NittanyBusiness$FlaskProject.coverage" NAME="FlaskProject Coverage Results" MODIFIED="1745157458006" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="" />
+    <SUITE FILE_PATH="coverage/NittanyBusiness$FlaskProject.coverage" NAME="FlaskProject Coverage Results" MODIFIED="1745169843648" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="" />
     <SUITE FILE_PATH="coverage/NittanyBusiness$Flask.coverage" NAME="Flask Coverage Results" MODIFIED="1743014788574" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/app" />
   </component>
 </project>

@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+
+{% block style %}
+<link rel="stylesheet" href="{{ url_for('static', filename='styles/seller.css') }}">
+{% endblock %}
+
+{% block navbar_content %}
+<li class="nav-content">
+    <a href="#" class="btn btn-primary nav-link">Publish Product</a>
+</li>
+<li class="nav-item">
+    <a class="nav-link" href="#">Settings</a>
+</li>
+<li class="nav-item">
+    <a class="nav-link" href="#">Log Out</a>
+</li>
+{% endblock %}
+
+{% block main_content %}
+<div class="w-100 h-100 d-flex justify-content-center">
+    <div class="w-75 h-75 mt-2 border rounded d-flex flex-column p-1">
+        <div class="d-flex w-100 h-10 mb-1">
+            <button type="button" class="w-35 btn btn-primary h-full">
+                Active
+            </button>
+            <button type="button" class="w-35 btn btn-primary h-full">
+                Inactive
+            </button>
+            <button type="button" class="w-35 btn btn-primary h-full">
+                Sold Out
+            </button>
+        </div>
+
+        <div class="w-100 h-90 bg-gray border rounded p-2 overflow-scroll">
+            <div class="w-100 h-25 bg-primary border rounded">
+
+            </div>
+            <div class="w-100 h-25 bg-primary border rounded">
+
+            </div>
+            <div class="w-100 h-25 bg-primary border rounded">
+
+            </div>
+            <div class="w-100 h-25 bg-primary border rounded">
+
+            </div>
+            <div class="w-100 h-25 bg-primary border rounded">
+
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

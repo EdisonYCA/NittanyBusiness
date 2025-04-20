@@ -1,13 +1,14 @@
 from flask import Flask
-from config import Config
 from flask import g
 from config import Config
+import os
 
 DB_PATH = Config.DB_PATH
 
 
 def create_app(config_class=Config):
     app = Flask(__name__)
+    app.secret_key = os.getenv("SECRET_KEY")
     app.config.from_object(config_class)
 
     # Register blueprints here

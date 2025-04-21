@@ -1,0 +1,39 @@
+.checkout-container {
+    display: flex;
+    flex-direction: column;
+    margin: auto;
+    width: 75%;
+}
+
+.product-detail-container {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 5px;
+    border:2px solid black;
+}
+
+.credit-form-container {
+    display: flex;
+    flex-direction: column;
+    border:2px solid black;
+}
+
+.auto-fill-button {
+    margin: 5px auto;
+}
+
+.credit-info-container {
+    display: flex;
+    flex-direction: row;
+    margin: auto;
+}
+
+.credit-num-container, .expire-date-container, .security-code-container {
+    margin-left: 5px;
+    margin-right: 5px;
+}
+
+.submit-container {
+    margin: 5px auto;
+}
+

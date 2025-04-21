@@ -1,12 +1,14 @@
 from flask import Flask
-from config import Config
 from flask import g
 from config import Config
+import os
 
 DB_PATH = Config.DB_PATH
 
+
 def create_app(config_class=Config):
     app = Flask(__name__)
+    app.secret_key = os.getenv("SECRET_KEY")
     app.config.from_object(config_class)
 
     # Register blueprints here
@@ -25,6 +27,15 @@ def create_app(config_class=Config):
     from app.helpdesk import bp as helpdesk_bp
     app.register_blueprint(helpdesk_bp, url_prefix='/helpdesk')
 
+    from app.product import bp as product_bp
+    app.register_blueprint(product_bp, url_prefix='/product')
+
+    from app.checkout import bp as checkout_bp
+    app.register_blueprint(checkout_bp, url_prefix='/checkout')
+
+    from app.seller import bp as seller_bp
+    app.register_blueprint(seller_bp, url_prefix='/seller')
+
     # app teardown tells db that connection is closing - refer to flask docs for details
     @app.teardown_appcontext
     def close_db(exception):
@@ -34,7 +45,8 @@ def create_app(config_class=Config):
 
     return app
 
-#trying to bypass import issues during refactoring
+
+# trying to bypass import issues during refactoring
 def get_db():
     from app.api.db_util import get_db as _get_db
     return _get_db()

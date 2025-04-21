@@ -1,0 +1,69 @@
+.listing-container {
+    display:flex;
+    margin:auto;
+    width:75%;
+    flex-direction: column;
+}
+
+.listing-header {
+    display:flex;
+    justify-content: center;
+    border:2px solid black;
+}
+
+.listing-details-container {
+    display:flex;
+    flex-direction: row;
+    min-height: 50vh;
+}
+
+.product-image {
+    flex-grow: 1;
+    border-left:2px solid black;
+    border-bottom:2px solid black;
+
+}
+
+.detail-container {
+    flex-grow: 3;
+    display: flex;
+    flex-direction: column;
+    border-left:2px solid black;
+    border-right:2px solid black;
+    border-bottom:2px solid black;
+}
+
+.description-container {
+    flex-grow: 5;
+    border-bottom:2px solid black;
+}
+
+.seller-container {
+    flex-grow: 1;
+    align-content: center;
+    border-bottom:2px solid black;
+}
+
+.logistic-container, .order-container {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: row;
+}
+
+.order-container {
+    align-items: center;
+    justify-content: center;
+}
+
+.quantity, .price {
+    align-content: center;
+    flex-grow: 1;
+    border-bottom:2px solid black;
+}
+
+input {
+    text-align: center;
+}
+h1 {
+    text-align: center;
+}

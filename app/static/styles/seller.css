@@ -1,0 +1,19 @@
+.h-10 {
+    height: 10%
+}
+
+.h-90 {
+    height: 90%
+}
+
+.w-35 {
+    width: 35%;
+}
+
+.fh {
+    height: 500px;
+}
+
+.bg-gray {
+    background-color: #eee;
+}

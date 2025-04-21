@@ -26,6 +26,7 @@ def validate_email(email):
     return regex.match(email) is not None
 
 
+# calculates incremented product_id per requirements analysis
 def get_prod_id(email):
     db = get_db()
     db.row_factory = sqlite3.Row
@@ -52,6 +53,48 @@ def get_user_type(email):
     if seller:
         return "Seller"
     return "Helpdesk"
+
+
+# gets all products by category
+@bp.route("/prod_by_cat", methods=["POST"])
+def prod_by_cat():
+    category = request.form.get("category")
+
+    db = get_db()
+    db.row_factory = sqlite3.Row
+    cursor = db.cursor()
+
+    try:
+        cursor.execute("SELECT * FROM Product_Listings WHERE category = ?", (category,))
+        rows = cursor.fetchall()
+        db.close()
+    except Exception as e:
+        print(e)
+        return f'Error: {e}'
+
+    result = [dict(row) for row in rows]
+    return jsonify(result)
+
+
+# gets all products by seller
+@bp.route("/prod_by_seller", methods=["POST"])
+def prod_by_seller():
+    seller_id = request.form.get("seller_id")
+
+    db = get_db()
+    db.row_factory = sqlite3.Row
+    cursor = db.cursor()
+
+    try:
+        cursor.execute("SELECT * FROM Product_Listings WHERE seller_email = ?", (seller_id,))
+        rows = cursor.fetchall()
+        db.close()
+    except Exception as e:
+        print(e)
+        return f'Error: {e}'
+
+    result = [dict(row) for row in rows]
+    return jsonify(result)
 
 
 # this endpoint grabs the children of whatever category was passed in

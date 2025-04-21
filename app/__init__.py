@@ -3,11 +3,12 @@ from flask import g
 from config import Config
 
 DB_PATH = Config.DB_PATH
-
+secret_key = Config.SECRET_KEY
 
 def create_app(config_class=Config):
     app = Flask(__name__)
     app.config.from_object(config_class)
+    app.config['SECRET_KEY'] = secret_key
 
     # Register blueprints here
     from app.main import bp as main_bp

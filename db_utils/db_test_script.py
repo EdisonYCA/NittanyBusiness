@@ -127,6 +127,29 @@ def test_add_product():
     print()
 
 
+# test for prod_by_cat endpoint
+def test_prod_by_cat():
+    url = f"{BASE_URL}/api/prod_by_cat"
+    payload = {
+        "category": "Bath Robes"
+    }
+    response = requests.post(url, data=payload)
+    print("prod_by_cat - Status Code:", response.status_code)
+    print("prod_by_cat - Response Text:", response.text)
+    print()
+
+# test for prod_by_seller endpoint
+def test_prod_by_seller():
+    url = f"{BASE_URL}/api/prod_by_seller"
+    payload = {
+        "seller_id": "gfwebr11@nittybiz.com"
+    }
+    response = requests.post(url, data=payload)
+    print("prod_by_seller - Status Code:", response.status_code)
+    print("prod_by_seller - Response Text:", response.text)
+    print()
+
+
 if __name__ == "__main__":
     # Uncomment specific tests when running
 
@@ -136,4 +159,6 @@ if __name__ == "__main__":
     # test_get_requests()
     # test_top_level_categories()
     # test_get_categories_by_parent()
-    test_add_product()
+    # test_add_product()
+    test_prod_by_cat()
+    test_prod_by_seller()

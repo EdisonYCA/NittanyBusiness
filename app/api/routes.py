@@ -26,6 +26,22 @@ def validate_email(email):
     return regex.match(email) is not None
 
 
+# calculates incremented product_id per requirements analysis
+def get_prod_id(email):
+    db = get_db()
+    db.row_factory = sqlite3.Row
+    cursor = db.cursor()
+
+    row = cursor.execute("SELECT MAX(listing_id) FROM Product_Listings WHERE seller_email = ?", (email,)).fetchone()
+    if row[0] is None:
+        row = cursor.execute("SELECT * FROM Sellers WHERE email = ?", (email,)).fetchone()
+        if row[0] is None:
+            raise Exception("Invalid email")
+        else:
+            return 1
+    return row[0] + 1
+
+
 # checks if user is a buyer, seller, or helpdesk user
 def get_user_type(email):
     db = get_db()
@@ -37,6 +53,48 @@ def get_user_type(email):
     if seller:
         return "Seller"
     return "Helpdesk"
+
+
+# gets all products by category
+@bp.route("/prod_by_cat", methods=["POST"])
+def prod_by_cat():
+    category = request.form.get("category")
+
+    db = get_db()
+    db.row_factory = sqlite3.Row
+    cursor = db.cursor()
+
+    try:
+        cursor.execute("SELECT * FROM Product_Listings WHERE category = ?", (category,))
+        rows = cursor.fetchall()
+        db.close()
+    except Exception as e:
+        print(e)
+        return f'Error: {e}'
+
+    result = [dict(row) for row in rows]
+    return jsonify(result)
+
+
+# gets all products by seller
+@bp.route("/prod_by_seller", methods=["POST"])
+def prod_by_seller():
+    seller_id = request.form.get("seller_id")
+
+    db = get_db()
+    db.row_factory = sqlite3.Row
+    cursor = db.cursor()
+
+    try:
+        cursor.execute("SELECT * FROM Product_Listings WHERE seller_email = ?", (seller_id,))
+        rows = cursor.fetchall()
+        db.close()
+    except Exception as e:
+        print(e)
+        return f'Error: {e}'
+
+    result = [dict(row) for row in rows]
+    return jsonify(result)
 
 
 # this endpoint grabs the children of whatever category was passed in
@@ -58,6 +116,37 @@ def get_child_categories():
     # this return is just for testing with test script
     result = [dict(row) for row in rows]
     return jsonify(result)
+
+
+#takes in product specs and creates new product listing
+@bp.route('/add_product', methods=['POST'])
+def add_product():
+
+    seller_id = request.form.get("seller_id")
+    # product_id = request.form.get("product_id")
+    category = request.form.get("category")
+    product_name = request.form.get("product_name")
+    quantity = request.form.get("quantity")
+    price = request.form.get("price")
+    status = request.form.get("status")
+    product_description = request.form.get("product_description")
+    product_title = request.form.get("product_title")
+    try:
+        product_id = get_prod_id(seller_id)
+    except Exception as e:
+        return f"error during product_id creation: {e}"
+
+    db = get_db()
+    cursor = db.cursor()
+
+    try:
+        cursor.execute("INSERT into Product_Listings (seller_email, listing_id, category, product_title, product_name, product_description, quantity, product_price, status) VALUES (?,?,?,?,?,?,?,?,?)",
+                   [seller_id, product_id, category, product_title, product_name, product_description, quantity, price, status])
+        db.commit()
+    except sqlite3.IntegrityError as e:
+        print(e)
+        return f"Error: {e}"
+    return f"Product {product_id} added to listing {seller_id}"
 
 
 # this endpoint grabs top level categories

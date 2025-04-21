@@ -56,7 +56,6 @@ def test_top_level_categories():
     # This endpoint doesn't expect any payload data.
     response = requests.post(url)
 
-    print("== Test Top Level Categories ==")
     print("Status Code:", response.status_code)
     print("Response Text:")
     print(response.text)
@@ -91,6 +90,66 @@ def test_get_categories_by_parent():
     print()
 
 
+def test_add_product():
+    url = f"{BASE_URL}/api/add_product"
+
+    # Valid product insertion
+    valid_payload = {
+        "seller_id": "6aunogko@nittybiz.com",
+        "category": "Bath Robes",
+        "product_title": "A bath robe",
+        "product_name": "Logitech PROMETHEUS bath robe",
+        "product_description": "Compact wireless mouse with USB receiver",
+        "quantity": "15",
+        "price": "19.99",
+        "status": "available"
+    }
+    response = requests.post(url, data=valid_payload)
+    print("Valid Product Test - Status Code:", response.status_code)
+    print("Valid Product Test - Response Text:", response.text)
+    print()
+
+    # invalid product insertion - invalid email
+    invalid_payload = {
+        "seller_id": "fake@email.com",
+        "category": "Bath Robes",
+        "product_title": "A bath robe",
+        "product_name": "Logitech PROMETHEUS bath robe",
+        "product_description": "Compact wireless mouse with USB receiver",
+        "quantity": "15",
+        "price": "19.99",
+        "status": "available"
+    }
+
+    response = requests.post(url, data=invalid_payload)
+    print("Invalid Product Test - Status Code:", response.status_code)
+    print("Invalid Product Test - Response Text:", response.text)
+    print()
+
+
+# test for prod_by_cat endpoint
+def test_prod_by_cat():
+    url = f"{BASE_URL}/api/prod_by_cat"
+    payload = {
+        "category": "Bath Robes"
+    }
+    response = requests.post(url, data=payload)
+    print("prod_by_cat - Status Code:", response.status_code)
+    print("prod_by_cat - Response Text:", response.text)
+    print()
+
+# test for prod_by_seller endpoint
+def test_prod_by_seller():
+    url = f"{BASE_URL}/api/prod_by_seller"
+    payload = {
+        "seller_id": "gfwebr11@nittybiz.com"
+    }
+    response = requests.post(url, data=payload)
+    print("prod_by_seller - Status Code:", response.status_code)
+    print("prod_by_seller - Response Text:", response.text)
+    print()
+
+
 if __name__ == "__main__":
     # Uncomment specific tests when running
 
@@ -99,4 +158,7 @@ if __name__ == "__main__":
     # test_complete_request()
     # test_get_requests()
     # test_top_level_categories()
-    test_get_categories_by_parent()
+    # test_get_categories_by_parent()
+    # test_add_product()
+    test_prod_by_cat()
+    test_prod_by_seller()

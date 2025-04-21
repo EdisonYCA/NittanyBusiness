@@ -37,6 +37,7 @@ def init_db():
     connection = sqlite3.connect(db_path)
     cursor = connection.cursor()
 
+    #users
     cursor.execute("""
         CREATE TABLE IF NOT EXISTS Users (
             email TEXT PRIMARY KEY,
@@ -44,6 +45,7 @@ def init_db():
             );
         """)
 
+    #helpdesk
     cursor.execute("""
         CREATE TABLE IF NOT EXISTS Helpdesk (
             email TEXT PRIMARY KEY,
@@ -51,6 +53,7 @@ def init_db():
             );
         """)
 
+    # requests
     # status is an int, so handle non 0/1 vals in API
     cursor.execute("""
         CREATE TABLE IF NOT EXISTS Requests (
@@ -63,6 +66,7 @@ def init_db():
             );
         """)
 
+    # buyers
     cursor.execute("""
         CREATE TABLE IF NOT EXISTS Buyers (
             email TEXT PRIMARY KEY,
@@ -73,6 +77,7 @@ def init_db():
             );
         """)
 
+    # credit_cards
     cursor.execute("""
         CREATE TABLE IF NOT EXISTS Credit_Cards (
             credit_card_num TEXT PRIMARY KEY,
@@ -85,6 +90,7 @@ def init_db():
             );
         """)
 
+    # address
     cursor.execute("""
         CREATE TABLE IF NOT EXISTS Address (
             address_id TEXT PRIMARY KEY,
@@ -94,6 +100,7 @@ def init_db():
             );
         """)
 
+    # zipcode
     cursor.execute("""
         CREATE TABLE IF NOT EXISTS Zipcode_Info (
             zipcode INTEGER PRIMARY KEY,
@@ -102,6 +109,7 @@ def init_db():
             );
         """)
 
+    # sellers
     cursor.execute("""
         CREATE TABLE IF NOT EXISTS Sellers (
             email TEXT PRIMARY KEY,
@@ -115,6 +123,7 @@ def init_db():
             );
         """)
 
+    # categories
     cursor.execute("""
         CREATE TABLE IF NOT EXISTS Categories (
             category_name TEXT PRIMARY KEY,
@@ -122,6 +131,7 @@ def init_db():
             );
         """)
 
+    # product_listings
     # status codes: 1-active, 0-inactive, 2-sold ; default value is 1
     # UPON INSERTION, IF LISTING_ID IS NULL SET TO INCREMENT
     # product price is price*100 and type integer
@@ -140,6 +150,7 @@ def init_db():
             );
         """)
 
+    # orders
     cursor.execute("""
         CREATE TABLE IF NOT EXISTS Orders (
             order_id integer PRIMARY KEY,
@@ -154,6 +165,7 @@ def init_db():
             );
         """)
 
+    # reviews
     cursor.execute("""
         CREATE TABLE IF NOT EXISTS Reviews (
             order_id INTEGER PRIMARY KEY,

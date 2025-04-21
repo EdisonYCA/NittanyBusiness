@@ -278,7 +278,7 @@ def new_prod_review():
     cursor = db.cursor()
 
     try:
-        cursor.execute("INSERT into Reviews (order_id, review_desc, rate) VALUE (?,?,?)", (order_id, review_desc, rating))
+        cursor.execute("INSERT into Reviews (order_id, review_desc, rate) VALUES (?,?,?)", (order_id, review_desc, rating))
         db.commit()
         db.close()
     except Exception as e:
@@ -295,13 +295,19 @@ def get_listing_reviews():
     cursor = db.cursor()
 
     try:
-        cursor.execute("SELECT * FROM Reviews WHERE listing_id = ?", (listing_id,))
+        cursor.execute("""SELECT * 
+                        FROM Reviews AS r
+                        JOIN Orders AS o
+                        ON r.order_id = o.order_id
+                        WHERE listing_id = ?""",
+                       (listing_id,))
         rows = cursor.fetchall()
         db.close()
     except Exception as e:
         print(f"Database Error: {e}")
         return f"Error while getting listing reviews: {e}"
-    return rows
+    result = [dict(row) for row in rows]
+    return jsonify(result)
 
 # gets average rating of all reviews for a given seller
 @bp.route("/get_avg_seller_rating", methods=["POST"])

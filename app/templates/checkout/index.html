@@ -40,28 +40,30 @@
                 </p>
             </div>
         </div>
-        <div class="credit-form-container">
-            <div class="auto-fill-button">
-                <input type="button" value="Auto-fill Previous Information">
-            </div>
-            <div class="credit-info-container">
-                <div class="credit-num-container">
-                    <label for="credit_card_num" class="form-label">Credit Card Number</label>
-                    <input name="credit_card_num" id="credit_card_num" class="form-control" value="{{ credit_num }}">
+        <form method="post" action="{{ url_for('checkout.rate') }}">
+            <div class="credit-form-container">
+                <div class="auto-fill-button">
+                    <input type="button" value="Auto-fill Previous Information">
                 </div>
-                <div class="expire-date-container">
-                    <label for="expire_date" class="form-label">Expiration Date</label>
-                    <input name="expire_date" id="expire_date" class="form-control" placeholder="mm/yy" value="{{ exp_date }}">
+                <div class="credit-info-container">
+                    <div class="credit-num-container">
+                        <label for="credit_card_num" class="form-label">Credit Card Number</label>
+                        <input name="credit_card_num" id="credit_card_num" class="form-control" value="{{ credit_num }}">
+                    </div>
+                    <div class="expire-date-container">
+                        <label for="expire_date" class="form-label">Expiration Date</label>
+                        <input name="expire_date" id="expire_date" class="form-control" placeholder="mm/yy" value="{{ exp_date }}">
+                    </div>
+                    <div class="security-code-container">
+                        <label for="security_code" class="form-label">Security Code</label>
+                        <input name="security_code" id="security_code" class="form-control" value="{{ security_code }}">
+                    </div>
                 </div>
-                <div class="security-code-container">
-                    <label for="security_code" class="form-label">Security Code</label>
-                    <input name="security_code" id="security_code" class="form-control" value="{{ security_code }}">
+                <div class="submit-container">
+                    <input type="submit" value="Purchase">
                 </div>
             </div>
-            <div class="submit-container">
-                <input type="submit" value="Purchase">
-            </div>
-        </div>
+        </form>
     </div>
 
 {%  endblock %}

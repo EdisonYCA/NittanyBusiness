@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+
+{% block style %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/rating.css') }}">
+{% endblock %}
+
+{% block main_content %}
+    <div class="rating-container">
+        <div class="rating-header">
+            <h1>Leave a review for {{ product_name }}</h1>
+        </div>
+        <form>
+            <div class="seller-container">
+
+            </div>
+            <div class="product-container">
+
+                <label for="product_review">Review of Product</label>
+                <textarea id="product_review" name="product_review">
+
+                </textarea>
+            </div>
+        </form>
+    </div>
+
+
+{% endblock %}

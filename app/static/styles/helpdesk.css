@@ -4,21 +4,36 @@
 }
 
 .submit-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
-.table-container {
+.input-label > label, .input-label > input {
+    text-align: center;
+}
 
+.card-title {
+    text-align: center;
+}
+
+.input-label > label, input {
+    display: flex;
+    flex-direction: column;
+    margin: auto;
 }
 
 .addcat-container {
     display:flex;
-    justify-content: center;
+    flex-direction: column;
     align-items:center;
-    width:100%;
+    justify-content: center;
+    margin-left: auto;
+    margin-right: auto;
 }
 
-.input-label > label, input {
-    display: block;
+.addcat-container > input {
+    margin-left: auto;
 }
 
 input {
@@ -28,8 +43,4 @@ input {
 .insert-container {
     display:flex;
     flex-direction: column;
-}
-
-.submit-button-container {
-
 }

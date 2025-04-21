@@ -9,7 +9,7 @@
         <div class="rating-header">
             <h1>Leave a review for {{ product_name }}</h1>
         </div>
-        <form method="post">
+        <form method="post" action="{{ url_for('api.new_prod_review') }}">
             <div class="seller-container">
                 <h2>Rate the Seller</h2>
                 <div class="star-container">

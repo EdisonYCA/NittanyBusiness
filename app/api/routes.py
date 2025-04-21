@@ -271,8 +271,8 @@ def signup():
 @bp.route("/new_prod_review", methods=["POST"])
 def new_prod_review():
     order_id = request.form.get("order_id")
-    review_desc = request.form.get("review_desc")
-    rating = request.form.get("rating")
+    review_desc = request.form.get("product_review")
+    rating = request.form.get("product_rating")
 
     db = get_db()
     cursor = db.cursor()
@@ -284,7 +284,7 @@ def new_prod_review():
     except Exception as e:
         print(f"Database Error: {e}")
         return f"Error while inserting new review: {e}"
-    return f"Review #{order_id} submitted successfully"
+    return redirect(url_for("main.index"))
 
 # lets buyer leave rating on product
 @bp.route("/get_listing_reviews", methods=["POST"])

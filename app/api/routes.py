@@ -265,3 +265,69 @@ def signup():
     except Exception as e:
         print(f"Database Error: {e}")
         return redirect(url_for("signup.index", signup_failed=True))
+
+
+# lets buyer leave rating on product
+@bp.route("/new_prod_review", methods=["POST"])
+def new_prod_review():
+    order_id = request.form.get("order_id")
+    review_desc = request.form.get("review_desc")
+    rating = request.form.get("rating")
+
+    db = get_db()
+    cursor = db.cursor()
+
+    try:
+        cursor.execute("INSERT into Reviews (order_id, review_desc, rate) VALUES (?,?,?)", (order_id, review_desc, rating))
+        db.commit()
+        db.close()
+    except Exception as e:
+        print(f"Database Error: {e}")
+        return f"Error while inserting new review: {e}"
+    return f"Review #{order_id} submitted successfully"
+
+# lets buyer leave rating on product
+@bp.route("/get_listing_reviews", methods=["POST"])
+def get_listing_reviews():
+    listing_id = request.form.get("listing_id")
+
+    db = get_db()
+    cursor = db.cursor()
+
+    try:
+        cursor.execute("""SELECT * 
+                        FROM Reviews AS r
+                        JOIN Orders AS o
+                        ON r.order_id = o.order_id
+                        WHERE listing_id = ?""",
+                       (listing_id,))
+        rows = cursor.fetchall()
+        db.close()
+    except Exception as e:
+        print(f"Database Error: {e}")
+        return f"Error while getting listing reviews: {e}"
+    result = [dict(row) for row in rows]
+    return jsonify(result)
+
+# gets average rating of all reviews for a given seller
+@bp.route("/get_avg_seller_rating", methods=["POST"])
+def get_avg_seller_rating():
+    seller_id = request.form.get("seller_id")
+
+    db = get_db()
+    cursor = db.cursor()
+
+    try:
+        row = cursor.execute("""SELECT AVG(rate) AS avg_rating 
+                                FROM Reviews AS r 
+                                JOIN Orders AS o ON r.order_id = o.order_id 
+                                JOIN Product_Listings AS p ON o.listing_id = p.listing_id 
+                                WHERE p.seller_email = ?""",
+                             (seller_id,)).fetchone()
+        avg_rating = row[0]
+    except Exception as e:
+        print(f"Database Error: {e}")
+        return f"Error while getting average seller rating: {e}"
+    finally:
+        db.close()
+    return jsonify("average seller rating: ", str(avg_rating))

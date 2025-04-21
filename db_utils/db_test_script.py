@@ -149,6 +149,41 @@ def test_prod_by_seller():
     print("prod_by_seller - Response Text:", response.text)
     print()
 
+# get avg rating of some seller
+def test_get_avg_seller_rating():
+    url = f"{BASE_URL}/api/get_avg_seller_rating"
+    payload = {
+        "seller_id": "03vth6xl@nittybiz.com"
+    }
+    response = requests.post(url, data=payload)
+    print("get_avg_seller_rating - Status Code:", response.status_code)
+    print("get_avg_seller_rating - Response Text:", response.text)
+    print()
+
+# test for new_prod_review endpoint
+def test_new_prod_review():
+    url = f"{BASE_URL}/api/new_prod_review"
+    payload = {
+        "order_id": "846123",
+        "review_desc": "Great product, would buy again!",
+        "rating": "5"
+    }
+    response = requests.post(url, data=payload)
+    print("new_prod_review - Status Code:", response.status_code)
+    print("new_prod_review - Response Text:", response.text)
+    print()
+
+# test for get_listing_reviews endpoint
+def test_get_listing_reviews():
+    url = f"{BASE_URL}/api/get_listing_reviews"
+    payload = {
+        "listing_id": "16"
+    }
+    response = requests.post(url, data=payload)
+    print("get_listing_reviews - Status Code:", response.status_code)
+    print("get_listing_reviews - Response Text:", response.text)
+    print()
+
 
 if __name__ == "__main__":
     # Uncomment specific tests when running
@@ -160,5 +195,8 @@ if __name__ == "__main__":
     # test_top_level_categories()
     # test_get_categories_by_parent()
     # test_add_product()
-    test_prod_by_cat()
-    test_prod_by_seller()
+    # test_prod_by_cat()
+    # test_prod_by_seller()
+    # test_get_avg_seller_rating()
+    # test_new_prod_review()
+    test_get_listing_reviews()

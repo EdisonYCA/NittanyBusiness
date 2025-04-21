@@ -1,4 +1,4 @@
-from flask import render_template, request, session
+from flask import render_template, request, session, redirect, url_for, flash
 from app.login import bp
 
 
@@ -17,5 +17,5 @@ def index():
         elif user == "Seller":
             return render_template('seller/index.html')
         else:
-            return render_template('helpdesk/index.html')
+            return redirect(url_for('helpdesk.index'))
     return render_template('login/index.html', login_failed=login_failed)

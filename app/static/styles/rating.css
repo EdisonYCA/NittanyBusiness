@@ -1,18 +1,16 @@
-div {
-    border: 2px solid black;
-}
 .rating-container {
     display: flex;
     flex-direction: column;
-    margin-left: auto;
-    margin-right: auto;
+    margin: auto;
     justify-content: center;
-    width: 75vh;
+    width: auto;
 }
 
 .rating-header {
     margin-left: auto;
     margin-right: auto;
+    margin-bottom: 15px;
+    border-bottom: 2px solid black;
 }
 
 .product-container {
@@ -20,11 +18,48 @@ div {
     flex-direction: column;
 }
 
+.product-container > h2 {
+    text-align: center;
+}
+
+.product-container > .star-container {
+    display: flex;
+    justify-content: center;
+}
+
 .product-container > label {
     text-align: center;
 }
 
 .seller-container {
+    display: flex;
+    flex-direction: column;
+}
 
+.seller-container > h2 {
+    text-align: center;
+}
+
+.seller-container > .star-container {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+}
+
+.star1, .star2 {
+    font-size: 5vh;
+    cursor: pointer;
+    margin-left: 0.2em;
+    margin-right: 0.2em;
+}
+
+.select {
+    color: rgb(255, 255, 0);
+}
+
+.submit-button {
+    margin-top: 10px;
+    display: flex;
+    justify-content: center;
 }
 

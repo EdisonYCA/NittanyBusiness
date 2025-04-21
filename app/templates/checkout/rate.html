@@ -9,19 +9,103 @@
         <div class="rating-header">
             <h1>Leave a review for {{ product_name }}</h1>
         </div>
-        <form>
+        <form method="post">
             <div class="seller-container">
-
+                <h2>Rate the Seller</h2>
+                <div class="star-container">
+                    <span onclick="update_star1(1)"
+                          class="star1">★
+                    </span>
+                    <span onclick="update_star1(2)"
+                          class="star1">★
+                    </span>
+                    <span onclick="update_star1(3)"
+                          class="star1">★
+                    </span>
+                    <span onclick="update_star1(4)"
+                          class="star1">★
+                    </span>
+                    <span onclick="update_star1(5)"
+                          class="star1">★
+                    </span>
+                </div>
+                <input type="hidden" id="seller_rating" name="seller_rating">
             </div>
             <div class="product-container">
-
-                <label for="product_review">Review of Product</label>
-                <textarea id="product_review" name="product_review">
-
-                </textarea>
+                <h2>Rate the Product</h2>
+                <div class="star-container">
+                    <span onclick="update_stars2(1)"
+                          class="star2">★
+                    </span>
+                    <span onclick="update_stars2(2)"
+                          class="star2">★
+                    </span>
+                    <span onclick="update_stars2(3)"
+                          class="star2">★
+                    </span>
+                    <span onclick="update_stars2(4)"
+                          class="star2">★
+                    </span>
+                    <span onclick="update_stars2(5)"
+                          class="star2">★
+                    </span>
+                </div>
+                <input type="hidden" id="product_rating" name="product_rating">
+                <label class="h3" for="product_review">Leave a Comment about the Product</label>
+                <textarea id="product_review" name="product_review" rows="6" style="resize: none"></textarea>
+            </div>
+            <div class="submit-button">
+                <input type="submit" value="Submit Review">
             </div>
         </form>
     </div>
+    <script>
+        let stars1 = document.getElementsByClassName("star1");
+        let stars2 = document.getElementsByClassName("star2");
+        let seller_rating = document.getElementById("seller_rating");
+        let product_rating = document.getElementById("product_rating");
+        let cls;
 
+        function update_star1(n) {
+            remove_star1();
+            for (let i = 0; i < n; i++) {
+                if (n === 1) cls = "select";
+                else if (n === 2) cls = "select";
+                else if (n === 3) cls = "select";
+                else if (n === 4) cls = "select";
+                else if (n === 5) cls = "select";
+                stars1[i].className = "star1 " + cls;
+            }
+            seller_rating.value = n;
+        }
 
+        function remove_star1() {
+            let i = 0;
+            while (i < 5) {
+                stars1[i].className = "star1";
+                i++;
+            }
+        }
+
+        function update_stars2(n) {
+            remove_star2();
+            for (let i = 0; i < n; i++) {
+                if (n === 1) cls = "select";
+                else if (n === 2) cls = "select";
+                else if (n === 3) cls = "select";
+                else if (n === 4) cls = "select";
+                else if (n === 5) cls = "select";
+                stars2[i].className = "star2 " + cls;
+            }
+            product_rating.value = n;
+        }
+
+        function remove_star2() {
+            let i = 0;
+            while (i < 5) {
+                stars2[i].className = "star2";
+                i++;
+            }
+        }
+    </script>
 {% endblock %}

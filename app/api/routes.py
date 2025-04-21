@@ -26,10 +26,22 @@ def validate_email(email):
     return regex.match(email) is not None
 
 
-#this endpoint grabs the children of whatever category was passed in
+# checks if user is a buyer, seller, or helpdesk user
+def get_user_type(email):
+    db = get_db()
+    buyer = db.execute("SELECT * FROM Buyers WHERE email = ?", [email]).fetchone()
+    seller = db.execute("SELECT * FROM Sellers WHERE email = ?", [email]).fetchone()
+
+    if buyer:
+        return "Buyer"
+    if seller:
+        return "Seller"
+    return "Helpdesk"
+
+
+# this endpoint grabs the children of whatever category was passed in
 @bp.route('/child_categories', methods=['POST'])
 def get_child_categories():
-
     parent_category = request.form.get("category")
 
     db = get_db()
@@ -43,7 +55,7 @@ def get_child_categories():
 
     # return render_template('standin_name/some_page.html', result=rows)
 
-    #this return is just for testing with test script
+    # this return is just for testing with test script
     result = [dict(row) for row in rows]
     return jsonify(result)
 
@@ -51,7 +63,6 @@ def get_child_categories():
 # this endpoint grabs top level categories
 @bp.route('/top_level_categories', methods=['POST'])
 def get_top_level_categories():
-
     db = get_db()
     db.row_factory = sqlite3.Row
     cursor = db.cursor()
@@ -63,7 +74,7 @@ def get_top_level_categories():
 
     # return render_template('standin_name/some_page.html', result=rows)
 
-    #this return is just for testing with test script
+    # this return is just for testing with test script
     result = [dict(row) for row in rows]
     return jsonify(result)
 
@@ -85,7 +96,7 @@ def complete_requests():
         db.close()
 
     return redirect(url_for('helpdesk.index'))
-     # return f"Request #{req_id} marked complete"
+    # return f"Request #{req_id} marked complete"
 
 
 # this grabs the requests for the helpdesk
@@ -118,7 +129,8 @@ def login():
     if user is None or user["password"] != password:
         return redirect(url_for("login.index", login_failed=True))
 
-    return f"Successful Login!"
+    user_type = get_user_type(emailS)
+    return redirect(url_for("login.index", login_failed=False, uid=emailS, user_type=user_type))
 
 
 # Signup route for new user registration
@@ -130,9 +142,9 @@ def signup():
     accountType = request.form.get("accountType")
 
     if not validate_email(newEmail) or not newPassword or not confirmPassowrd:
-    #if not newPassword or not confirmPassowrd:
+        # if not newPassword or not confirmPassowrd:
         return redirect(url_for("signup.index", signup_failed=True))
-    #match password
+    # match password
     if newPassword != confirmPassowrd:
         return redirect(url_for("signup.index", password_match_failed=True))
 
@@ -164,5 +176,3 @@ def signup():
     except Exception as e:
         print(f"Database Error: {e}")
         return redirect(url_for("signup.index", signup_failed=True))
-
-

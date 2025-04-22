@@ -20,102 +20,55 @@
 <div class="w-100 h-100 d-flex justify-content-center">
   <div class="w-75 mt-2 border rounded d-flex flex-column p-1">
 
-    <form method="get" action="{{ url_for('api.get_seller_products') }}"
-          class="d-flex w-100 h-10 mb-1">
-      <button type="submit"
-              name="filter" value="active"
-              class="w-35 btn btn-primary h-full
-                     {% if status_filter=='active' %}active{% endif %}">
-        Active
-      </button>
-      <button type="submit"
-              name="filter" value="inactive"
-              class="w-35 btn btn-primary h-full
-                     {% if status_filter=='inactive' %}active{% endif %}">
-        Inactive
-      </button>
-      <button type="submit"
-              name="filter" value="soldout"
-              class="w-35 btn btn-primary h-full
-                     {% if status_filter=='soldout' %}active{% endif %}">
-        Sold Out
-      </button>
-    </form>
-  <!--
-    <div class="d-flex w-100 mb-2">
-      <a href="{{ url_for('seller.index', filter='active') }}"
-         class="btn btn-primary flex-fill {% if status_filter=='active' %}active{% endif %}">
-        Active
-      </a>
-      <a href="{{ url_for('seller.index', filter='inactive') }}"
-         class="btn btn-primary flex-fill {% if status_filter=='inactive' %}active{% endif %}">
-        Inactive
-      </a>
-      <a href="{{ url_for('seller.index', filter='soldout') }}"
-         class="btn btn-primary flex-fill {% if status_filter=='soldout' %}active{% endif %}">
-        Sold Out
-      </a>
-    </div>
-    -->
-    <!-- listing products - using status filters on array-->
-    <div class="w-100 bg-gray border rounded p-2 overflow-auto">
-      {% if products %}
-        {% for p in products %}
-          <div class="border rounded p-3 bg-white mb-2">
-            <div class="d-flex justify-content-between">
-              <h5 class="m-0">{{ p.product_name }}</h5>
-              <span class="fw-bold">${{ '%.2f'|format(p.product_price) }}</span>
-            </div>
-            <p class="mb-2 text-muted">{{ p.category }}</p>
-            <p>{{ p.description }}</p>
-            <div class="d-flex justify-content-between align-items-center">
-              {% if p.status == 1 %}
-                <button class="btn btn-sm btn-primary">Edit</button>
-              {% elif p.status == 0 %}
-                <button class="btn btn-sm btn-primary">Re‑publish</button>
-              {% endif %}
-              {% if p.quantity == 0 %}
-                <button class="btn btn-sm btn-secondary">Restock</button>
-              {% endif %}
-              <span class="text-danger">{{ p.quantity }} Left</span>
-            </div>
-          </div>
-        {% endfor %}
-      {% else %}
-        <p class="text-center">No {{ status_filter }} products.</p>
-      {% endif %}
-    </div>
-            <!--
-            <div class="w-100 border rounded p-3 d-flex flex-column bg-white">
-                <div class="d-flex justify-content-between align-items-center">
-                    <h1 class="h5 text-dark rounded m-0">Pen</h1>
-                    <span class="fw-bold text-success">$2.99</span>
+        <form method="get" action="{{ url_for('api.get_seller_products') }}"
+              class="d-flex w-100 h-10 mb-1">
+          <button type="submit"
+                  name="filter" value="active"
+                  class="w-35 btn btn-primary h-full
+                         {% if status_filter=='active' %}active{% endif %}">
+            Active
+          </button>
+          <button type="submit"
+                  name="filter" value="inactive"
+                  class="w-35 btn btn-primary h-full
+                         {% if status_filter=='inactive' %}active{% endif %}">
+            Inactive
+          </button>
+          <button type="submit"
+                  name="filter" value="soldout"
+                  class="w-35 btn btn-primary h-full
+                         {% if status_filter=='soldout' %}active{% endif %}">
+            Sold Out
+          </button>
+        </form>
+        <!-- listing products - using status filters on array-->
+        <div class="w-100 bg-gray border rounded p-2 overflow-auto">
+          {% if products %}
+            {% for p in products %}
+              <div class="border rounded p-3 bg-white mb-2">
+                <div class="d-flex justify-content-between">
+                  <h5 class="m-0">{{ p.product_name }}</h5>
+                  <span class="fw-bold">${{ '%.2f'|format(p.product_price) }}</span>
                 </div>
-                <p class="mb-2 text-muted">Office</p>
-
-                <p>Sleek and smooth-writing office pen, perfect for everyday use.</p>
+                <p class="mb-2 text-muted">{{ p.category }}</p>
+                <p>{{ p.description }}</p>
                 <div class="d-flex justify-content-between align-items-center">
-                    <button class="btn btn-sm btn-primary align-self-end">Re-publish</button>
-                    <p class="text-danger mb-0">10 Left</p>
+                  {% if p.status == 1 %}
+                    <button class="btn btn-sm btn-primary">Edit</button>
+                  {% elif p.status == 0 %}
+                    <button class="btn btn-sm btn-primary">Re‑publish</button>
+                  {% endif %}
+                  {% if p.quantity == 0 %}
+                    <button class="btn btn-sm btn-secondary">Restock</button>
+                  {% endif %}
+                  <span class="text-danger">{{ p.quantity }} Left</span>
                 </div>
-            </div>
-
-            <div class="w-100 border rounded p-3 d-flex flex-column bg-white">
-                <div class="d-flex justify-content-between align-items-center">
-                    <h1 class="h5 text-dark rounded m-0">Pen</h1>
-                    <span class="fw-bold text-success">$2.99</span>
-                </div>
-                <p class="mb-2 text-muted">Office</p>
-
-                <p>Sleek and smooth-writing office pen, perfect for everyday use.</p>
-                <div class="d-flex justify-content-between align-items-center">
-                    <button class="btn btn-sm btn-primary align-self-end">Stock</button>
-                    <p class="text-danger mb-0">0 Left</p>
-                </div>
-            </div>
-
+              </div>
+            {% endfor %}
+          {% else %}
+            <p class="text-center">No {{ status_filter }} products.</p>
+          {% endif %}
         </div>
-        -->
     </div>
 </div>
 {% endblock %}

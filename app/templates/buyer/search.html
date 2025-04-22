@@ -1,0 +1,74 @@
+{% extends 'base.html' %}
+
+{% block style %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/buyer.css') }}">
+{% endblock %}
+
+{% block navbar_content %}
+    <li class="nav-item active">
+        <a class="nav-link" href="{{ url_for("main.index") }}">Home <span class="sr-only">(current)</span></a>
+    </li>
+{% endblock %}
+
+{% block main_content %}
+    <div class="container">
+        <div class="search-container">
+            <form class="form-search">
+                <input class="form-control input-search" type="search" placeholder="Search for Product" aria-label="Search" name="search" id="search">
+                <a onclick="changeCollapsible()" class="btn btn-light" data-toggle="collapse" href="#moreOptions" role="button" aria-expanded="false" id="searchOption">Show More Filter Options</a>
+                <div class="collapse option-container text-center" id="moreOptions">
+                    <label for="minCostRange" class="form-label">Minimum Cost</label>
+                    <input type="range" class="form-range" id="minCostRange" name="minCostRange" min="0" max="500" step="1">
+                    <label for="maxCostRange" class="form-label">Maximum Cost</label>
+                    <input type="range" class="form-range" id="maxCostRange" name="maxCostRange" min="0" max="500" step="1">
+                    <div class="range-container">
+                        <span id="minValue">0</span>
+                        <span>-</span>
+                        <span id="maxValue">0</span>
+                    </div>
+                </div>
+                <button class="btn btn-light my-2 my-sm-0" type="submit">Search</button>
+            </form>
+        </div>
+        <div class="product-container">
+            This is the search page, it is redirecting correctly
+        </div>
+    </div>
+    <script>
+        let collapsible = document.getElementById("searchOption");
+        let min_slider = document.getElementById("minCostRange");
+        let max_slider = document.getElementById("maxCostRange");
+        let min_val = document.getElementById("minValue");
+        let max_val = document.getElementById("maxValue");
+        let option = document.getElementById("moreOptions");
+
+        function changeCollapsible() {
+            if (collapsible.innerHTML === "Show More Filter Options") {
+                collapsible.innerHTML = "Show Less Filter Options";
+                option.style.display = "flex";
+            } else {
+                collapsible.innerHTML = "Show More Filter Options";
+                option.style.display = "none";
+            }
+        }
+
+        function updateRange() {
+            if (min_slider.value > max_slider.value) {
+                max_slider.value = min_slider.value;
+            }
+
+            min_val.textContent = min_slider.value;
+            max_val.textContent = max_slider.value;
+        }
+
+        min_slider.addEventListener('input', function () {
+            updateRange();
+        });
+
+        max_slider.addEventListener('input', function () {
+            updateRange();
+        });
+
+        window.addEventListener('load', updateRange);
+    </script>
+{% endblock %}

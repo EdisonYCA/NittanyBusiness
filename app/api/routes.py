@@ -55,6 +55,36 @@ def get_user_type(email):
     return "Helpdesk"
 
 
+#gets product info so that front end can leave some fields blank on update
+def update_listing(seller_email, listing_id,*,category=None,product_title=None,product_name=None, product_description=None,quantity=None,product_price=None):
+
+    to_update = {}
+    if category is not None: to_update['category'] = category
+    if product_title is not None: to_update['product_title'] = product_title
+    if product_name is not None: to_update['product_name'] = product_name
+    if product_description is not None: to_update['product_description'] = product_description
+    if quantity is not None: to_update['quantity'] = quantity
+    if product_price is not None: to_update['product_price'] = product_price
+
+    # print(f"[DEBUG] update_listing(): fields to update = {to_update}")
+
+    if not to_update:
+        return False
+
+    cols = ", ".join(f"{col}=?" for col in to_update)
+    params = list(to_update.values()) + [seller_email, listing_id]
+    sql = f"UPDATE Product_Listings SET {cols} WHERE seller_email = ? AND listing_id = ?"
+
+    db = get_db()
+    cursor = db.execute(sql, params)
+    rowcount = cursor.rowcount
+    db.commit()
+
+    # print(f"[DEBUG] Executed SQL: {sql}")
+
+    return rowcount
+
+
 # gets all products by category
 @bp.route("/prod_by_cat", methods=["POST"])
 def prod_by_cat():
@@ -149,6 +179,34 @@ def add_product():
         return f"Error: {e}"
     return f"Product {product_id} added to listing {seller_id}"
 
+
+# gets products of a seller
+@bp.route('/get_seller_products', methods=['GET','POST'])
+def get_seller_products():
+    seller_id = session.get("user")
+
+    if not seller_id:
+        return redirect(url_for('login.index'))
+
+    status_filter = request.args.get('filter', 'active')
+
+    db = get_db()
+    db.row_factory = sqlite3.Row
+
+    sql = "SELECT * FROM Product_Listings WHERE seller_email = ?"
+    params = [seller_id]
+
+    if status_filter == 'active':
+        sql += " AND status = 1"
+    elif status_filter == 'inactive':
+        sql += " AND status = 0"
+    elif status_filter == 'soldout':
+        sql += " AND quantity = 0"
+
+    products = db.execute(sql, params).fetchall()
+    print(products)
+
+    return render_template("seller/index.html", products=products, status_filter=status_filter)
 
 # this endpoint grabs top level categories
 @bp.route('/top_level_categories', methods=['POST'])
@@ -278,6 +336,48 @@ def signup():
         return redirect(url_for("signup.index", signup_failed=True))
 
 
+# updates all fields other than key/status
+@bp.route("/product_update", methods=["POST"])
+def product_update():
+
+    seller_email = session.get('user')
+    listing_id = request.form.get("listing_id")
+    # print(f"[DEBUG] product_update(): seller_email={seller_email!r}, listing_id={listing_id!r}")
+
+    updated_count = update_listing(
+                   seller_email,
+                   listing_id,
+                   category=request.form.get("category"),
+                   product_title=request.form.get("product_title"),
+                   product_name=request.form.get("product_name"),
+                   product_description=request.form.get("product_description"),
+                   quantity=request.form.get("quantity"),
+                   product_price=request.form.get("product_price"))
+
+
+    # if updated_count:
+    #     print(f"[DEBUG] update_listing → {updated_count} row(s) updated")
+    # else:
+    #     print("[DEBUG] update_listing → no rows updated (nothing changed or bad key)")
+
+    return redirect(url_for('seller.index'))
+
+
+# changes status of a product listing
+@bp.route("/product_status_update", methods=["POST"])
+def product_status_update():
+    listing_id = request.form.get("listing_id")
+    seller_email = session.get('user')
+    status = request.form.get("status")
+
+    db = get_db()
+    cursor = db.cursor()
+
+    cursor.execute("UPDATE product_listings SET status = ? WHERE seller_email = ? AND listing_id = ?", (status, seller_email, listing_id))
+    db.commit()
+
+    return redirect(url_for('seller.index'))
+
 # lets buyer leave rating on product
 @bp.route("/new_prod_review", methods=["POST"])
 def new_prod_review():
@@ -347,3 +447,4 @@ def get_avg_seller_rating():
 def logout():
     session.clear()
     return redirect(url_for("main.index"))
+

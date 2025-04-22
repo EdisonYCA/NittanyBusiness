@@ -48,7 +48,7 @@
               <div class="border rounded p-3 bg-white mb-2">
                 <div class="d-flex justify-content-between">
                   <h5 class="m-0">{{ p.product_name }}</h5>
-                  <span class="fw-bold">${{ '%.2f'|format(p.product_price) }}</span>
+                  <span class="fw-bold">${{ '%.2f'|format(p.product_price / 100 ) }}</span>
                 </div>
                 <p class="mb-2 text-muted">{{ p.category }}</p>
                 <p>{{ p.description }}</p>

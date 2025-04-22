@@ -184,6 +184,21 @@ def test_get_listing_reviews():
     print("get_listing_reviews - Response Text:", response.text)
     print()
 
+# test for update_listing endpoint
+def test_update_listing():
+    url = f"{BASE_URL}/api/product_update"
+    payload = {
+        "seller_email": "dcjdw3qn@nittybiz.com",
+        "listing_id": "2505",
+        "product_price": "1999",   # this should be the new price * 100
+        "quantity": "42"
+    }
+    response = requests.post(url, data=payload)
+    print("update_listing    - Status Code:", response.status_code)
+    print("update_listing    - Response Text:", response.text)
+    print()
+
+
 
 if __name__ == "__main__":
     # Uncomment specific tests when running
@@ -199,4 +214,5 @@ if __name__ == "__main__":
     # test_prod_by_seller()
     # test_get_avg_seller_rating()
     # test_new_prod_review()
-    test_get_listing_reviews()
+    # test_get_listing_reviews()
+    test_update_listing()

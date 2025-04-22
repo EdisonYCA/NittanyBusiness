@@ -80,7 +80,7 @@ def update_listing(seller_email, listing_id,*,category=None,product_title=None,p
     rowcount = cursor.rowcount
     db.commit()
 
-    print(f"[DEBUG] Executed SQL: {sql}")?
+    # print(f"[DEBUG] Executed SQL: {sql}")
 
     return rowcount
 

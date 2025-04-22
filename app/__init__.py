@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, session
 from flask import g
 from config import Config
 
@@ -34,6 +34,9 @@ def create_app(config_class=Config):
 
     from app.seller import bp as seller_bp
     app.register_blueprint(seller_bp, url_prefix='/seller')
+
+    from app.buyer import bp as buyer_bp
+    app.register_blueprint(buyer_bp, url_prefix='/buyer')
 
     # app teardown tells db that connection is closing - refer to flask docs for details
     @app.teardown_appcontext

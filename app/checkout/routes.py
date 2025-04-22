@@ -6,3 +6,8 @@ import sqlite3
 @bp.route('/', methods=['POST'])
 def index():
     return render_template('checkout/index.html')
+
+
+@bp.route('/rate', methods=['GET', 'POST'])
+def rate():
+    return render_template('checkout/rate.html', product_name = "test")

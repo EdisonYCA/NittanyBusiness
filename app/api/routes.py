@@ -1,7 +1,7 @@
 import sqlite3
 
 from click import confirm
-from flask import request, redirect, url_for, render_template, jsonify
+from flask import request, redirect, url_for, render_template, jsonify, session
 from app import get_db
 from app.api import bp
 import hashlib
@@ -219,7 +219,17 @@ def login():
         return redirect(url_for("login.index", login_failed=True))
 
     user_type = get_user_type(emailS)
-    return redirect(url_for("login.index", login_failed=False, uid=emailS, user_type=user_type))
+    session["user"] = emailS
+    session["user_type"] = user_type
+
+    if user_type == "Buyer":
+        return redirect(url_for("buyer.index"))
+    elif user_type == "Seller":
+        return redirect(url_for("seller.index"))
+    else:
+        return redirect(url_for("helpdesk.index"))
+
+    return redirect(url_for("login.index", login_failed=True))
 
 
 # Signup route for new user registration
@@ -271,8 +281,8 @@ def signup():
 @bp.route("/new_prod_review", methods=["POST"])
 def new_prod_review():
     order_id = request.form.get("order_id")
-    review_desc = request.form.get("review_desc")
-    rating = request.form.get("rating")
+    review_desc = request.form.get("product_review")
+    rating = request.form.get("product_rating")
 
     db = get_db()
     cursor = db.cursor()
@@ -284,7 +294,7 @@ def new_prod_review():
     except Exception as e:
         print(f"Database Error: {e}")
         return f"Error while inserting new review: {e}"
-    return f"Review #{order_id} submitted successfully"
+    return redirect(url_for("main.index"))
 
 # lets buyer leave rating on product
 @bp.route("/get_listing_reviews", methods=["POST"])
@@ -331,4 +341,9 @@ def get_avg_seller_rating():
     finally:
         db.close()
     return jsonify("average seller rating: ", str(avg_rating))
+
+@bp.route("/logout", methods=["POST"])
+def logout():
+    session.clear()
+    return redirect(url_for("main.index"))
 

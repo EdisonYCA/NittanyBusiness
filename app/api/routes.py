@@ -149,6 +149,34 @@ def add_product():
     return f"Product {product_id} added to listing {seller_id}"
 
 
+# gets products of a seller
+@bp.route('/get_seller_products', methods=['GET','POST'])
+def get_seller_products():
+    seller_id = session.get("user")
+
+    if not seller_id:
+        return redirect(url_for('login.index'))
+
+    status_filter = request.args.get('filter', 'active')
+
+    db = get_db()
+    db.row_factory = sqlite3.Row
+
+    sql = "SELECT * FROM Product_Listings WHERE seller_email = ?"
+    params = [seller_id]
+
+    if status_filter == 'active':
+        sql += " AND status = 1"
+    elif status_filter == 'inactive':
+        sql += " AND status = 0"
+    elif status_filter == 'soldout':
+        sql += " AND quantity = 0"
+
+    products = db.execute(sql, params).fetchall()
+    print(products)
+
+    return render_template("seller/index.html", products=products, status_filter=status_filter)
+
 # this endpoint grabs top level categories
 @bp.route('/top_level_categories', methods=['POST'])
 def get_top_level_categories():

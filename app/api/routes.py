@@ -223,11 +223,12 @@ def login():
     session["user_type"] = user_type
 
     if user_type == "Buyer":
-        return redirect(url_for("seller.index"))
+        return redirect(url_for("buyer.index"))
     elif user_type == "Seller":
         return redirect(url_for("seller.index"))
     else:
         return redirect(url_for("helpdesk.index"))
+
     return redirect(url_for("login.index", login_failed=True))
 
 
@@ -340,3 +341,8 @@ def get_avg_seller_rating():
     finally:
         db.close()
     return jsonify("average seller rating: ", str(avg_rating))
+
+@bp.route("/logout", methods=["POST"])
+def logout():
+    session.clear()
+    return redirect(url_for("main.index"))

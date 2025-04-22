@@ -73,7 +73,8 @@ def prod_by_cat():
         return f'Error: {e}'
 
     result = [dict(row) for row in rows]
-    return jsonify(result)
+    return render_template('buyer/prodByCat.html', result=result)
+    #return jsonify(result)
 
 
 # gets all products by seller

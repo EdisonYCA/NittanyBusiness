@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+
+{% block style %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/productbycat.css') }}">
+{% endblock %}
+
+{% block main_content %}
+    <div class="product-container">
+    {% for i in result %}
+        <form>
+            <div class="single-product-container">
+                <div class="product-name-container">
+                    <button type="submit">{{ i.product_name }}</button>
+                </div>
+
+                <div class="product-inner-container">
+                    <button type="submit">Category: {{ i.category }}</button>
+                </div>
+                <div class="product-inner-container">
+                    <button type="submit">Title: {{ i.product_title }}</button>
+                </div>
+                <div class="product-inner-container">
+                    <button type="submit">Seller: {{ i.seller_email }}</button>
+                </div>
+                <div class="product-inner-container">
+                    <button type="submit">Description: {{ i.product_description }}</button>
+                </div>
+                <div class="product-inner-container">
+                    <button type="submit">Quantity Available: {{ i.quantity }}</button>
+                </div>
+                <div class="product-inner-container">
+                    <button type="submit">Unit Price: ${{ i.product_price }}</button>
+                </div>
+                <input type="hidden" value="{{ i.listing_id }}">
+            </div>
+        </form>
+    {% endfor %}
+    </div>
+{% endblock %}

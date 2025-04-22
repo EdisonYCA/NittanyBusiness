@@ -1,0 +1,29 @@
+div {
+    border: 2px solid black;
+}
+.product-container {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    margin-left: 5vw;
+    margin-right: 5vw;
+    margin-top: 3vh;
+}
+
+.single-product-container {
+    display: flex;
+    flex-direction: column;
+    margin: 10px 15px;
+    min-width: 20vw;
+}
+
+.product-name-container {
+    text-align: center;
+}
+
+.product-name-container > button, .product-inner-container > button {
+    background-color: transparent;
+    background-repeat:no-repeat;
+    border: none;
+    outline: none;
+}

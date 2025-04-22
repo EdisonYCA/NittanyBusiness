@@ -1,0 +1,38 @@
+div {
+    border: 2px solid black;
+}
+
+.container {
+    display: flex;
+    flex-direction: column;
+    width: 75vw;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.search-container {
+    margin-top: 10px;
+}
+
+.form-search {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.form-search > button {
+    width: 25%;
+}
+
+.form-search > .input-search {
+    width: 40%;
+    text-align: center;
+}
+
+.option-container {
+    display: none;
+    flex-direction: column;
+}
+.product-container {
+
+}

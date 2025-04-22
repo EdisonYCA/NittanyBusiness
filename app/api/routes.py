@@ -55,6 +55,29 @@ def get_user_type(email):
     return "Helpdesk"
 
 
+#gets product info so that front end can leave some fields blank on update
+def update_listing(seller_email, listing_id,*,category=None,product_title=None,product_name=None, product_description=None,quantity=None,product_price=None):
+
+    to_update = {}
+    if category is not None: to_update['category'] = category
+    if product_title is not None: to_update['product_title'] = product_title
+    if product_name is not None: to_update['product_name'] = product_name
+    if product_description is not None: to_update['product_description'] = product_description
+    if quantity is not None: to_update['quantity'] = quantity
+    if product_price is not None: to_update['product_price'] = product_price
+
+    if not to_update:
+        return False
+
+    cols = ", ".join(f"{col}=?" for col in to_update)
+    params = list(to_update.values()) + [seller_email, listing_id]
+
+    db = get_db()
+    db.execute(f"UPDATE Product_Listings SET {cols} WHERE seller_email = ? AND listing_id = ?", params)
+    db.commit()
+    return True
+
+
 # gets all products by category
 @bp.route("/prod_by_cat", methods=["POST"])
 def prod_by_cat():
@@ -304,6 +327,39 @@ def signup():
         print(f"Database Error: {e}")
         return redirect(url_for("signup.index", signup_failed=True))
 
+
+# updates all fields other than key/status
+@bp.route("/product_update", methods=["POST"])
+def product_update():
+    seller_email = session.get('user')
+    listing_id = request.form.get("listing_id")
+
+    update_listing(seller_email,
+                   listing_id,
+                   category=request.form.get("category"),
+                   product_title=request.form.get("product_title"),
+                   product_name=request.form.get("product_name"),
+                   product_description=request.form.get("product_description"),
+                   quantity=request.form.get("quantity"),
+                   product_price=request.form.get("product_price"))
+
+    return redirect(url_for('seller.index'))
+
+
+# changes status of a product listing
+@bp.route("/product_status_update", methods=["POST"])
+def product_status_update():
+    listing_id = request.form.get("listing_id")
+    seller_email = session.get('user')
+    status = request.form.get("status")
+
+    db = get_db()
+    cursor = db.cursor()
+
+    cursor.execute("UPDATE products SET status = ? WHERE seller_email = ? AND listing_id = ?", (status, seller_email, listing_id))
+    db.commit()
+
+    return redirect(url_for('seller.index'))
 
 # lets buyer leave rating on product
 @bp.route("/new_prod_review", methods=["POST"])

@@ -16,7 +16,7 @@
         <h1>Buyer Profile</h1>
         <h5>Update your information below</h5>
         <!-- Change Password Section -->
-        <form method="POST" action="{{ url_for('profile.update_password') }}">
+        <form method="POST" action="{{ url_for('profile.updateBuyerProfile') }}">
             <fieldset>
                 <legend>Change Password</legend>
                 <div class="mb-3">
@@ -34,78 +34,78 @@
                     <input type="password" name="confirm_password" class="form-control" id="confirmPasswordInput"
                            placeholder="Re-enter your new password" required>
                 </div>
-                <button type="submit" class="btn btn-primary">Update Password</button>
             </fieldset>
         </form>
 
-        <!-- Credit Card Section -->
-        <form method="POST" action="{{ url_for('profile.update_credit_card') }}">
             <fieldset>
                 <legend>Update Credit Card Information</legend>
                 <div class="mb-3">
                     <label for="creditCardNumberInput" class="form-label">Card Number</label>
                     <input type="text" name="credit_card_num" class="form-control" id="creditCardNumberInput"
-                           placeholder="1234 5678 9012 3456" pattern="\d{16}" title="Enter a valid 16-digit card number" required>
+                           value="{{ credit_card.credit_card_num }}" placeholder="1234 5678 9012 3456" pattern="\d{16}"
+                           title="Enter a valid 16-digit card number" required>
                 </div>
                 <div class="mb-3">
                     <label for="expirationMonthInput" class="form-label">Expiration Month</label>
                     <input type="number" name="expire_month" class="form-control" id="expirationMonthInput"
-                           placeholder="MM" min="1" max="12" required>
+                           value="{{ credit_card.expire_month }}" placeholder="MM" min="1" max="12" required>
                 </div>
                 <div class="mb-3">
                     <label for="expirationYearInput" class="form-label">Expiration Year</label>
                     <input type="number" name="expire_year" class="form-control" id="expirationYearInput"
-                           placeholder="YYYY" min="2023" required>
+                           value="{{ credit_card.expire_year }}" placeholder="YYYY" min="2023" required>
                 </div>
                 <div class="mb-3">
                     <label for="securityCodeInput" class="form-label">Security Code</label>
                     <input type="number" name="security_code" class="form-control" id="securityCodeInput"
-                           placeholder="123" pattern="\d{3}" title="Enter a valid 3-digit security code" required>
+                           value="{{ credit_card.security_code }}" placeholder="123" pattern="\d{3}"
+                           title="Enter a valid 3-digit security code" required>
                 </div>
                 <div class="mb-3">
                     <label for="cardTypeInput" class="form-label">Card Type</label>
                     <select name="card_type" class="form-control" id="cardTypeInput" required>
-                        <option value="Visa">Visa</option>
-                        <option value="MasterCard">MasterCard</option>
-                        <option value="Discover">Discover</option>
-                        <option value="American Express">American Express</option>
+                        <option value="Visa" {% if user.card_type == 'Visa' %}selected{% endif %}>Visa</option>
+                        <option value="MasterCard" {% if user.card_type == 'MasterCard' %}selected{% endif %}>MasterCard</option>
+                        <option value="Discover" {% if user.card_type == 'Discover' %}selected{% endif %}>Discover</option>
+                        <option value="American Express" {% if user.card_type == 'American Express' %}selected{% endif %}>
+                            American Express
+                        </option>
                     </select>
                 </div>
-                <button type="submit" class="btn btn-primary">Update Credit Card</button>
             </fieldset>
         </form>
 
-        <!-- Address Section -->
-        <form method="POST" action="{{ url_for('profile.update_address') }}">
+        <!-- Update Address Section -->
             <fieldset>
                 <legend>Update Address Information</legend>
                 <div class="mb-3">
                     <label for="streetNumInput" class="form-label">Street Number</label>
                     <input type="number" name="street_num" class="form-control" id="streetNumInput"
-                           placeholder="123" required>
+                           value="{{ address.street_num }}" placeholder="123" required>
                 </div>
                 <div class="mb-3">
                     <label for="streetNameInput" class="form-label">Street Name</label>
                     <input type="text" name="street_name" class="form-control" id="streetNameInput"
-                           placeholder="Main St" required>
+                           value="{{ address.street_name }}" placeholder="Main St" required>
                 </div>
                 <div class="mb-3">
                     <label for="zipInput" class="form-label">ZIP Code</label>
                     <input type="number" name="zipcode" class="form-control" id="zipInput"
-                           placeholder="12345" required>
+                           value="{{ address.zipcode }}" placeholder="12345" required>
                 </div>
                 <div class="mb-3">
                     <label for="cityInput" class="form-label">City</label>
                     <input type="text" name="city" class="form-control" id="cityInput"
-                           placeholder="Your City" required>
+                           value="{{ address.city }}" placeholder="Your City" required>
                 </div>
                 <div class="mb-3">
                     <label for="stateInput" class="form-label">State</label>
                     <input type="text" name="state" class="form-control" id="stateInput"
-                           placeholder="Your State" required>
+                           value="{{ address.state }}" placeholder="Your State" required>
                 </div>
-                <button type="submit" class="btn btn-primary">Update Address</button>
             </fieldset>
+            <button type="submit" class="btn btn-primary">Update!</button>
+
         </form>
 
         <!-- Additional Profile Options -->
@@ -128,6 +128,9 @@
                 {% endif %}
                 {% if oldMatchingPassword %}
                     <p style="color: red;">Old and New Passwords can't be the same!</p>
+                {% endif %}
+                {% if delete_failed %}
+                    <p style="color: red;">Couldn't delete account!</p>
                 {% endif %}
                 <button type="submit" class="btn btn-primary">Update Profile</button>
                 </form>

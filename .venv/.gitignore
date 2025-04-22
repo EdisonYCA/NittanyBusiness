@@ -1,0 +1,5 @@
+# created by virtualenv automatically
+*database.db
+database.db
+*.db
+*.db.bak

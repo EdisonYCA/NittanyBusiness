@@ -86,8 +86,6 @@ def signup():
     newPassword = request.form.get("password")
     confirmPassword = request.form.get("passwordConf")
     accountType = request.form.get("accountType")
-    businessName = request.form.get("businessName")
-
     if not validate_email(newEmail) or not newPassword or not confirmPassword:
         return redirect(url_for("signup.index", signup_failed=True))
 
@@ -106,6 +104,7 @@ def signup():
         if existing_user is not None:
             return redirect(url_for("signup.index", signup_exists=True))
 
+
         # Insert the new user into the Users table
         hashed_password = hash_password(newPassword)
         db.execute("INSERT INTO Users (email, password) VALUES (?, ?)", [newEmail, hashed_password])
@@ -113,9 +112,11 @@ def signup():
 
         # Insert into the relevant table based on the account type
         if accountType == "seller":
-            return render_template("signup/seller.html", email=newEmail, businessName=businessName)
+            return render_template("signup/seller.html", email=newEmail)
         elif accountType == "buyer":
-            return render_template("signup/buyer.html", email=newEmail, businessName=businessName)
+            return render_template("signup/buyer.html", email=newEmail)
+        elif accountType.lower() == "helpdesk":
+            return render_template("signup/HelpDesk.html")
         else:
             return redirect(url_for("signup.index", signup_failed=True))
 
@@ -133,6 +134,8 @@ def signupSeller():
     state = request.form.get('state')
     bank_routing_number = request.form.get('bank_routing_number')
     bank_account_number = request.form.get('bank_account_number')
+    businessName = request.form.get("businessName")
+
 
     db = get_db()
     try:
@@ -147,14 +150,13 @@ def signupSeller():
         db.execute("""
                 INSERT INTO Sellers (email, business_name, business_address_id, bank_routing_number, bank_account_number, balance)
                 VALUES (?, ?, ?, ?, ?, ?)
-            """, [email, session.get('businessName'), address_id, bank_routing_number, bank_account_number, 0.0])
+            """, [email, businessName, address_id, bank_routing_number, bank_account_number, 0.0])
 
         db.commit()
-        return redirect(url_for("profile.index", success=True))  # Redirect to a success page
+        return render_template("profile/sellerProfile.html", email=email)
     except Exception as e:
         print(f"Seller Details Error: {e}")
-        return redirect(url_for("profile.index", profile_failed=True))  # Redirect in case of failure
-
+        return render_template("profile/sellerProfile.html", profile_failed=True)
 
 
 @bp.route('/signupBuyer', methods=['POST'])
@@ -170,6 +172,7 @@ def signupBuyer():
         expire_month = request.form.get('expire_month')
         expire_year = request.form.get('expire_year')
         security_code = request.form.get('security_code')
+        businessName = request.form.get("businessName")
 
         db = get_db()
         try:
@@ -181,14 +184,24 @@ def signupBuyer():
 
             # Insert Buyer and Credit Card
             db.execute("INSERT INTO Buyers (email, business_name, buyer_address_id) VALUES (?, ?, ?)",
-                       [email, session.get('businessName'), address_id])
+                       [email, businessName, address_id])
             db.execute("""
                 INSERT INTO Credit_Cards (credit_card_num, card_type, expire_month, expire_year, security_code, owner_email)
                 VALUES (?, ?, ?, ?, ?, ?)
             """, [credit_card_num, card_type, expire_month, expire_year, security_code, email])
 
             db.commit()
-            return redirect(url_for("profile.index", success=True))  # Redirect to a success page
+            return render_template("profile/buyerProfile.html", email=email)
         except Exception as e:
             print(f"Buyer Details Error: {e}")
-            return redirect(url_for("profile.index", profile_failed=True))  # Redirect in case of failure
+            return render_template("profile/buyerProfile.html", profile_failed=True)
+
+@bp.route('/signupHelpDesk', methods=['POST'])
+def signupHelpDesk():
+    authCode = request.form.get("auth_code")
+    valid_auth_codes = ["HELP123", "DESK456", "HD789"]
+
+    if not authCode or authCode not in valid_auth_codes:
+        return redirect(url_for("signup.signupHelpDesk", auth_failed=True))
+
+    return redirect(url_for("signup.signupHelpDesk"))

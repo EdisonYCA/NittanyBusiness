@@ -17,21 +17,56 @@ def index():
 
 @bp.route('/buyerProfile', methods=['POST'])
 def buyerProfileLoad():
+    user_email = session.get("email")
+    db = get_db()
+    user = db.execute("SELECT * FROM Users WHERE email = ?", [user_email]).fetchone()
+    address = db.execute("""
+            SELECT A.*, Z.city, Z.state
+            FROM Address A
+            JOIN Buyers B ON B.buyer_address_id = A.address_id
+            JOIN Zipcode_Info Z ON A.zipcode = Z.zipcode
+            WHERE B.email = ?
+        """, [user_email]).fetchone()
+    credit_card = db.execute("SELECT * FROM Credit_Cards WHERE owner_email = ?", [user_email]).fetchone()
     password_match_failed = request.args.get('password_match_failed', False)
     oldMatchingPassword = request.args.get('oldMatchingPassword', False)
     password_requirements = request.args.get('password_requirements', False)
     profile_failed = request.args.get('profile_failed', False)
-    return render_template('profile/buyerProfile.html', oldMatchingPassword=oldMatchingPassword,
-                           password_match_failed=password_match_failed, password_requirements=password_requirements, profile_failed = profile_failed)
+    delete_failed = request.args.get('delete_failed', False)
+    return render_template('profile/buyerProfile.html',
+                           user = user,
+                           address = address,
+                           credit_card = credit_card,
+                           oldMatchingPassword=oldMatchingPassword,
+                           password_match_failed=password_match_failed,
+                           password_requirements=password_requirements,
+                           profile_failed = profile_failed, delete_failed=delete_failed)
 
 @bp.route('/sellerProfile', methods=['POST'])
 def sellerProfileLoad():
+    user_email = session.get('user_email')
+    db = get_db()
+    user = db.execute("SELECT * FROM Users WHERE email = ?", [user_email]).fetchone()
+    address = db.execute("""
+        SELECT A.*, Z.city, Z.state
+        FROM Address A
+        JOIN Sellers S ON S.business_address_id = A.address_id
+        JOIN Zipcode_Info Z ON A.zipcode = Z.zipcode
+        WHERE S.email = ?
+    """, [user_email]).fetchone()
+    seller_bank_info = db.execute("SELECT bank_routing_number, bank_account_number FROM Sellers WHERE email = ?", [user_email]).fetchone()
     password_match_failed = request.args.get('password_match_failed', False)
     oldMatchingPassword = request.args.get('oldMatchingPassword', False)
     password_requirements = request.args.get('password_requirements', False)
     profile_failed = request.args.get('profile_failed', False)
-    return render_template('profile/sellerProfile.html', oldMatchingPassword=oldMatchingPassword,
-                           password_match_failed=password_match_failed, password_requirements=password_requirements, profile_failed = profile_failed)
+    return render_template('profile/sellerProfile.html',
+                           user = user,
+                           address = address,
+                           bank_info = seller_bank_info,
+                           oldMatchingPassword=oldMatchingPassword,
+                           password_match_failed=password_match_failed,
+                           password_requirements=password_requirements,
+                           profile_failed = profile_failed)
 
 
 
@@ -271,10 +306,10 @@ def delete_profile():
 
         db.commit()
         session.clear()
-        return redirect(url_for("signup.index", user_deleted=True))
+        return redirect(url_for("signup.index", delete_failed=False))
     except Exception as e:
         print(f"Delete Profile Error: {e}")
-        return redirect(url_for("profile.index", profile_failed=True))
+        return redirect(url_for("profile.index", delete_failed=True))
 
 
 @bp.route('/switch_account_type', methods=['POST'])
@@ -336,3 +371,5 @@ def switch_account_type():
         return redirect(url_for("profile.index", profile_failed=True))
 
     #to change userID contact helpdesk, to switch useer contact helpdesk, to add new category contact helpdesk
+@bp.route('/logOut', methods=['POST'])
+def logOut():

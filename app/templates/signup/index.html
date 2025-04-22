@@ -47,20 +47,19 @@
                            placeholder="examplepass123!">
                 </div>
                 <div class="mb-3">
-                    <label for="businessNameInput" class="form-label">Business Name</label>
-                    <input name="businessName" class="form-control" id="businessNameInput"
-                           placeholder="NittanyBusiness LLC">
-                </div>
-                <div class="mb-3">
                     <label for="accountTypeInput" class="form-label">Account Type</label>
                     <select class="form-control" id="accountTypeInput" name="accountType">
                         <option value="seller">Seller</option>
                         <option value="buyer">Buyer</option>
+                        <option value="helpdesk">HelpDesk</option>
                     </select>
                 </div>
+
+
                 {% if signup_failed %}
-                <p style="color: red;">Please enter a valid email address and password.</p>
+                    <p style="color: red;">Please enter a valid email address and password.</p>
                 {% endif %}
+
                 {% if password_match_failed %}
                     <p style="color: red;">Passwords do not match! </p>
                 {% endif %}

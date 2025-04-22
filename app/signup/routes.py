@@ -13,4 +13,7 @@ def index():
                            password_match_failed=password_match_failed,
                            password_requirements = password_requirements)
 
-#    return render_template('signup/index.html')
+
+def signupHelpDesk():
+    auth_failed = request.args.get('auth_failed', False)
+    return render_template('signup/index.html', auth_failed=auth_failed)

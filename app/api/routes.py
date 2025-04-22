@@ -331,3 +331,4 @@ def get_avg_seller_rating():
     finally:
         db.close()
     return jsonify("average seller rating: ", str(avg_rating))
+

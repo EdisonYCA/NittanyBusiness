@@ -410,7 +410,7 @@ def place_order():
     db.close()
 
     # return "Order placed successfully", 200
-    return redirect(url_for("stand_in.index"))
+    return redirect(url_for("checkout.rate"))
 
 
 #for a buyer to see their orders
@@ -553,7 +553,7 @@ def product_to_checkout():
 
     total = int(order_quantity) * int(product_price)
 
-    return render_template("checkout/index.html", result=row, quantity=order_quantity, total=total, business_name=business_name)
+    return render_template("checkout/index.html", result=row, quantity=order_quantity, total=total, business_name=business_name, listing_id=listing_id)
 
 @bp.route("/logout", methods=["POST"])
 def logout():

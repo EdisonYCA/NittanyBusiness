@@ -13,7 +13,7 @@
 {% block main_content %}
     <div class="container">
         <div class="search-container">
-            <form class="form-search">
+            <form class="form-search" method="post" action="{{ url_for("buyer.search") }}">
                 <input class="form-control input-search" type="search" placeholder="Search for Product" aria-label="Search" name="search" id="search" value="{{ search }}">
                 <a onclick="changeCollapsible()" class="btn btn-light" data-toggle="collapse" href="#moreOptions" role="button" aria-expanded="false" id="searchOption">Show More Filter Options</a>
                 <div class="collapse option-container text-center" id="moreOptions">
@@ -31,7 +31,14 @@
             </form>
         </div>
         <div class="product-container">
-            This is the search page, it is redirecting correctly
+            {% for i in results %}
+                <div>
+                    {{ i.product_name }}
+                </div>
+                <div>
+                    {{ i }}
+                </div>
+            {% endfor %}
         </div>
     </div>
     <script>

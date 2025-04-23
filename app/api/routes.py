@@ -443,6 +443,52 @@ def get_avg_seller_rating():
         db.close()
     return jsonify("average seller rating: ", str(avg_rating))
 
+# Redirects to individual product page from productByCat
+@bp.route("/to_product", methods=["POST"])
+def to_product():
+    listing_id = request.form.get("listing_id")
+
+    db = get_db()
+    cursor = db.cursor()
+
+    try:
+        row = cursor.execute("""SELECT *
+                                FROM Product_Listings
+                                WHERE listing_id = ?""",
+                             (listing_id,)).fetchone()
+    except Exception as e:
+        print(f"Database Error: {e}")
+        return f"Error while getting listing reviews: {e}"
+    finally:
+        db.close()
+
+    return render_template("product/index.html", result=row)
+
+# Redirects from individual product page to checkout
+@bp.route("/product_to_checkout", methods=["POST"])
+def product_to_checkout():
+    listing_id = request.form.get("listing_id")
+    order_quantity = request.form.get("order_quantity")
+    product_price = request.form.get("product_price")
+
+    db = get_db()
+    cursor = db.cursor()
+
+    try:
+        row = cursor.execute("""SELECT *
+                                    FROM Product_Listings
+                                    WHERE listing_id = ?""",
+                             (listing_id,)).fetchone()
+    except Exception as e:
+        print(f"Database Error: {e}")
+        return f"Error while getting listing reviews: {e}"
+    finally:
+        db.close()
+
+    total = int(order_quantity) * int(product_price)
+
+    return render_template("checkout/index.html", result=row, quantity=order_quantity, total=total)
+
 @bp.route("/logout", methods=["POST"])
 def logout():
     session.clear()

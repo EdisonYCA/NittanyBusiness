@@ -173,7 +173,6 @@ def get_seller_products():
         sql += " AND quantity = 0"
 
     products = db.execute(sql, params).fetchall()
-    print(products)
 
     return render_template("seller/index.html", products=products, status_filter=status_filter)
 
@@ -370,7 +369,41 @@ def get_avg_seller_rating():
         db.close()
     return jsonify("average seller rating: ", str(avg_rating))
 
-@bp.route("/logout", methods=["POST"])
+@bp.route("/logout", methods=["POST", "GET"])
 def logout():
     session.clear()
     return redirect(url_for("main.index"))
+
+@bp.route("publish_product", methods=["POST"])
+def publish_product():
+    email = session.get("user")
+
+    if not email:
+        return redirect(url_for("api.logout"))
+
+    name = request.form.get("name")
+    title =  request.form.get("title")
+    category =  request.form.get("category")
+    price = request.form.get("price")
+    quantity = request.form.get("quantity")
+    desc = request.form.get("desc")
+
+    if not all([name, price, quantity, desc]):
+        return jsonify(error="Missing product data"), 400
+
+    db = get_db()
+    try:
+        db.execute(
+            """
+            INSERT INTO Product_listings (category, product_name, product_price, product_title, quantity, product_description, seller_email, listing_id, status)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+            """,
+            (category, name, price, quantity, desc, email, title, 1, "active")
+        )
+        db.commit()
+    except Exception as e:
+        return f"Error while publishing product or getting rating: {e}"
+    finally:
+        db.close()
+
+    return redirect(url_for("seller.index"))

@@ -5,14 +5,14 @@
 {% endblock %}
 
 {% block navbar_content %}
-<li class="nav-content">
-    <a href="#" class="btn btn-primary nav-link">Publish Product</a>
+<li class="nav-item">
+    <a class="nav-link" href="{{ url_for("seller.publish") }}">Publish Product</a>
 </li>
 <li class="nav-item">
     <a class="nav-link" href="#">Settings</a>
 </li>
 <li class="nav-item">
-    <a class="nav-link" href="#">Log Out</a>
+    <a class="nav-link" href="{{ url_for('api.logout') }}">Log Out</a>
 </li>
 {% endblock %}
 

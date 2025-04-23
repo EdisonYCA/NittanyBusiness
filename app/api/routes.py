@@ -66,16 +66,23 @@ def update_listing(seller_email, listing_id,*,category=None,product_title=None,p
     if quantity is not None: to_update['quantity'] = quantity
     if product_price is not None: to_update['product_price'] = product_price
 
+    # print(f"[DEBUG] update_listing(): fields to update = {to_update}")
+
     if not to_update:
         return False
 
     cols = ", ".join(f"{col}=?" for col in to_update)
     params = list(to_update.values()) + [seller_email, listing_id]
+    sql = f"UPDATE Product_Listings SET {cols} WHERE seller_email = ? AND listing_id = ?"
 
     db = get_db()
-    db.execute(f"UPDATE Product_Listings SET {cols} WHERE seller_email = ? AND listing_id = ?", params)
+    cursor = db.execute(sql, params)
+    rowcount = cursor.rowcount
     db.commit()
-    return True
+
+    print(f"[DEBUG] Executed SQL: {sql}")?
+
+    return rowcount
 
 
 # gets all products by category
@@ -331,10 +338,13 @@ def signup():
 # updates all fields other than key/status
 @bp.route("/product_update", methods=["POST"])
 def product_update():
+
     seller_email = session.get('user')
     listing_id = request.form.get("listing_id")
+    # print(f"[DEBUG] product_update(): seller_email={seller_email!r}, listing_id={listing_id!r}")
 
-    update_listing(seller_email,
+    updated_count = update_listing(
+                   seller_email,
                    listing_id,
                    category=request.form.get("category"),
                    product_title=request.form.get("product_title"),
@@ -342,6 +352,12 @@ def product_update():
                    product_description=request.form.get("product_description"),
                    quantity=request.form.get("quantity"),
                    product_price=request.form.get("product_price"))
+
+
+    # if updated_count:
+    #     print(f"[DEBUG] update_listing → {updated_count} row(s) updated")
+    # else:
+    #     print("[DEBUG] update_listing → no rows updated (nothing changed or bad key)")
 
     return redirect(url_for('seller.index'))
 
@@ -356,7 +372,7 @@ def product_status_update():
     db = get_db()
     cursor = db.cursor()
 
-    cursor.execute("UPDATE products SET status = ? WHERE seller_email = ? AND listing_id = ?", (status, seller_email, listing_id))
+    cursor.execute("UPDATE product_listings SET status = ? WHERE seller_email = ? AND listing_id = ?", (status, seller_email, listing_id))
     db.commit()
 
     return redirect(url_for('seller.index'))

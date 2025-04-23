@@ -1,5 +1,5 @@
 from app.buyer import bp
-from flask import render_template
+from flask import render_template, request
 from app.utils.auth import login_required
 
 
@@ -10,4 +10,5 @@ def index():
 
 @bp.route('/search', methods=['POST'])
 def search():
-    return render_template('buyer/search.html')
+    search_val = request.form.get('search')
+    return render_template('buyer/search.html', search=search_val)

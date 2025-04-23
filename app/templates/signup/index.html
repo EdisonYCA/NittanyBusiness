@@ -47,20 +47,19 @@
                            placeholder="examplepass123!">
                 </div>
                 <div class="mb-3">
-                    <label for="businessNameInput" class="form-label">Business Name</label>
-                    <input name="businessName" class="form-control" id="businessNameInput"
-                           placeholder="NittanyBusiness LLC">
-                </div>
-                <div class="mb-3">
                     <label for="accountTypeInput" class="form-label">Account Type</label>
                     <select class="form-control" id="accountTypeInput" name="accountType">
                         <option value="seller">Seller</option>
                         <option value="buyer">Buyer</option>
+                        <option value="helpdesk">HelpDesk</option>
                     </select>
                 </div>
+
+
                 {% if signup_failed %}
-                <p style="color: red;">Please enter a valid email address and password.</p>
+                    <p style="color: red;">Please enter a valid email address and password.</p>
                 {% endif %}
+
                 {% if password_match_failed %}
                     <p style="color: red;">Passwords do not match! </p>
                 {% endif %}
@@ -79,45 +78,3 @@
 
 
 {% endblock %}
-
-{#{% block main_content %}#}
-{#    <ul class="nav nav-tabs" id="myTab" role="tablist">#}
-{#        <li class="nav-item" role="presentation">#}
-{#            <button class="nav-link active" id="buyer-tab" data-bs-toggle="tab" data-bs-target="#buyer-tab-pane"#}
-{#                    type="button" role="tab" aria-controls="buyer-tab-pane" aria-selected="true">Buyer Signup#}
-{#            </button>#}
-{#        </li>#}
-{#        <li class="nav-item" role="presentation">#}
-{#            <button class="nav-link" id="seller-tab" data-bs-toggle="tab" data-bs-target="#seller-tab-pane"#}
-{#                    type="button" role="tab" aria-controls="seller-tab-pane" aria-selected="false">Seller Signup#}
-{#            </button>#}
-{#        </li>#}
-{#    </ul>#}
-{#    <div class="tab-content" id="myTabContent">#}
-{#        <div class="tab-pane show active" id="buyer-tab-pane" role="tabpanel" aria-labelledby="buyer-tab" tabindex="0">#}
-{#            <div class="mb-3">#}
-{#                <label for="emailInput" class="form-label">Email</label>#}
-{#                <input name="email" type="email" class="form-control" id="emailInput"#}
-{#                       aria-describedby="emailHelp" placeholder="youremail@example.com">#}
-{#            </div>#}
-{#            <div class="mb-3">#}
-{#                <label for="passwordInput" class="form-label">Password</label>#}
-{#                <input name="password" type="password" class="form-control" id="passwordInput"#}
-{#                       placeholder="examplepass123!">#}
-{#            </div>#}
-{#            <div class="mb-3">#}
-{#                <label for="passwordConfInput" class="form-label">Confirm Password</label>#}
-{#                <input name="passwordConf" type="password" class="form-control" id="passwordConfInput"#}
-{#                       placeholder="examplepass123!">#}
-{#            </div>#}
-{#            <div class="mb-3">#}
-{#                <label for="businessNameInput" class="form-label">Business Name</label>#}
-{#                <input name="businessName" class="form-control" id="businessNameInput"#}
-{#                       placeholder="samplebusinessname">#}
-{#            </div>#}
-{#        </div>#}
-{#        <div class="tab-pane" id="seller-tab-pane" role="tabpanel" aria-labelledby="seller-tab" tabindex="0">#}
-{#            This should have different input fields for sellers#}
-{#        </div>#}
-{#    </div>#}
-{#{% endblock %}#}

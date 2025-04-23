@@ -1,16 +1,14 @@
-from flask import Flask
-from config import Config
-import os
-import subprocess
-import sqlite3
+from flask import Flask, session
 from flask import g
 from config import Config
 
 DB_PATH = Config.DB_PATH
+secret_key = Config.SECRET_KEY
 
 def create_app(config_class=Config):
     app = Flask(__name__)
     app.config.from_object(config_class)
+    app.config['SECRET_KEY'] = secret_key
 
     # Register blueprints here
     from app.main import bp as main_bp
@@ -28,8 +26,17 @@ def create_app(config_class=Config):
     from app.helpdesk import bp as helpdesk_bp
     app.register_blueprint(helpdesk_bp, url_prefix='/helpdesk')
 
-    from app.profile import bp as profile_bp
-    app.register_blueprint(profile_bp, url_prefix='/profile')
+    from app.product import bp as product_bp
+    app.register_blueprint(product_bp, url_prefix='/product')
+
+    from app.checkout import bp as checkout_bp
+    app.register_blueprint(checkout_bp, url_prefix='/checkout')
+
+    from app.seller import bp as seller_bp
+    app.register_blueprint(seller_bp, url_prefix='/seller')
+
+    from app.buyer import bp as buyer_bp
+    app.register_blueprint(buyer_bp, url_prefix='/buyer')
 
     # app teardown tells db that connection is closing - refer to flask docs for details
     @app.teardown_appcontext
@@ -40,16 +47,8 @@ def create_app(config_class=Config):
 
     return app
 
-# will create db from backup if db is not found.
+
+# trying to bypass import issues during refactoring
 def get_db():
-    if 'db' not in g:
-        if not os.path.exists(DB_PATH):
-            script_path = os.path.join(os.path.dirname(__file__), '..', 'db_utils', 'db_init.py')
-            try:
-                subprocess.run(['python', script_path], check=True)
-            except subprocess.CalledProcessError as e:
-                print(f"Failed to run population script: {e}")
-                raise
-        g.db = sqlite3.connect(DB_PATH)
-        g.db.row_factory = sqlite3.Row
-    return g.db
+    from app.api.db_util import get_db as _get_db
+    return _get_db()

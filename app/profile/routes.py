@@ -7,15 +7,15 @@ import hashlib
 import re
 from app.profile import bp
 
-@bp.route('/')
-def index():
-    password_match_failed = request.args.get('password_match_failed', False)
-    oldMatchingPassword = request.args.get('oldMatchingPassword', False)
-    password_requirements = request.args.get('password_requirements', False)
-    profile_failed = request.args.get('profile_failed', False)
-    return render_template('profile.html', oldMatchingPassword=oldMatchingPassword, password_match_failed= password_match_failed, password_requirements = password_requirements)
+#@bp.route('/')
+#def index():
+ #   password_match_failed = request.args.get('password_match_failed', False)
+  #  oldMatchingPassword = request.args.get('oldMatchingPassword', False)
+   # password_requirements = request.args.get('password_requirements', False)
+    #profile_failed = request.args.get('profile_failed', False)
+    #return render_template('profile.html', oldMatchingPassword=oldMatchingPassword, password_match_failed= password_match_failed, password_requirements = password_requirements)
 
-@bp.route('/buyerProfile', methods=['POST'])
+@bp.route('/buyerProfileLoad', methods=['GET'])
 def buyerProfileLoad():
     user_email = session.get("email")
     db = get_db()
@@ -42,7 +42,7 @@ def buyerProfileLoad():
                            password_requirements=password_requirements,
                            profile_failed = profile_failed, delete_failed=delete_failed)
 
-@bp.route('/sellerProfile', methods=['POST'])
+@bp.route('/sellerProfileLoad', methods=['GET'])
 def sellerProfileLoad():
     user_email = session.get('user_email')
     db = get_db()
@@ -68,6 +68,17 @@ def sellerProfileLoad():
                            password_requirements=password_requirements,
                            profile_failed = profile_failed)
 
+@bp.route('/helpdeskProfileLoad', methods=['GET'])
+def helpdeskProfileLoad():
+    password_match_failed = request.args.get('password_match_failed', False)
+    oldMatchingPassword = request.args.get('oldMatchingPassword', False)
+    password_requirements = request.args.get('password_requirements', False)
+    profile_failed = request.args.get('profile_failed', False)
+    return render_template('profile/sellerProfile.html',
+                           oldMatchingPassword=oldMatchingPassword,
+                           password_match_failed=password_match_failed,
+                           password_requirements=password_requirements,
+                           profile_failed = profile_failed)
 
 
 def hash_password(password):
@@ -143,7 +154,7 @@ def update():
 
 
 
-@bp.route('/updateBuyerProfile', methods=['POST'])
+@bp.route('/update_buyer_profile', methods=['GET','POST'])
 def update_buyer_profile():
     user_email = session.get("email")
     if not user_email:
@@ -167,57 +178,69 @@ def update_buyer_profile():
     security_code = request.form.get('security_code')
 
     db = get_db()
-    try:
-        # Validate and update password
-        if old_password and new_password and confirm_password:
-            user = db.execute("SELECT * FROM Users WHERE email = ?", [user_email]).fetchone()
-            if not user or hash_password(old_password) != user["password"]:
-                return redirect(url_for("profile.buyerProfileLoad", profile_failed=True))
+    if request.method == "POST":
+        try:
+            # Validate and update password
+            if old_password and new_password and confirm_password:
+                user = db.execute("SELECT * FROM Users WHERE email = ?", [user_email]).fetchone()
+                if not user or hash_password(old_password) != user["password"]:
+                    return redirect(url_for("profile.buyerProfileLoad", profile_failed=True))
 
-            if new_password != confirm_password:
-                return redirect(url_for("profile.buyerProfileLoad", password_match_failed=True))
+                if new_password != confirm_password:
+                    return redirect(url_for("profile.buyerProfileLoad", password_match_failed=True))
 
-            if len(new_password) < 8 or not any(char.isupper() for char in new_password):
-                return redirect(url_for("profile.buyerProfileLoad", password_requirements=True))
+                if len(new_password) < 8 or not any(char.isupper() for char in new_password):
+                    return redirect(url_for("profile.buyerProfileLoad", password_requirements=True))
 
-            hashed_password = hash_password(new_password)
-            db.execute("UPDATE Users SET password = ? WHERE email = ?", [hashed_password, user_email])
+                hashed_password = hash_password(new_password)
+                db.execute("UPDATE Users SET password = ? WHERE email = ?", [hashed_password, user_email])
 
-        # Update address information
-        if street_num and street_name and zipcode and city and state:
-            address_id = f"{street_num}_{street_name}_{zipcode}"
-            db.execute("""
-                INSERT OR REPLACE INTO Address (address_id, street_num, street_name, zipcode)
-                VALUES (?, ?, ?, ?)
-            """, [address_id, street_num, street_name, zipcode])
+            # Update address information
+            if street_num and street_name and zipcode and city and state:
+                address_id = f"{street_num}_{street_name}_{zipcode}"
+                db.execute("""
+                    INSERT OR REPLACE INTO Address (address_id, street_num, street_name, zipcode)
+                    VALUES (?, ?, ?, ?)
+                """, [address_id, street_num, street_name, zipcode])
 
-            db.execute("""
-                INSERT OR REPLACE INTO Zipcode_Info (zipcode, city, state)
-                VALUES (?, ?, ?)
-            """, [zipcode, city, state])
+                db.execute("""
+                    INSERT OR REPLACE INTO Zipcode_Info (zipcode, city, state)
+                    VALUES (?, ?, ?)
+                """, [zipcode, city, state])
 
-            db.execute("""
-                UPDATE Buyers SET buyer_address_id = ? WHERE email = ?
-            """, [address_id, user_email])
+                db.execute("""
+                    UPDATE Buyers SET buyer_address_id = ? WHERE email = ?
+                """, [address_id, user_email])
 
-        # Update credit card information
-        if credit_card_num and card_type and expire_month and expire_year and security_code:
-            db.execute("""
-                INSERT OR REPLACE INTO Credit_Cards (credit_card_num, card_type, expire_month, expire_year, security_code, owner_email)
-                VALUES (?, ?, ?, ?, ?, ?)
-            """, [credit_card_num, card_type, expire_month, expire_year, security_code, user_email])
+            # Update credit card information
+            if credit_card_num and card_type and expire_month and expire_year and security_code:
+                db.execute("""
+                    INSERT OR REPLACE INTO Credit_Cards (credit_card_num, card_type, expire_month, expire_year, security_code, owner_email)
+                    VALUES (?, ?, ?, ?, ?, ?)
+                """, [credit_card_num, card_type, expire_month, expire_year, security_code, user_email])
 
-        db.commit()
-        return redirect(url_for("profile.buyerProfileLoad", success=True))
-    except Exception as e:
-        print(f"Buyer Profile Update Error: {e}")
-        return redirect(url_for("profile.buyerProfileLoad", profile_failed=True))
+            db.commit()
+            return redirect(url_for("profile.buyerProfileLoad", success=True))
+        except Exception as e:
+            print(f"Buyer Profile Update Error: {e}")
+            return redirect(url_for("profile.buyerProfileLoad", profile_failed=True))
+
+    user = db.execute("SELECT * FROM Users WHERE email = ?", [user_email]).fetchone()
+    address = db.execute("""
+            SELECT A.*, Z.city, Z.state
+            FROM Address A
+            JOIN Buyers B ON B.buyer_address_id = A.address_id
+            JOIN Zipcode_Info Z ON A.zipcode = Z.zipcode
+            WHERE B.email = ?
+        """, [user_email]).fetchone()
+    credit_card = db.execute("SELECT * FROM Credit_Cards WHERE owner_email = ?", [user_email]).fetchone()
+    return render_template('profile.buyerProfileLoad', user=user, address=address, credit_card=credit_card)
 
 
 
 
 
-@bp.route('/updateSellerProfile', methods=['POST'])
+@bp.route('/update_seller_profile', methods=['GET','POST'])
 def update_seller_profile():
     user_email = session.get("email")
     if not user_email:
@@ -238,57 +261,97 @@ def update_seller_profile():
     bank_account_number = request.form.get('bank_account_number')
 
     db = get_db()
+    if request.method == "POST":
+        try:
+            # Validate and update password
+            if old_password and new_password and confirm_password:
+                user = db.execute("SELECT * FROM Users WHERE email = ?", [user_email]).fetchone()
+                if not user or hash_password(old_password) != user["password"]:
+                    return redirect(url_for("profile.sellerProfileLoad", profile_failed=True))
+
+                if new_password != confirm_password:
+                    return redirect(url_for("profile.sellerProfileLoad", password_match_failed=True))
+
+                if len(new_password) < 8 or not any(char.isupper() for char in new_password):
+                    return redirect(url_for("profile.sellerProfileLoad", password_requirements=True))
+
+                hashed_password = hash_password(new_password)
+                db.execute("UPDATE Users SET password = ? WHERE email = ?", [hashed_password, user_email])
+
+            # Update business address information
+            if street_num and street_name and zipcode and city and state:
+                address_id = f"{street_num}_{street_name}_{zipcode}"
+                db.execute("""
+                    INSERT OR REPLACE INTO Address (address_id, street_num, street_name, zipcode)
+                    VALUES (?, ?, ?, ?)
+                """, [address_id, street_num, street_name, zipcode])
+
+                db.execute("""
+                    INSERT OR REPLACE INTO Zipcode_Info (zipcode, city, state)
+                    VALUES (?, ?, ?)
+                """, [zipcode, city, state])
+
+                db.execute("""
+                    UPDATE Sellers SET business_address_id = ? WHERE email = ?
+                """, [address_id, user_email])
+
+            # Update bank details
+            if bank_routing_number and bank_account_number:
+                db.execute("""
+                    UPDATE Sellers SET
+                        bank_routing_number = ?,
+                        bank_account_number = ?
+                    WHERE email = ?
+                """, [bank_routing_number, bank_account_number, user_email])
+
+            db.commit()
+            return redirect(url_for("profile.sellerProfileLoad", success=True))
+        except Exception as e:
+            print(f"Seller Profile Update Error: {e}")
+            return redirect(url_for("profile.sellerProfileLoad", profile_failed=True))
+
+    user = db.execute("SELECT * FROM Users WHERE email = ?", [user_email]).fetchone()
+    address = db.execute("""
+            SELECT A.*, Z.city, Z.state
+            FROM Address A
+            JOIN Sellers S ON S.business_address_id = A.address_id
+            JOIN Zipcode_Info Z ON A.zipcode = Z.zipcode
+            WHERE S.email = ?
+        """, [user_email]).fetchone()
+    seller_bank_info = db.execute("SELECT bank_routing_number, bank_account_number FROM Sellers WHERE email = ?",
+                                  [user_email]).fetchone()
+    return render_template('profile.sellerProfileLoad', user=user, address=address, bank_info=seller_bank_info)
+
+
+@bp.route('/update_helpdesk_profile', methods=['GET','POST'])
+def update_helpdesk_profile():
+    user_email = session.get("email")
+    if not user_email:
+        return redirect(url_for("login.index", login_failed=True))
+
+    # Get form data
+    old_password = request.form.get('old_password')
+    new_password = request.form.get('new_password')
+    confirm_password = request.form.get('confirm_password')
+    db = get_db()
     try:
-        # Validate and update password
-        if old_password and new_password and confirm_password:
-            user = db.execute("SELECT * FROM Users WHERE email = ?", [user_email]).fetchone()
-            if not user or hash_password(old_password) != user["password"]:
-                return redirect(url_for("profile.sellerProfileLoad", profile_failed=True))
+            # Validate and update password
+            if old_password and new_password and confirm_password:
+                user = db.execute("SELECT * FROM Users WHERE email = ?", [user_email]).fetchone()
+                if not user or hash_password(old_password) != user["password"]:
+                    return redirect(url_for("profile.sellerProfileLoad", profile_failed=True))
 
-            if new_password != confirm_password:
-                return redirect(url_for("profile.sellerProfileLoad", password_match_failed=True))
+                if new_password != confirm_password:
+                    return redirect(url_for("profile.sellerProfileLoad", password_match_failed=True))
 
-            if len(new_password) < 8 or not any(char.isupper() for char in new_password):
-                return redirect(url_for("profile.sellerProfileLoad", password_requirements=True))
+                if len(new_password) < 8 or not any(char.isupper() for char in new_password):
+                    return redirect(url_for("profile.sellerProfileLoad", password_requirements=True))
 
-            hashed_password = hash_password(new_password)
-            db.execute("UPDATE Users SET password = ? WHERE email = ?", [hashed_password, user_email])
-
-        # Update business address information
-        if street_num and street_name and zipcode and city and state:
-            address_id = f"{street_num}_{street_name}_{zipcode}"
-            db.execute("""
-                INSERT OR REPLACE INTO Address (address_id, street_num, street_name, zipcode)
-                VALUES (?, ?, ?, ?)
-            """, [address_id, street_num, street_name, zipcode])
-
-            db.execute("""
-                INSERT OR REPLACE INTO Zipcode_Info (zipcode, city, state)
-                VALUES (?, ?, ?)
-            """, [zipcode, city, state])
-
-            db.execute("""
-                UPDATE Sellers SET business_address_id = ? WHERE email = ?
-            """, [address_id, user_email])
-
-        # Update bank details
-        if bank_routing_number and bank_account_number:
-            db.execute("""
-                UPDATE Sellers SET
-                    bank_routing_number = ?,
-                    bank_account_number = ?
-                WHERE email = ?
-            """, [bank_routing_number, bank_account_number, user_email])
-
-        db.commit()
-        return redirect(url_for("profile.sellerProfileLoad", success=True))
+                hashed_password = hash_password(new_password)
+                db.execute("UPDATE Users SET password = ? WHERE email = ?", [hashed_password, user_email])
     except Exception as e:
-        print(f"Seller Profile Update Error: {e}")
-        return redirect(url_for("profile.sellerProfileLoad", profile_failed=True))
-
-
-
-
+        print(f"Helpdesk Profile Update Error: {e}")
+        return redirect(url_for("profile.helpdeskProfileLoad", profile_failed=True))
 
 @bp.route('/delete_user', methods=['POST'])
 def delete_profile():
@@ -373,3 +436,5 @@ def switch_account_type():
     #to change userID contact helpdesk, to switch useer contact helpdesk, to add new category contact helpdesk
 @bp.route('/logOut', methods=['POST'])
 def logOut():
+    session.clear()
+    return redirect(url_for("login.index"))

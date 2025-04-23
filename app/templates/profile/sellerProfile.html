@@ -21,7 +21,7 @@
         <h5>Update your information below</h5>
 
         <!-- Change Password Section -->
-        <form method="POST" action="{{ url_for('profile.updateSellerProfile') }}">
+        <form method="POST" action="{{ url_for('profile.update_seller_profile') }}">
             <fieldset>
                 <legend>Change Password</legend>
                 <div class="mb-3">
@@ -39,7 +39,6 @@
                     <input type="password" name="confirm_password" class="form-control" id="confirmPasswordInput"
                            placeholder="Re-enter your new password" required>
                 </div>
-                <button type="submit" class="btn btn-primary">Update Password</button>
             </fieldset>
         </form>
 
@@ -110,7 +109,6 @@
                 {% if oldMatchingPassword %}
                     <p style="color: red;">Old and New Passwords can't be the same!</p>
                 {% endif %}
-                <button type="submit" class="btn btn-primary">Update Profile</button>
             </form>
         </div>
     </div>

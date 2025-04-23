@@ -1,39 +1,45 @@
-{% extends 'base.html' %}
-
-{% block style %}
-    <link rel="stylesheet" href="{{ url_for('static', filename='styles/helpdesk.css') }}">
-{% endblock %}
-
-{% block navbar_content %}
-    <li class="nav-item active">
-        <a class="nav-link" href="{{ url_for("main.index") }}">Home <span class="sr-only">(current)</span></a>
-    </li>
-{% endblock %}
+{% extends 'helpdesk/base.html' %}
 
 {% block main_content %}
-    <div class="card-body">
-        <h2 class="card-title">Helpdesk Requests</h2>
-        <table class="table table-dark">
-            <tr>
-                <th scope="col"> Request ID</th>
-                <th scope="col"> Sender Email</th>
-                <th scope="col"> Helpdesk Staff Email</th>
-                <th scope="col"> Request Type</th>
-                <th scope="col"> Description</th>
-                <th scope="col"> Status</th>
-            </tr>
-            <tbody>
-            {% for request_id, sender_email, helpdesk_staff_email, request_type, request_desc, request_status in result %}
-                <tr>
-                    <td> {{ request_id }}</td>
-                    <td> {{ sender_email }} </td>
-                    <td> {{ helpdesk_staff_email }} </td>
-                    <td> {{ request_type }} </td>
-                    <td> {{ request_desc }} </td>
-                    <td> {{ request_status }} </td>
-                </tr>
-            {% endfor %}
-            </tbody>
-        </table>
+    <div class="container">
+        <form method="post" action="{{ url_for("api.complete_requests") }}">
+            <div class="submit-container">
+                <div class="input-label">
+                    <label for="request_id">Request ID to Complete</label>
+                    <input id="request_id" name="request_id">
+                </div>
+                <div class="submit-button-container">
+                    <input type="submit" id="submit-change" value="Mark Complete">
+                </div>
+            </div>
+        </form>
+
+        <div class="table-container">
+            <div class="card-body">
+                <h2 class="card-title">Helpdesk Requests</h2>
+                <table class="table">
+                    <tr>
+                        <th scope="col"> Request ID</th>
+                        <th scope="col"> Sender Email</th>
+                        <th scope="col"> Helpdesk Staff Email</th>
+                        <th scope="col"> Request Type</th>
+                        <th scope="col"> Description</th>
+                        <th scope="col"> Status</th>
+                    </tr>
+                    <tbody>
+                    {% for request_id, sender_email, helpdesk_staff_email, request_type, request_desc, request_status in result %}
+                        <tr>
+                            <td> {{ request_id }}</td>
+                            <td> {{ sender_email }} </td>
+                            <td> {{ helpdesk_staff_email }} </td>
+                            <td> {{ request_type }} </td>
+                            <td> {{ request_desc }} </td>
+                            <td> {{ request_status }} </td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
     </div>
 {% endblock %}

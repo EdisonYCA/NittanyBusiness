@@ -16,7 +16,7 @@
         <h1>Buyer Profile</h1>
         <h5>Update your information below</h5>
         <!-- Change Password Section -->
-        <form method="POST" action="{{ url_for('profile.updateBuyerProfile') }}">
+        <form method="POST" action="{{ url_for('profile.update_buyer_profile') }}">
             <fieldset>
                 <legend>Change Password</legend>
                 <div class="mb-3">
@@ -132,7 +132,6 @@
                 {% if delete_failed %}
                     <p style="color: red;">Couldn't delete account!</p>
                 {% endif %}
-                <button type="submit" class="btn btn-primary">Update Profile</button>
                 </form>
         </div>
     </div>

@@ -3,3 +3,4 @@
 database.db
 *.db
 *.db.bak
+.env

@@ -8,15 +8,23 @@
     <li class="nav-item active">
         <a class="nav-link" href="{{ url_for("main.index") }}">Home <span class="sr-only">(current)</span></a>
     </li>
-    <li class="nav-item">
-        <a class="nav-link" href="#">About</a>
-    </li>
-    <li class="nav-item active">
-        <a class="nav-link" href="{{ url_for("login.index") }}">Login</a>
-    </li>
-    <li class="nav-item active">
-        <a class="nav-link" href="{{ url_for("signup.index") }}">Sign Up</a>
-    </li>
+
+    {% if active %}
+        <li class="nav-item active">
+            <form action="{{ url_for('api.logout') }}" method="POST">
+                <button type="submit" class="nav-link btn btn-link active" style="font-size: 17.6px;">Logout</button>
+            </form>
+        </li>
+    {% endif %}
+
+    {% if not active %}
+        <li class="nav-item active">
+            <a class="nav-link" href="{{ url_for("login.index") }}">Login</a>
+        </li>
+        <li class="nav-item active">
+            <a class="nav-link" href="{{ url_for("signup.index") }}">Sign Up</a>
+        </li>
+    {% endif %}
 {% endblock %}
 
 {% block main_content %}

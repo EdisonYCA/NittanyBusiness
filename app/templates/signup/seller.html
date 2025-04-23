@@ -88,7 +88,6 @@
         <div class="form-container">
             <h5>Enter additional details below to finish signing up!</h5>
             <form method="POST" action="{{ url_for("api.signupSeller") }}">
-               <form action="/signupSeller" method="POST">
             <fieldset>
         <div class="mb-3">
             <label for="streetNumInput" class="form-label">Street Number</label>
@@ -123,9 +122,8 @@
                     <input name="businessName" class="form-control" id="businessNameInput"
                            placeholder="NittanyBusiness LLC">
                 </div>
-            </fieldset>
-                   </form>
-        <button type="submit" class="btn btn-primary">Done</button>
+                    </fieldset>
+                   <button type="submit" class="btn btn-primary">Done</button>
             </form>
         </div>
     </div>

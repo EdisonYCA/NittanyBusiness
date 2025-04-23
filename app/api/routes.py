@@ -412,6 +412,19 @@ def place_order():
     return redirect(url_for("stand_in.index"))
 
 
+#for a buyer to see their orders
+@bp.route("/buyer_orders", methods=["POST"])
+def buyer_orders():
+    buyer_id = session.get('user')
+
+    db = get_db()
+    db.row_factory = sqlite3.Row
+    rows = db.execute("SELECT * FROM Orders WHERE buyer_email = ?", [buyer_id]).fetchall()
+    orders = [dict(row) for row in rows]
+    db.close()
+
+    return jsonify(orders)
+
 # changes status of a product listing
 # 1=active, 0=inactive, 2=soldout
 @bp.route("/product_status_update", methods=["POST"])

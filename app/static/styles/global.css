@@ -22,3 +22,42 @@ nav {
     width: 100vw;
     height: 100vh;
 }
+
+.center {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.w-full {
+    width: 100vw;
+}
+
+.h-full {
+    height: 100vh;
+}
+
+.w-80 {
+    width: 80%;
+}
+
+.h-80 {
+    height: 80%;
+}
+
+.bg-yellow {
+    background-color: #D5B942;
+}
+
+.w-45 {
+    width: 45%;
+}
+
+.w-55 {
+    width: 55%;
+}
+
+.bg-yellow {
+    background-color: #D5B942;
+}

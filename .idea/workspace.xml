@@ -5,9 +5,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="7387a409-4f98-41b4-878d-4d8c7e602e7b" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/app/static/styles/auth.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/static/styles/global.css" beforeDir="false" afterPath="$PROJECT_DIR$/app/static/styles/global.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/static/styles/login.css" beforeDir="false" afterPath="$PROJECT_DIR$/app/static/styles/login.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/static/styles/signup.css" beforeDir="false" afterPath="$PROJECT_DIR$/app/static/styles/signup.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/static/styles/signup.css" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/app/templates/login/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/app/templates/login/index.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/templates/signup/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/app/templates/signup/index.html" afterDir="false" />
     </list>
@@ -15,6 +17,13 @@
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="CSS File" />
+      </list>
+    </option>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_BRANCH_BY_REPOSITORY">
@@ -44,6 +53,7 @@
     "Flask server.Flask2.executor": "Run",
     "Python.db_init.executor": "Run",
     "git-widget-placeholder": "signup2",
+    "list.type.of.created.stylesheet": "CSS",
     "node.js.selected.package.tslint": "(autodetect)"
   }
 }]]></component>

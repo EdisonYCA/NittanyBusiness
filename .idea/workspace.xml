@@ -5,11 +5,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="7387a409-4f98-41b4-878d-4d8c7e602e7b" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/app/api/routes.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/api/routes.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/signup/routes.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/signup/routes.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/static/styles/login.css" beforeDir="false" afterPath="$PROJECT_DIR$/app/static/styles/login.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/static/styles/signup.css" beforeDir="false" afterPath="$PROJECT_DIR$/app/static/styles/signup.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/templates/login/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/app/templates/login/index.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/templates/signup/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/app/templates/signup/index.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/templates/signup/seller.html" beforeDir="false" afterPath="$PROJECT_DIR$/app/templates/signup/seller.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/utils/auth.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/utils/auth.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

@@ -20,16 +20,70 @@
 {% endblock %}
 
 {% block main_content %}
+{#    <div class="signup-img-container center w-45">#}
+{#        <img src="/static/img/pppointed.svg" class="img-non-logo"#}
+{#             alt="a dashed arrow with curves">#}
+{#    </div>#}
+{##}
+{#    <div class="center w-55">#}
+{#    <div class="w-75 h-100">#}
+{#            <h1>Sign up for NittanyBusiness</h1>#}
+{#            <h5>Enter your details below</h5>#}
+{#            <form method="POST" action="{{ url_for("signup.signup") }}">#}
+{#                <div class="mb-3">#}
+{#                    <label for="exampleInputEmail1" class="form-label">Email address</label>#}
+{#                    <input name="email" type="email" class="form-control" id="exampleInputEmail1"#}
+{#                           aria-describedby="emailHelp" placeholder="youremail@example.com">#}
+{#                </div>#}
+{#                <div class="mb-3">#}
+{#                    <label for="exampleInputPassword1" class="form-label">Password</label>#}
+{#                    <input type="password" name="password" placeholder="examplepass123!"#}
+{#                           class="form-control"#}
+{#                           id="exampleInputPassword1">#}
+{#                </div>#}
+{#                <div class="mb-3">#}
+{#                    <label for="passwordConfInput" class="form-label">Confirm Password</label>#}
+{#                    <input name="passwordConf" type="password" class="form-control" id="passwordConfInput"#}
+{#                           placeholder="examplepass123!">#}
+{#                </div>#}
+{#                <div class="mb-3">#}
+{#                    <label for="accountTypeInput" class="form-label">Account Type</label>#}
+{#                    <select class="form-control" id="accountTypeInput" name="accountType">#}
+{#                        <option value="seller">Seller</option>#}
+{#                        <option value="buyer">Buyer</option>#}
+{#                        <option value="helpdesk">HelpDesk</option>#}
+{#                    </select>#}
+{#                </div>#}
+{##}
+{##}
+{#                {% if signup_failed %}#}
+{#                    <p style="color: red;">Please enter a valid email address and password.</p>#}
+{#                {% endif %}#}
+{##}
+{#                {% if password_match_failed %}#}
+{#                    <p style="color: red;">Passwords do not match! </p>#}
+{#                {% endif %}#}
+{#                {% if password_requirements %}#}
+{#                    <p style = "color: red;">Password doesn't meet requirements!.</p>#}
+{#                    <p style="color: red;">Passwords must have at least 1 capital and longer than 8 characters! </p></p>#}
+{#                {% endif %}#}
+{#                {% if signup_exists %}#}
+{#                    <p style="color: red;">This email is already registered. Try logging in instead!</p>#}
+{#                {% endif %}#}
+{#                <button type="submit" class="btn btn-primary">Sign Up</button>#}
+{#            </form>#}
+{#        </div>#}
+{#    </div>#}
+
     <div class="signup-img-container center">
         <img src="/static/img/pppointed.svg" class="img-non-logo"
              alt="a dashed arrow with curves">
     </div>
-
-    <div class="center">
+    <div class="signup-form-container center">
         <div class="form-container">
-            <h1>Sign up for NittanyBusiness</h1>
+            <h1>Login to NittanyBusiness</h1>
             <h5>Enter your details below</h5>
-            <form method="POST" action="{{ url_for("signup.signup") }}">
+            <form method="POST" action="{{ url_for("api.login") }}">
                 <div class="mb-3">
                     <label for="exampleInputEmail1" class="form-label">Email address</label>
                     <input name="email" type="email" class="form-control" id="exampleInputEmail1"
@@ -54,27 +108,13 @@
                         <option value="helpdesk">HelpDesk</option>
                     </select>
                 </div>
-
-
-                {% if signup_failed %}
+                {% if login_failed %}
                     <p style="color: red;">Please enter a valid email address and password.</p>
                 {% endif %}
-
-                {% if password_match_failed %}
-                    <p style="color: red;">Passwords do not match! </p>
-                {% endif %}
-                {% if password_requirements %}
-                    <p style = "color: red;">Password doesn't meet requirements!.</p>
-                    <p style="color: red;">Passwords must have at least 1 capital and longer than 8 characters! </p></p>
-                {% endif %}
-                {% if signup_exists %}
-                    <p style="color: red;">This email is already registered. Try logging in instead!</p>
-                {% endif %}
-                <button type="submit" class="btn btn-primary">Sign Up</button>
+                <button type="submit" class="btn btn-primary">Log In</button>
             </form>
         </div>
     </div>
-
 
 
 {% endblock %}

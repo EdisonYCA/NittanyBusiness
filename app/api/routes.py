@@ -95,7 +95,7 @@ def prod_by_cat():
     cursor = db.cursor()
 
     try:
-        cursor.execute("SELECT * FROM Product_Listings WHERE category = ?", (category,))
+        cursor.execute("SELECT * FROM Product_Listings, Sellers WHERE category = ? and Product_listings.seller_email = Sellers.email", (category,))
         rows = cursor.fetchall()
         db.close()
     except Exception as e:
@@ -103,7 +103,7 @@ def prod_by_cat():
         return f'Error: {e}'
 
     result = [dict(row) for row in rows]
-    return render_template('buyer/prodByCat.html', result=result)
+    return render_template('buyer/prodByCat.html', result=result, category=category)
     #return jsonify(result)
 
 
@@ -447,6 +447,7 @@ def get_avg_seller_rating():
 @bp.route("/to_product", methods=["POST"])
 def to_product():
     listing_id = request.form.get("listing_id")
+    business_name = request.form.get("business_name")
 
     db = get_db()
     cursor = db.cursor()
@@ -462,7 +463,7 @@ def to_product():
     finally:
         db.close()
 
-    return render_template("product/index.html", result=row)
+    return render_template("product/index.html", result=row, business_name=business_name)
 
 # Redirects from individual product page to checkout
 @bp.route("/product_to_checkout", methods=["POST"])
@@ -470,6 +471,7 @@ def product_to_checkout():
     listing_id = request.form.get("listing_id")
     order_quantity = request.form.get("order_quantity")
     product_price = request.form.get("product_price")
+    business_name = request.form.get("business_name")
 
     db = get_db()
     cursor = db.cursor()
@@ -487,7 +489,7 @@ def product_to_checkout():
 
     total = int(order_quantity) * int(product_price)
 
-    return render_template("checkout/index.html", result=row, quantity=order_quantity, total=total)
+    return render_template("checkout/index.html", result=row, quantity=order_quantity, total=total, business_name=business_name)
 
 @bp.route("/logout", methods=["POST"])
 def logout():

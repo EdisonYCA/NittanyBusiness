@@ -14,9 +14,6 @@
     <li class="nav-item">
         <a class="nav-link" href="#">About</a>
     </li>
-    <li class="nav-content active">
-        <a class="nav-link" href="{{ url_for("signup.index") }}">Sign Up</a>
-    </li>
 {% endblock %}
 
 {%  block main_content %}
@@ -24,10 +21,13 @@
         <div class="product-detail-container">
             <div>
                 <p>
-                    Product Name: {{ result.product_title }}
+                    Product Name: {{ result.product_name }}
                 </p>
                 <p>
-                    Seller: {{ result.seller_email }}
+                    Seller: {{ business_name }}
+                </p>
+                <p>
+                    Contact: {{ result.seller_email }}
                 </p>
                 <p>
                     Quantity: {{ quantity }}

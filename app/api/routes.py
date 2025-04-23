@@ -560,3 +560,25 @@ def logout():
     session.clear()
     return redirect(url_for("main.index"))
 
+# testing auto-key on address table
+
+@bp.route("/add_address", methods=["POST"])
+def add_address():
+    zipcode     = request.form.get("zipcode")
+    street_num  = request.form.get("street_num")
+    street_name = request.form.get("street_name")
+
+    if not zipcode or not street_num or not street_name:
+        return "Missing address fields", 400
+
+    db     = get_db()
+    cursor = db.cursor()
+    cursor.execute(
+        "INSERT INTO Address (zipcode, street_num, street_name) VALUES (?, ?, ?)",
+        (zipcode, street_num, street_name)
+    )
+    db.commit()
+    address_id = cursor.lastrowid
+    db.close()
+
+    return jsonify({"address_id": address_id}), 201

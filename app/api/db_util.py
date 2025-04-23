@@ -94,7 +94,8 @@ def init_db():
     # address
     cursor.execute("""
         CREATE TABLE IF NOT EXISTS Address (
-            address_id TEXT PRIMARY KEY,
+            address_id TEXT PRIMARY KEY
+                            DEFAULT (lower(hex(randomblob(16)))),
             zipcode INTEGER NOT NULL,
             street_num INTEGER NOT NULL,
             street_name TEXT NOT NULL

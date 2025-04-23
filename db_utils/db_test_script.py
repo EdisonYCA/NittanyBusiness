@@ -198,6 +198,32 @@ def test_update_listing():
     print("update_listing    - Response Text:", response.text)
     print()
 
+# test for order placement
+def test_place_order():
+    url = f"{BASE_URL}/api/place_order"
+    payload = {
+        "listing_id":   "747",
+        "seller_email": "ztolk7z1@nittybiz.com",
+        "buyer_id": "o5mrsfw0@nittybiz.com",
+        "quantity":     "1",
+        "price":        "50.00"
+    }
+    response = requests.post(url, data=payload)
+    print("place_order      - Status Code:", response.status_code)
+    print("place_order      - Response Text:", response.text)
+    print()
+
+    payload = {
+        "listing_id":   "747",
+        "seller_email": "ztolk7z1@nittybiz.com",
+        "buyer_id": "o5mrsfw0@nittybiz.com",
+        "quantity":     "6",
+        "price":        "50.00"
+    }
+    response = requests.post(url, data=payload)
+    print("place_order      - Status Code:", response.status_code)
+    print("place_order      - Response Text:", response.text)
+    print()
 
 
 if __name__ == "__main__":
@@ -215,4 +241,5 @@ if __name__ == "__main__":
     # test_get_avg_seller_rating()
     # test_new_prod_review()
     # test_get_listing_reviews()
-    test_update_listing()
+    # test_update_listing()
+    test_place_order()

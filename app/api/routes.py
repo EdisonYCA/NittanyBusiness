@@ -9,24 +9,6 @@ import hashlib
 import re
 
 
-def hash_password(password):
-    if not password:
-        return ""
-
-    sha256 = hashlib.new("SHA256")
-    sha256.update(password.encode())
-    hashed_password = sha256.hexdigest()
-    return hashed_password
-
-
-def validate_email(email):
-    if not email:
-        return False
-
-    regex = re.compile("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$")
-    return regex.match(email) is not None
-
-
 # calculates incremented product_id per requirements analysis
 def get_prod_id(email):
     db = get_db()
@@ -155,7 +137,6 @@ def get_child_categories():
 def add_product():
 
     seller_id = request.form.get("seller_id")
-    # product_id = request.form.get("product_id")
     category = request.form.get("category")
     product_name = request.form.get("product_name")
     quantity = request.form.get("quantity")
@@ -513,85 +494,6 @@ def product_to_checkout():
 def logout():
     session.clear()
     return redirect(url_for("main.index"))
-
-@bp.route("/signup", methods=["POST"])
-def signup():
-    newEmail = request.form.get("email")
-    newPassword = request.form.get("password")
-    confirmPassword = request.form.get("passwordConf")
-    accountType = request.form.get("accountType")
-    if not validate_email(newEmail) or not newPassword or not confirmPassword:
-        return redirect(url_for("signup.index", signup_failed=True))
-
-    # Match passwords
-    if newPassword != confirmPassword:
-        return redirect(url_for("signup.index", password_match_failed=True))
-
-    if len(newPassword) < 8 or not any(char.isupper() for char in newPassword):
-        return redirect(url_for("signup.index", password_requirements=True))
-
-    db = get_db()
-
-    try:
-        # Check if the email already exists
-        existing_user = db.execute("SELECT * FROM Users WHERE email = ?", [newEmail]).fetchone()
-        if existing_user is not None:
-            return redirect(url_for("signup.index", signup_exists=True))
-
-
-        # Insert the new user into the Users table
-        hashed_password = hash_password(newPassword)
-        db.execute("INSERT INTO Users (email, password) VALUES (?, ?)", [newEmail, hashed_password])
-        db.commit()
-
-        # Insert into the relevant table based on the account type
-        if accountType == "seller":
-            return render_template("signup/seller.html", email=newEmail)
-        elif accountType == "buyer":
-            return render_template("signup/buyer.html", email=newEmail)
-        elif accountType.lower() == "helpdesk":
-            return render_template("signup/HelpDeskProfile.html")
-        else:
-            return redirect(url_for("signup.index", signup_failed=True))
-
-    except Exception as e:
-        print(f"Database Error: {e}")
-        return redirect(url_for("signup.index", signup_failed=True))
-
-@bp.route('/signupSeller', methods=['POST'])
-def signupSeller():
-    email = session.get('email')
-    street_num = request.form.get('street_num')
-    street_name = request.form.get('street_name')
-    zipcode = request.form.get('zipcode')
-    city = request.form.get('city')
-    state = request.form.get('state')
-    bank_routing_number = request.form.get('bank_routing_number')
-    bank_account_number = request.form.get('bank_account_number')
-    businessName = request.form.get("businessName")
-
-
-    db = get_db()
-    try:
-        # Insert Address and Zipcode_Info
-        address_id = f"{street_num}_{street_name}_{zipcode}"  # Generate address ID
-        db.execute("INSERT INTO Address (address_id, street_num, street_name, zipcode) VALUES (?, ?, ?, ?)",
-                   [address_id, street_num, street_name, zipcode])
-        db.execute("INSERT INTO Zipcode_Info (zipcode, city, state) VALUES (?, ?, ?)",
-                   [zipcode, city, state])
-
-        # Insert Seller Information
-        db.execute("""
-                INSERT INTO Sellers (email, business_name, business_address_id, bank_routing_number, bank_account_number, balance)
-                VALUES (?, ?, ?, ?, ?, ?)
-            """, [email, businessName, address_id, bank_routing_number, bank_account_number, 0.0])
-
-        db.commit()
-        return render_template("profile/sellerProfile.html", email=email)
-    except Exception as e:
-        print(f"Seller Details Error: {e}")
-        return render_template("profile/sellerProfile.html", profile_failed=True)
-
 
 @bp.route('/signupBuyer', methods=['POST'])
 def signupBuyer():

@@ -87,8 +87,10 @@
     <div class="center">
         <div class="form-container">
             <h5>Enter additional details below to finish signing up!</h5>
-            <form method="POST" action="{{ url_for("api.signupSeller") }}">
+            <form method="POST" action="{{ url_for("signup.signupSeller") }}">
             <fieldset>
+
+        <input type="hidden" name="email" value={{ email }}/>
         <div class="mb-3">
             <label for="streetNumInput" class="form-label">Street Number</label>
             <input type="number" name="street_num" class="form-control" id="streetNumInput" required>
@@ -100,14 +102,6 @@
         <div class="mb-3">
             <label for="zipCodeInput" class="form-label">ZIP Code</label>
             <input type="number" name="zipcode" class="form-control" id="zipCodeInput" required>
-        </div>
-        <div class="mb-3">
-            <label for="cityInput" class="form-label">City</label>
-            <input type="text" name="city" class="form-control" id="cityInput" required>
-        </div>
-        <div class="mb-3">
-            <label for="stateInput" class="form-label">State</label>
-            <input type="text" name="state" class="form-control" id="stateInput" required>
         </div>
         <div class="mb-3">
             <label for="bankRoutingInput" class="form-label">Bank Routing Number</label>

@@ -32,11 +32,31 @@
         </div>
         <div class="product-container">
             {% for i in results %}
-                <div>
-                    {{ i.product_name }}
-                </div>
-                <div>
-                    {{ i }}
+                <div class="individual-product-container">
+                    <div>
+                        <h4>{{ i.product_name }}</h4>
+                    </div>
+                    <div>
+                        Category: {{ i.category }}
+                    </div>
+                    <div>
+                        Title: {{ i.product_title }}
+                    </div>
+                    <div>
+                        Seller: {{ i.business_name }}
+                    </div>
+                    <div>
+                        Contact: {{ i.seller_email }}
+                    </div>
+                    <div>
+                        Description: {{ i.product_description }}
+                    </div>
+                    <div>
+                        Quantity Available: {{ i.quantity }}
+                    </div>
+                    <div>
+                        Unit Price: {{ i.product_price }}
+                    </div>
                 </div>
             {% endfor %}
         </div>

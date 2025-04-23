@@ -122,13 +122,16 @@ def get_child_categories():
 @bp.route('/add_product', methods=['POST'])
 def add_product():
 
-    seller_id = request.form.get("seller_id")
+    seller_id = session.get("user")
+    if not seller_id:
+        return redirect("api.logout")
+
     # product_id = request.form.get("product_id")
     category = request.form.get("category")
     product_name = request.form.get("product_name")
     quantity = request.form.get("quantity")
     price = request.form.get("price")
-    status = request.form.get("status")
+    status = 1
     product_description = request.form.get("product_description")
     product_title = request.form.get("product_title")
     try:
@@ -146,7 +149,7 @@ def add_product():
     except sqlite3.IntegrityError as e:
         print(e)
         return f"Error: {e}"
-    return f"Product {product_id} added to listing {seller_id}"
+    return redirect(url_for('api.get_seller_products'))
 
 
 # gets products of a seller
@@ -173,7 +176,6 @@ def get_seller_products():
         sql += " AND quantity = 0"
 
     products = db.execute(sql, params).fetchall()
-
     return render_template("seller/index.html", products=products, status_filter=status_filter)
 
 # this endpoint grabs top level categories
@@ -373,37 +375,3 @@ def get_avg_seller_rating():
 def logout():
     session.clear()
     return redirect(url_for("main.index"))
-
-@bp.route("publish_product", methods=["POST"])
-def publish_product():
-    email = session.get("user")
-
-    if not email:
-        return redirect(url_for("api.logout"))
-
-    name = request.form.get("name")
-    title =  request.form.get("title")
-    category =  request.form.get("category")
-    price = request.form.get("price")
-    quantity = request.form.get("quantity")
-    desc = request.form.get("desc")
-
-    if not all([name, price, quantity, desc]):
-        return jsonify(error="Missing product data"), 400
-
-    db = get_db()
-    try:
-        db.execute(
-            """
-            INSERT INTO Product_listings (category, product_name, product_price, product_title, quantity, product_description, seller_email, listing_id, status)
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
-            """,
-            (category, name, price, quantity, desc, email, title, 1, "active")
-        )
-        db.commit()
-    except Exception as e:
-        return f"Error while publishing product or getting rating: {e}"
-    finally:
-        db.close()
-
-    return redirect(url_for("seller.index"))

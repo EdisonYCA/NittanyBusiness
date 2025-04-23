@@ -5,11 +5,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="b26e62c2-86e1-4742-b853-5dc0e3a32373" name="Changes" comment="Finished first sign up form. Missing buyer.html and seller.html specific forms. Backend is under development.">
-      <change afterPath="$PROJECT_DIR$/app/templates/seller/product_form.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/api/routes.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/api/routes.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/seller/routes.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/seller/routes.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/static/styles/seller.css" beforeDir="false" afterPath="$PROJECT_DIR$/app/static/styles/seller.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/templates/seller/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/app/templates/seller/index.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/templates/seller/product_form.html" beforeDir="false" afterPath="$PROJECT_DIR$/app/templates/seller/product_form.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/database.db" beforeDir="false" afterPath="$PROJECT_DIR$/database.db" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -72,6 +72,6 @@
     <option name="LAST_COMMIT_MESSAGE" value="Finished first sign up form. Missing buyer.html and seller.html specific forms. Backend is under development." />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
-    <SUITE FILE_PATH="coverage/FlaskProject$Flask.coverage" NAME="Flask Coverage Results" MODIFIED="1745414709245" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/FlaskProject$Flask.coverage" NAME="Flask Coverage Results" MODIFIED="1745431023867" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
   </component>
 </project>

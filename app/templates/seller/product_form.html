@@ -19,22 +19,22 @@
 {% block main_content %}
 <div class="container mt-4">
     <h2>Add New Product</h2>
-    <form method="POST" action="{{ url_for("api.publish_product") }}">
+    <form method="POST" action="{{ url_for("api.add_product") }}">
         <div class="form-group">
             <label for="category">Category</label>
             <input type="text" class="form-control" id="category" name="category" required>
         </div>
         <div class="form-group">
-            <label for="title">Product Title</label>
-            <input type="text" class="form-control" id="title" name="title" required>
+            <label for="product_title">Product Title</label>
+            <input type="text" class="form-control" id="product_title" name="product_title" required>
         </div>
         <div class="form-group">
-            <label for="name">Product Name</label>
-            <input type="text" class="form-control" id="name" name="name" required>
+            <label for="product_name">Product Name</label>
+            <input type="text" class="form-control" id="product_name" name="product_name" required>
         </div>
         <div class="form-group">
-            <label for="desc">Product Description</label>
-            <textarea class="form-control" id="desc" name="desc" required></textarea>
+            <label for="product_description">Product Description</label>
+            <textarea class="form-control" id="product_description" name="product_description" required></textarea>
         </div>
         <div class="form-group mt-3">
             <label for="price">Price ($)</label>

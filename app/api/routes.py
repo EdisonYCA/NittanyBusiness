@@ -8,7 +8,6 @@ from datetime import datetime
 import hashlib
 import re
 
-
 # calculates incremented product_id per requirements analysis
 def get_prod_id(email):
     db = get_db()
@@ -244,34 +243,6 @@ def get_active_requests():
 
     return render_template('helpdesk/index.html', result=rows)
 
-
-# login checks if email and password match any row in the database
-@bp.route("/users", methods=["POST"])
-def login():
-    emailS = request.form.get("email")
-    password = hash_password(request.form.get("password"))
-
-    if not validate_email(emailS) or not password:
-        return redirect(url_for("login.index", login_failed=True))
-
-    db = get_db()
-    user = db.execute("SELECT * FROM Users WHERE email = ?", [emailS]).fetchone()
-
-    if user is None or user["password"] != password:
-        return redirect(url_for("login.index", login_failed=True))
-
-    user_type = get_user_type(emailS)
-    session["user"] = emailS
-    session["user_type"] = user_type
-
-    if user_type == "Buyer":
-        return redirect(url_for("buyer.index"))
-    elif user_type == "Seller":
-        return redirect(url_for("seller.index"))
-    else:
-        return redirect(url_for("helpdesk.index"))
-
-    return redirect(url_for("login.index", login_failed=True))
 
 # updates all fields other than key/status
 @bp.route("/product_update", methods=["POST"])

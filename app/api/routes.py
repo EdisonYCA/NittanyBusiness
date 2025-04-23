@@ -4,6 +4,7 @@ from click import confirm
 from flask import request, redirect, url_for, render_template, jsonify, session
 from app import get_db
 from app.api import bp
+from datetime import datetime
 import hashlib
 import re
 
@@ -196,6 +197,7 @@ def get_seller_products():
     sql = "SELECT * FROM Product_Listings WHERE seller_email = ?"
     params = [seller_id]
 
+    # last filter should be status = 2, but it works so don't touch it unless you have to
     if status_filter == 'active':
         sql += " AND status = 1"
     elif status_filter == 'inactive':
@@ -363,7 +365,69 @@ def product_update():
     return redirect(url_for('seller.index'))
 
 
+#for placing orders
+@bp.route("/place_order", methods=["POST"])
+def place_order():
+    buyer_id = session.get('user')
+    # form for testing purposes, use session in prod
+    # buyer_id = request.form.get("buyer_id")
+
+    # listing id and seller email need to be grabbed from the page when an order is placed
+    listing_id = request.form.get("listing_id")
+    seller_email = request.form.get("seller_email")
+    order_qty = int(request.form.get("quantity"))
+    price = float(request.form.get("price"))
+    date = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+
+    soldout = 2
+
+    db = get_db()
+    cursor = db.cursor()
+    row = cursor.execute("SELECT * FROM Product_listings WHERE listing_id = ? AND seller_email = ?", [listing_id, seller_email]).fetchone()
+
+    remainder = row["quantity"] - order_qty
+
+    if row is None:
+        return f"ERROR: ITEM DOES NOT EXIST"
+
+    if row["status"] == 0:
+        return f"Item is not available"
+    if row["status"] == 2:
+        return f"Item is sold out!"
+    if remainder < 0:
+        return f"Not enough items to sell"
+
+    #creates order
+    cursor.execute("INSERT INTO Orders (listing_id, seller_email, buyer_email, date, quantity, payment) VALUES (?,?,?,?,?,?)", (listing_id, seller_email, buyer_id, date, order_qty, price))
+
+    #updates product listing/sets status if out of stock
+    if remainder == 0:
+        cursor.execute("UPDATE Product_Listings SET quantity = ?, status = ? WHERE listing_id = ? AND seller_email = ?", [remainder, soldout, listing_id, seller_email])
+    else:
+        cursor.execute("UPDATE Product_Listings SET quantity = ? WHERE listing_id = ? AND seller_email = ?", [remainder, listing_id, seller_email])
+
+    db.commit()
+    db.close()
+
+    # return "Order placed successfully", 200
+    return redirect(url_for("stand_in.index"))
+
+
+#for a buyer to see their orders
+@bp.route("/buyer_orders", methods=["POST"])
+def buyer_orders():
+    buyer_id = session.get('user')
+
+    db = get_db()
+    db.row_factory = sqlite3.Row
+    rows = db.execute("SELECT * FROM Orders WHERE buyer_email = ?", [buyer_id]).fetchall()
+    orders = [dict(row) for row in rows]
+    db.close()
+
+    return jsonify(orders)
+
 # changes status of a product listing
+# 1=active, 0=inactive, 2=soldout
 @bp.route("/product_status_update", methods=["POST"])
 def product_status_update():
     listing_id = request.form.get("listing_id")

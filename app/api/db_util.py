@@ -33,6 +33,7 @@ def sanitize_price_column(price):
 
 def init_db():
     # db path can be pointed to config, but db_utils will need to be integrated into modules.
+    print("Initializing DB")
     db_path = Config.DB_PATH
     connection = sqlite3.connect(db_path)
     cursor = connection.cursor()

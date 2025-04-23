@@ -4,6 +4,7 @@ from app.utils import auth
 from app.utils import db as db_utils
 from app import get_db
 
+
 @bp.route('/')
 def index():
     failed = request.args.get("login_failed", False)

@@ -28,19 +28,22 @@
         <input type="submit" value="test submit">
     </form>-->
     <div class="page-container">
-    {% for i in result %}
-        <div class="category-container">
-            <form method="post" action="{{ url_for("api.prod_by_cat") }}">
-                <input type="hidden" value="{{ i.category_name }}" name="category" id="category">
-                <input type="submit" value="{{ i.category_name }}">
-            </form>
-            <button onclick="get_sub_category('{{ i.category_name }}')" class="btn" type="button" data-toggle="collapse" data-target="#{{ i.category_name }}"
-                    aria-expanded="false" aria-controls="{{ i.category_name }}">
-                +
-            </button>
+        <div class="cat-hierarchy-container">
+            <h2>Categories</h2>
+            {% for i in result %}
+                <div class="category-container">
+                    <form method="post" action="{{ url_for("api.prod_by_cat") }}">
+                        <input type="hidden" value="{{ i.category_name }}" name="category" id="category">
+                        <input type="submit" value="{{ i.category_name }}" class="cat-button">
+                    </form>
+                    <button onclick="get_sub_category('{{ i.category_name }}')" class="btn" type="button" data-toggle="collapse" data-target="#{{ i.category_name }}"
+                            aria-expanded="false" aria-controls="{{ i.category_name }}">
+                        +
+                    </button>
+                </div>
+                <div class="collapse" id="{{ i.category_name }}" style="margin:0 0 0 30px"></div>
+            {% endfor %}
         </div>
-        <div class="collapse" id="{{ i.category_name }}"></div>
-    {% endfor %}
     </div>
     <script>
         function get_sub_category(category) {
@@ -67,7 +70,6 @@
                     }
 
                     response.json().then(function (data) {
-                        console.log(data)
                         for (const key in data) {
                             if (data.hasOwnProperty(key)) {
                                 const newDiv = document.createElement("div");
@@ -88,6 +90,7 @@
                                 const catSubmit = document.createElement("input");
                                 catSubmit.type= "submit"
                                 catSubmit.value = data[key].category_name
+                                catSubmit.className = "cat-button"
                                 newForm.appendChild(catSubmit);
 
                                 const expandButton = document.createElement("button");
@@ -103,10 +106,11 @@
                                 const newDiv2 = document.createElement("div")
                                 newDiv2.className = "collapse"
                                 newDiv2.id = data[key].category_name
+                                newDiv2.style.margin = "0 0 0 30px";
+
 
                                 subCatDiv.appendChild(newDiv);
-                                subCatDiv.appendChild(newDiv2)
-                                console.log(data[key].category_name);
+                                subCatDiv.appendChild(newDiv2);
                               }
                         }
                     })

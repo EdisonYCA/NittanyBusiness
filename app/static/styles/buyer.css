@@ -1,10 +1,17 @@
 .page-container {
     display: flex;
     flex-direction: column;
-    width: 75vw;
+    width: 100vw;
     margin-left: auto;
     margin-right: auto;
     margin-top: 10px;
+}
+
+.cat-hierarchy-container {
+    width: 25vw;
+    min-height: 100vh;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 .btn {
@@ -62,6 +69,7 @@
 
 .individual-product-container {
     margin-bottom: 10px;
+    border: 2px solid black
 }
 
 .product-inner-container > button {
@@ -80,4 +88,13 @@
     outline: none;
     width: 100%;
     text-align: center;
+}
+
+.cat-button {
+    background-color: transparent;
+    background-repeat:no-repeat;
+    border: none;
+    outline: none;
+    width: 100%;
+    text-align: left;
 }

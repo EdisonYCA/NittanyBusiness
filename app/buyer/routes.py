@@ -14,6 +14,8 @@ def index():
 def search():
     search_val = request.form.get('search')
     search_val_query = "%" + search_val + "%"
+    minCostRange = request.form.get('minCostRange')
+    maxCostRange = request.form.get('maxCostRange')
 
     db = get_db()
     cursor = db.cursor()
@@ -23,8 +25,8 @@ def search():
                                  from Product_Listings
                                  join Sellers
                                  on seller_email = email
-                                 where (category LIKE ?) or (product_title LIKE ?) or (product_description LIKE ?) or (business_name = ?)
-                              """,(search_val_query, search_val_query, search_val_query, search_val_query)).fetchall()
+                                 where ((category LIKE ?) or (product_title LIKE ?) or (product_description LIKE ?) or (business_name = ?)) and (product_price >= ? and product_price <= ?)
+                              """,(search_val_query, search_val_query, search_val_query, search_val_query, minCostRange, maxCostRange)).fetchall()
     except Exception as e:
         print(e)
         return f'Error: {e}'

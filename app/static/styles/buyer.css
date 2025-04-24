@@ -43,9 +43,23 @@ div {
 }
 
 .individual-product-container {
-    margin-bottom: 5px;
+    margin-bottom: 10px;
 }
 
-h4 {
+.product-inner-container > button {
+    background-color: transparent;
+    background-repeat:no-repeat;
+    border: none;
+    outline: none;
+    width: 100%;
+    text-align: left;
+}
+
+.product-name-container > button {
+    background-color: transparent;
+    background-repeat:no-repeat;
+    border: none;
+    outline: none;
+    width: 100%;
     text-align: center;
 }

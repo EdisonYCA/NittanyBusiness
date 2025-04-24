@@ -36,8 +36,8 @@
                         <input type="hidden" value="{{ i.category_name }}" name="category" id="category">
                         <input type="submit" value="{{ i.category_name }}" class="cat-button">
                     </form>
-                    <button onclick="get_sub_category('{{ i.category_name }}')" class="btn" type="button" data-toggle="collapse" data-target="#{{ i.category_name }}"
-                            aria-expanded="false" aria-controls="{{ i.category_name }}">
+                    <button onclick="get_sub_category('{{ i.category_name }}');swap('{{ i.category_name }}')" class="btn" type="button" data-toggle="collapse" data-target="#{{ i.category_name }}"
+                            aria-expanded="false" aria-controls="{{ i.category_name }}" id="{{ i.category_name }} expand">
                         +
                     </button>
                 </div>
@@ -46,10 +46,17 @@
         </div>
     </div>
     <script>
+        function swap(category) {
+            var button = document.getElementById(category + " expand");
+            if (button.innerHTML === "-") {
+                button.innerHTML = "+"
+            } else {
+                button.innerHTML = "-"
+            }
+        }
         function get_sub_category(category) {
             var isEmpty = document.getElementById(category).innerHTML === "";
             var subCatDiv = document.getElementById(category);
-            console.log(subCatDiv)
             if (isEmpty === true) {
                 var parent_cat = {
                     parent: category
@@ -94,7 +101,7 @@
                                 newForm.appendChild(catSubmit);
 
                                 const expandButton = document.createElement("button");
-                                expandButton.setAttribute('onclick', 'get_sub_category(\'' + data[key].category_name + '\')');
+                                expandButton.setAttribute('onclick', 'get_sub_category(\'' + data[key].category_name + '\');swap(\'' + data[key].category_name + '\')');
                                 expandButton.className = "btn"
                                 expandButton.type = "button"
                                 expandButton.setAttribute("data-toggle", "collapse")

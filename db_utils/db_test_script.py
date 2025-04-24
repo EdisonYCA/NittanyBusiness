@@ -225,6 +225,18 @@ def test_place_order():
     print("place_order      - Response Text:", response.text)
     print()
 
+#test address key gen
+def test_add_address():
+    url = f"{BASE_URL}/api/add_address"
+    payload = {
+        "zipcode":     "16803",
+        "street_num":  "432",
+        "street_name": "Ablewood"
+    }
+    response = requests.post(url, data=payload)
+    print("add_address     - Status Code:", response.status_code)
+    print("add_address     - Response Text:", response.text)
+    print()
 
 if __name__ == "__main__":
     # Uncomment specific tests when running
@@ -242,4 +254,5 @@ if __name__ == "__main__":
     # test_new_prod_review()
     # test_get_listing_reviews()
     # test_update_listing()
-    test_place_order()
+    # test_place_order()
+    test_add_address()

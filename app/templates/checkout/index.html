@@ -14,9 +14,6 @@
     <li class="nav-item">
         <a class="nav-link" href="#">About</a>
     </li>
-    <li class="nav-content active">
-        <a class="nav-link" href="{{ url_for("signup.index") }}">Sign Up</a>
-    </li>
 {% endblock %}
 
 {%  block main_content %}
@@ -24,10 +21,13 @@
         <div class="product-detail-container">
             <div>
                 <p>
-                    Product Name: {{ result.product_title }}
+                    Product Name: {{ result.product_name }}
                 </p>
                 <p>
-                    Seller: {{ result.seller_email }}
+                    Seller: {{ business_name }}
+                </p>
+                <p>
+                    Contact: {{ result.seller_email }}
                 </p>
                 <p>
                     Quantity: {{ quantity }}
@@ -40,7 +40,7 @@
                 </p>
             </div>
         </div>
-        <form method="post" action="{{ url_for('checkout.rate') }}">
+        <form method="post" action="{{ url_for('api.place_order') }}">
             <div class="credit-form-container">
                 <div class="auto-fill-button">
                     <input type="button" value="Auto-fill Previous Information">
@@ -58,6 +58,12 @@
                         <label for="security_code" class="form-label">Security Code</label>
                         <input name="security_code" id="security_code" class="form-control" value="{{ security_code }}">
                     </div>
+                </div>
+                <div class="hidden-container">
+                    <input type="hidden" value="{{ listing_id }}" name="listing_id" id="listing_id">
+                    <input type="hidden" value="{{ result.seller_email }}" name="seller_email" id="seller_email">
+                    <input type="hidden" value="{{ quantity }}" name="quantity" id="quantity">
+                    <input type="hidden" value="{{ total }}" name="price" id="price">
                 </div>
                 <div class="submit-container">
                     <input type="submit" value="Purchase">

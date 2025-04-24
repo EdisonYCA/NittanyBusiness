@@ -34,8 +34,11 @@
 }
 
 .description-container {
+    display: flex;
     flex-grow: 5;
     border-bottom:2px solid black;
+    justify-content: center;
+    text-align: center;
 }
 
 .seller-container {

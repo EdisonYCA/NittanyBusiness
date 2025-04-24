@@ -1,9 +1,17 @@
-div {
-    border: 2px solid black;
+.page-container {
+    display: flex;
+    flex-direction: column;
+    margin-left: auto;
+    margin-right: auto;
 }
+
+.page-container > .cat-header {
+    text-align: center;
+}
+
 .product-container {
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     flex-wrap: wrap;
     margin-left: 5vw;
     margin-right: 5vw;
@@ -13,12 +21,16 @@ div {
 .single-product-container {
     display: flex;
     flex-direction: column;
-    margin: 10px 15px;
-    min-width: 20vw;
+    border: 2px solid black;
+    margin: 10px auto;
+    padding-left: 1px;
+    padding-right: 1px;
+
 }
 
 .product-name-container {
     text-align: center;
+    border-bottom: 2px solid black;
 }
 
 .product-name-container > button, .product-inner-container > button {
@@ -26,4 +38,6 @@ div {
     background-repeat:no-repeat;
     border: none;
     outline: none;
+    width: 100%;
+    text-align: left;
 }

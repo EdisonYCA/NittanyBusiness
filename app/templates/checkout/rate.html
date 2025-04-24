@@ -7,9 +7,11 @@
 {% block main_content %}
     <div class="rating-container">
         <div class="rating-header">
-            <h1>Leave a review for {{ product_name }}</h1>
+            <h1>Order Placed Successfully</h1>
+            <h2>Leave A Review For The Product</h2>
         </div>
         <form method="post" action="{{ url_for('api.new_prod_review') }}">
+            <!--
             <div class="seller-container">
                 <h2>Rate the Seller</h2>
                 <div class="star-container">
@@ -31,6 +33,7 @@
                 </div>
                 <input type="hidden" id="seller_rating" name="seller_rating">
             </div>
+            -->
             <div class="product-container">
                 <h2>Rate the Product</h2>
                 <div class="star-container">

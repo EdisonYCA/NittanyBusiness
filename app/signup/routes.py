@@ -60,7 +60,7 @@ def signup():
 
 @bp.route('/signupSeller', methods=['POST'])
 def signupSeller():
-    email = request.form.get('email')
+    email = request.form.get('uid')
     street_num = request.form.get('street_num')
     street_name = request.form.get('street_name')
     zipcode = request.form.get('zipcode')
@@ -82,6 +82,8 @@ def signupSeller():
             """, [email, businessName, address_id, bank_routing_number, bank_account_number, 0.0])
 
         db.commit()
+
+
         return render_template("seller/index.html", email=email)
     except Exception as e:
         return jsonify(f"Seller Details Error: {e}")
@@ -98,7 +100,7 @@ def signupBuyer():
     expire_month = request.form.get('expire_month')
     expire_year = request.form.get('expire_year')
     security_code = request.form.get('security_code')
-    businessName = request.form.get("businessName")
+    business_name = request.form.get("business_name")
 
     db = get_db()
     try:
@@ -109,13 +111,17 @@ def signupBuyer():
 
         # Insert Buyer and Credit Card
         db.execute("INSERT INTO Buyers (email, business_name, buyer_address_id) VALUES (?, ?, ?)",
-                   [email, businessName, address_id])
+                   [email, business_name, address_id])
         db.execute("""
                              INSERT INTO Credit_Cards (credit_card_num, card_type, expire_month, expire_year, security_code, owner_email)
                              VALUES (?, ?, ?, ?, ?, ?)
                          """, [credit_card_num, card_type, expire_month, expire_year, security_code, email])
 
         db.commit()
+        session["user"] = email
+        session["user_type"] = "Buyer"
+
         return render_template("buyer/index.html", email=email)
     except Exception as e:
-        return jsonify(f"Buyer Details Error: {e}")
+        print(e)
+        return render_template("buyer/index.html", error=True)

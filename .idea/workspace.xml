@@ -6,7 +6,8 @@
   <component name="ChangeListManager">
     <list default="true" id="7387a409-4f98-41b4-878d-4d8c7e602e7b" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/static/styles/global.css" beforeDir="false" afterPath="$PROJECT_DIR$/app/static/styles/global.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/signup/routes.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/signup/routes.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/templates/signup/buyer.html" beforeDir="false" afterPath="$PROJECT_DIR$/app/templates/signup/buyer.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/database.db" beforeDir="false" afterPath="$PROJECT_DIR$/database.db" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -177,7 +178,7 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1745506462703</updated>
-      <workItem from="1745506464019" duration="3431000" />
+      <workItem from="1745506464019" duration="4322000" />
     </task>
     <servers />
   </component>

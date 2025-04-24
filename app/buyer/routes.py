@@ -1,5 +1,5 @@
 from app.buyer import bp
-from flask import render_template, request
+from flask import render_template, request, make_response, jsonify
 from app.utils.auth import login_required
 import sqlite3
 from app import get_db
@@ -58,3 +58,24 @@ def search():
 
     result = [dict(row) for row in rows]
     return render_template('buyer/search.html', search=search_val, results=result)
+
+@bp.route('/get_sub_cat', methods=['POST'])
+def get_sub_cat():
+    req = request.get_json()
+    parent_category = req['parent']
+
+    db = get_db()
+    db.row_factory = sqlite3.Row
+    cursor = db.cursor()
+
+    # status 0 is incomplete, 1 is complete - id must be passed as 1 element tuple
+    cursor.execute("SELECT * FROM categories WHERE parent_category = ?", (parent_category,))
+    rows = cursor.fetchall()
+    db.close()
+
+    result = [dict(row) for row in rows]
+    print(result)
+
+    res = make_response(jsonify(result), 200)
+
+    return res

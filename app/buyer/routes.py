@@ -74,7 +74,7 @@ def get_sub_cat():
     db.close()
 
     result = [dict(row) for row in rows]
-    print(result)
+    #print(result)
 
     res = make_response(jsonify(result), 200)
 

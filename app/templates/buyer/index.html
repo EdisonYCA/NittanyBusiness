@@ -46,6 +46,7 @@
         function get_sub_category(category) {
             var isEmpty = document.getElementById(category).innerHTML === "";
             var subCatDiv = document.getElementById(category);
+            console.log(subCatDiv)
             if (isEmpty === true) {
                 var parent_cat = {
                     parent: category
@@ -70,18 +71,18 @@
                         for (const key in data) {
                             if (data.hasOwnProperty(key)) {
                                 const newDiv = document.createElement("div");
-                                newDiv.classname = "category-container";
+                                newDiv.className = "category-container";
 
                                 const newForm = document.createElement("FORM");
                                 newForm.method = "post";
                                 newForm.action = "{{ url_for("api.prod_by_cat") }}";
-                                newDiv.appendChild(newForm)
+                                newDiv.appendChild(newForm);
 
                                 const catName = document.createElement("input");
                                 catName.type = "hidden";
                                 catName.value = data[key].category_name;
-                                catName.name = data[key].category_name;
-                                catName.id = data[key].category_name;
+                                catName.name = "category";
+                                catName.id = data[key].category_name + "hidden";
                                 newForm.appendChild(catName);
 
                                 const catSubmit = document.createElement("input");
@@ -90,13 +91,13 @@
                                 newForm.appendChild(catSubmit);
 
                                 const expandButton = document.createElement("button");
-                                expandButton.onclick = function () {
-                                    get_sub_category(data[key].category_name);
-                                }
-                                expandButton.class = "btn"
-                                expandButton.type ="button"
+                                expandButton.setAttribute('onclick', 'get_sub_category(\'' + data[key].category_name + '\')');
+                                expandButton.className = "btn"
+                                expandButton.type = "button"
                                 expandButton.setAttribute("data-toggle", "collapse")
                                 expandButton.setAttribute("data-target", "#" + data[key].category_name)
+                                expandButton.innerHTML = "+"
+                                expandButton.id = data[key].category_name + " expand";
                                 newDiv.append(expandButton)
 
                                 const newDiv2 = document.createElement("div")
@@ -114,18 +115,3 @@
         }
     </script>
 {% endblock %}
-<!--
-{% for i in result %}
-        <div class="category-container">
-            <form method="post" action="{{ url_for("api.prod_by_cat") }}">
-                <input type="hidden" value="{{ i.category_name }}" name="category" id="category">
-                <input type="submit" value="{{ i.category_name }}">
-            </form>
-            <button onclick="get_sub_category('{{ i.category_name }}')" class="btn" type="button" data-toggle="collapse" data-target="#{{ i.category_name }}"
-                    aria-expanded="false" aria-controls="{{ i.category_name }}">
-                +
-            </button>
-        </div>
-        <div class="collapse" id="{{ i.category_name }}"></div>
-    {% endfor %}
--->

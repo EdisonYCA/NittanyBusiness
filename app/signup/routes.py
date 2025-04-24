@@ -82,11 +82,13 @@ def signupSeller():
             """, [email, businessName, address_id, bank_routing_number, bank_account_number, 0.0])
 
         db.commit()
-
+        session["user"] = email
+        session["user_type"] = "Seller"
 
         return render_template("seller/index.html", email=email)
     except Exception as e:
-        return jsonify(f"Seller Details Error: {e}")
+        print(e)
+        return render_template("seller/index.html", error=True)
 
 
 @bp.route('/signupBuyer', methods=['POST'])

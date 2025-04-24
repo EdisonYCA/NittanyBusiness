@@ -23,33 +23,38 @@
             <h1>Finish your account setup</h1>
             <h5>Enter additional details below</h5>
             <form method="POST" action="{{ url_for("signup.signupSeller") }}">
+                <input name="uid" type="hidden" value="email" />
                 <div class="mb-3">
                     <label for="streetNumInput" class="form-label">Street Number</label>
-                    <input type="number" name="street_num" class="form-control" id="streetNumInput" required>
+                    <input type="number" name="street_num" class="form-control" id="streetNumInput" placeholder="123" required>
                 </div>
                 <div class="mb-3">
                     <label for="streetNameInput" class="form-label">Street Name</label>
-                    <input type="text" name="street_name" class="form-control" id="streetNameInput" required>
+                    <input type="text" name="street_name" class="form-control" id="streetNameInput"
+                           placeholder="Main St" required>
                 </div>
-            <div class="mb-3">
-                <label for="zipCodeInput" class="form-label">ZIP Code</label>
-                <input type="number" name="zipcode" class="form-control" id="zipCodeInput" required>
-            </div>
-            <div class="mb-3">
-                <label for="bankRoutingInput" class="form-label">Bank Routing Number</label>
-                <input type="number" name="bank_routing_number" class="form-control" id="bankRoutingInput" required>
-            </div>
-            <div class="mb-3">
-                <label for="bankAccountInput" class="form-label">Bank Account Number</label>
-                <input type="number" name="bank_account_number" class="form-control" id="bankAccountInput" required>
-            </div>
-            <div class="mb-3">
-                <label for="businessNameInput" class="form-label">Business Name</label>
-                <input name="businessName" class="form-control" id="businessNameInput"
-                       placeholder="NittanyBusiness LLC">
-            </div>
-                {% if login_failed %}
-                    <p class="text-danger">Please enter a valid email address and password.</p>
+                <div class="mb-3">
+                    <label for="zipCodeInput" class="form-label">ZIP Code</label>
+                    <input type="number" name="zipcode" class="form-control" id="zipCodeInput"
+                           min="10000" max="99999" title="Enter a valid 5-digit ZIP code" placeholder="12345" required>
+                </div>
+                <div class="mb-3">
+                    <label for="bankRoutingInput" class="form-label">Bank Routing Number</label>
+                    <input type="number" name="bank_routing_number" class="form-control" id="bankRoutingInput"
+                           min="100000000" max="999999999" title="Routing number must be 9 digits" required>
+                </div>
+                <div class="mb-3">
+                    <label for="bankAccountInput" class="form-label">Bank Account Number</label>
+                    <input type="number" name="bank_account_number" class="form-control" id="bankAccountInput"
+                           min="10000000" max="999999999999" title="Account number must be between 8 and 12 digits" required>
+                </div>
+                <div class="mb-3">
+                    <label for="businessNameInput" class="form-label">Business Name</label>
+                    <input name="businessName" class="form-control" id="businessNameInput"
+                           placeholder="Nittany Business LLC" required>
+                </div>
+                {% if error %}
+                    <p class="text-danger">An error occurred, please try again.</p>
                 {% endif %}
                 <button type="submit" class="btn btn-primary">Done</button>
             </form>

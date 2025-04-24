@@ -9,6 +9,9 @@
         <a class="nav-link" href="{{ url_for("main.index") }}">Home <span class="sr-only">(current)</span></a>
     </li>
     <li class="nav-item active">
+        <a class="nav-link" href="{{ url_for("buyer.index") }}">Browse by Category <span class="sr-only">(current)</span></a>
+    </li>
+    <li class="nav-item active">
         <form class="form-inline" method="POST" action="{{ url_for("buyer.search") }}">
             <input class="form-control search-field" type="search" placeholder="Search for Product" aria-label="Search" name="search" id="search">
             <button class="btn btn-light my-2 my-sm-0" type="submit">Search</button>
@@ -19,9 +22,29 @@
 {% endblock %}
 
 {% block main_content %}
-    <form method="post" action="{{ url_for("api.prod_by_cat") }}">
+    <!--<form method="post" action="{{ url_for("api.prod_by_cat") }}">
         <label for="category"></label>
         <input id="category" name="category">
         <input type="submit" value="test submit">
-    </form>
+    </form>-->
+    <div class="page-container">
+    {% for i in result %}
+        <div class="category-container">
+        <form method="post" action="{{ url_for("api.prod_by_cat") }}">
+            <input type="hidden" value="{{ i.category_name }}" name="category" id="category">
+            <input type="submit" value="{{ i.category_name }}">
+        </form>
+            <button class="btn" type="button" data-toggle="collapse" data-target="#{{ i.category_name }}"
+                    aria-expanded="false" aria-controls="{{ i.category_name }}">
+                +
+            </button>
+        </div>
+        <div class="collapse" id="{{ i.category_name }}">
+            test
+        </div>
+    {% endfor %}
+    </div>
+    <script>
+
+    </script>
 {% endblock %}

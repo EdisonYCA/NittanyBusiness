@@ -8,7 +8,26 @@ from app import get_db
 @bp.route('/')
 @login_required
 def index():
-    return render_template('buyer/index.html')
+    parent_category = request.form.get('parent_category')
+
+    if parent_category is None:
+        db = get_db()
+        db.row_factory = sqlite3.Row
+        cursor = db.cursor()
+
+        # status 0 is incomplete, 1 is complete - id must be passed as 1 element tuple
+        cursor.execute("SELECT * FROM categories WHERE parent_category = 'Root'")
+        rows = cursor.fetchall()
+        db.close()
+
+        # return render_template('standin_name/some_page.html', result=rows)
+
+        # this return is just for testing with test script
+        result = [dict(row) for row in rows]
+        return render_template('buyer/index.html', result=result)
+
+    return render_template("buyer/index.html")
+
 
 @bp.route('/search', methods=['POST'])
 def search():
@@ -16,6 +35,10 @@ def search():
     search_val_query = "%" + search_val + "%"
     min_cost_range = request.form.get('minCostRange')
     max_cost_range = request.form.get('maxCostRange')
+
+    # If nothing was entered, search returns no products
+    if search_val is "":
+        return render_template('buyer/search.html', search=search_val, result=None)
 
     db = get_db()
     cursor = db.cursor()

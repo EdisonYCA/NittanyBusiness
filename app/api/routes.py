@@ -210,25 +210,6 @@ def get_seller_products():
 
     return render_template("seller/index.html", products=products, status_filter=status_filter)
 
-# this endpoint grabs top level categories
-@bp.route('/top_level_categories', methods=['POST'])
-def get_top_level_categories():
-    db = get_db()
-    db.row_factory = sqlite3.Row
-    cursor = db.cursor()
-
-    # status 0 is incomplete, 1 is complete - id must be passed as 1 element tuple
-    cursor.execute("SELECT * FROM categories WHERE parent_category = 'Root'")
-    rows = cursor.fetchall()
-    db.close()
-
-    # return render_template('standin_name/some_page.html', result=rows)
-
-    # this return is just for testing with test script
-    result = [dict(row) for row in rows]
-    return jsonify(result)
-
-
 # this endpoint sets a request to inactive
 @bp.route('/complete_request', methods=['POST'])
 def complete_requests():

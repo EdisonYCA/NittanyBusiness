@@ -33,7 +33,7 @@
         <div class="product-container">
             {% for i in results %}
                 <div class="individual-product-container">
-                    <form method="POST", action="{{ url_for("api.to_product") }}">
+                    <form method="POST" action="{{ url_for("api.to_product") }}">
                         <div class="product-name-container">
                             <button class="h4" type="submit">{{ i.product_name }}</button>
                         </div>

@@ -8,12 +8,6 @@
     <li class="nav-item active">
         <a class="nav-link" href="/">Home <span class="sr-only">(current)</span></a>
     </li>
-    <li class="nav-item">
-        <a class="nav-link" href="#">Contact</a>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link" href="#">About</a>
-    </li>
     <li class="nav-content">
         <a class="nav-link" href="{{ url_for("login.index") }}">Log In</a>
     </li>
@@ -24,48 +18,11 @@
         <img src="/static/img/pppointed.svg" class="w-80 h-80"
              alt="a dashed arrow with curves">
     </div>
-
-{#    <div class="w-50 h-100 center">#}
-{#        <div>#}
-{#            <h1>Enter additional details below to finish signing up!</h1>#}
-{#            <form method="POST" action="{{ url_for("signup.signupSeller") }}">#}
-{##}
-{#        <input type="hidden" name="email" value={{ email }}/>#}
-{#        <div class="mb-3">#}
-{#            <label for="streetNumInput" class="form-label">Street Number</label>#}
-{#            <input type="number" name="street_num" class="form-control" id="streetNumInput" required>#}
-{#        </div>#}
-{#        <div class="mb-3">#}
-{#            <label for="streetNameInput" class="form-label">Street Name</label>#}
-{#            <input type="text" name="street_name" class="form-control" id="streetNameInput" required>#}
-{#        </div>#}
-{#        <div class="mb-3">#}
-{#            <label for="zipCodeInput" class="form-label">ZIP Code</label>#}
-{#            <input type="number" name="zipcode" class="form-control" id="zipCodeInput" required>#}
-{#        </div>#}
-{#        <div class="mb-3">#}
-{#            <label for="bankRoutingInput" class="form-label">Bank Routing Number</label>#}
-{#            <input type="number" name="bank_routing_number" class="form-control" id="bankRoutingInput" required>#}
-{#        </div>#}
-{#        <div class="mb-3">#}
-{#            <label for="bankAccountInput" class="form-label">Bank Account Number</label>#}
-{#            <input type="number" name="bank_account_number" class="form-control" id="bankAccountInput" required>#}
-{#        </div>#}
-{#                <div class="mb-3">#}
-{#                    <label for="businessNameInput" class="form-label">Business Name</label>#}
-{#                    <input name="businessName" class="form-control" id="businessNameInput"#}
-{#                           placeholder="NittanyBusiness LLC">#}
-{#                </div>#}
-{#                    </fieldset>#}
-{#                   <button type="submit" class="btn btn-primary">Done</button>#}
-{#            </form>#}
-{#        </div>#}
-{#    </div>#}
     <div class="w-50 h-100 center">
         <div>
             <h1>Finish your account setup</h1>
             <h5>Enter additional details below</h5>
-            <form method="POST" action="{{ url_for("login.login") }}">
+            <form method="POST" action="{{ url_for("signup.signupSeller") }}">
                 <div class="mb-3">
                     <label for="streetNumInput" class="form-label">Street Number</label>
                     <input type="number" name="street_num" class="form-control" id="streetNumInput" required>
@@ -98,6 +55,4 @@
             </form>
         </div>
     </div>
-
-
 {% endblock %}

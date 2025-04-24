@@ -85,3 +85,37 @@ def signupSeller():
         return render_template("seller/index.html", email=email)
     except Exception as e:
         return jsonify(f"Seller Details Error: {e}")
+
+
+@bp.route('/signupBuyer', methods=['POST'])
+def signupBuyer():
+    email = request.form.get('email')
+    street_num = request.form.get('street_num')
+    street_name = request.form.get('street_name')
+    zipcode = request.form.get('zipcode')
+    credit_card_num = request.form.get('credit_card_num')
+    card_type = request.form.get('card_type')
+    expire_month = request.form.get('expire_month')
+    expire_year = request.form.get('expire_year')
+    security_code = request.form.get('security_code')
+    businessName = request.form.get("businessName")
+
+    db = get_db()
+    try:
+        # Insert Address and Zipcode_Info
+        address_id = uuid.uuid4().hex
+        db.execute("INSERT INTO Address (address_id, street_num, street_name, zipcode) VALUES (?, ?, ?, ?)",
+                   [address_id, street_num, street_name, zipcode])
+
+        # Insert Buyer and Credit Card
+        db.execute("INSERT INTO Buyers (email, business_name, buyer_address_id) VALUES (?, ?, ?)",
+                   [email, businessName, address_id])
+        db.execute("""
+                             INSERT INTO Credit_Cards (credit_card_num, card_type, expire_month, expire_year, security_code, owner_email)
+                             VALUES (?, ?, ?, ?, ?, ?)
+                         """, [credit_card_num, card_type, expire_month, expire_year, security_code, email])
+
+        db.commit()
+        return render_template("buyer/index.html", email=email)
+    except Exception as e:
+        return jsonify(f"Buyer Details Error: {e}")

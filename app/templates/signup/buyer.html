@@ -1,18 +1,12 @@
 {% extends 'base.html' %}
 
 {% block style %}
-    <link rel="stylesheet" href="{{ url_for('static', filename='styles/signup.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/auth.css') }}">
 {% endblock %}
 
 {% block navbar_content %}
     <li class="nav-item active">
         <a class="nav-link" href="/">Home <span class="sr-only">(current)</span></a>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link" href="#">Contact</a>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link" href="#">About</a>
     </li>
     <li class="nav-content">
         <a class="nav-link" href="{{ url_for("login.index") }}">Log In</a>
@@ -20,83 +14,85 @@
 {% endblock %}
 
 {% block main_content %}
-    <div class="signup-img-container center">
-        <img src="/static/img/pppointed.svg" class="img-non-logo"
+    <div class="w-50 h-100 bg-yellow center">
+        <img src="/static/img/pppointed.svg" class="w-80 h-80"
              alt="a dashed arrow with curves">
     </div>
-
-    <div class="center">
-        <div class="form-container">
-            <h5>Enter additional details below to finish signing up!</h5>
-            <form method="POST" action="{{ url_for("api.signupBuyer") }}">
-            <fieldset>
-                <legend>Credit Card Information</legend>
-                <div class="mb-3">
-                    <label for="creditCardNumberInput" class="form-label">Card Number</label>
-                    <input type="text" name="credit_card_num" class="form-control" id="creditCardNumberInput"
-                           placeholder="1234 5678 9012 3456" pattern="\d{16}" title="Please enter a valid 16-digit card number" required>
-                </div>
-                <div class="mb-3">
-                    <label for="expirationMonthInput" class="form-label">Expiration Month</label>
-                    <input type="number" name="expire_month" class="form-control" id="expirationMonthInput"
-                           placeholder="MM" min="1" max="12" required>
-                </div>
-                <div class="mb-3">
-                    <label for="expirationYearInput" class="form-label">Expiration Year</label>
-                    <input type="number" name="expire_year" class="form-control" id="expirationYearInput"
-                           placeholder="YYYY" min="2023" required>
-                </div>
-                <div class="mb-3">
-                    <label for="securityCodeInput" class="form-label">Security Code</label>
-                    <input type="text" name="security_code" class="form-control" id="securityCodeInput"
-                           placeholder="123" pattern="\d{3}" title="Please enter a valid 3-digit security code" required>
-                </div>
-                <div class="mb-3">
-                    <label for="cardTypeInput" class="form-label">Card Type</label>
-                    <select name="card_type" class="form-control" id="cardTypeInput" required>
-                        <option value="Visa">Visa</option>
-                        <option value="MasterCard">MasterCard</option>
-                        <option value="Discover">Discover</option>
-                        <option value="American Express">American Express</option>
-                    </select>
-                </div>
-            </fieldset>
-
-            <fieldset>
-                <legend>Address Information</legend>
-                <div class="mb-3">
+    <div class="w-50 mh-100 h-100 container p-5">
+        <div class="row">
+            <div class="col">
+              <h1>Finish your account setup</h1>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <h5>Enter additional details below</h5>
+            </div>
+          </div>
+        <div class="row">
+        <div class="col">
+          <form method="POST" action="{{ url_for('signup.signupBuyer') }}">
+            <div class="row">
+              <div class="col-12">
+                <label for="creditCardNumberInput" class="form-label">Card Number</label>
+                <input type="text" name="credit_card_num" class="form-control" id="creditCardNumberInput"
+                       placeholder="1234 5678 9012 3456" pattern="\d{16}"
+                       title="Please enter a valid 16-digit card number" required>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-6">
+                <label for="expirationMonthInput" class="form-label">Expiration Month</label>
+                <input type="number" name="expire_month" class="form-control" id="expirationMonthInput"
+                       placeholder="MM" min="1" max="12" required>
+              </div>
+              <div class="col-md-6">
+                <label for="expirationYearInput" class="form-label">Expiration Year</label>
+                <input type="number" name="expire_year" class="form-control" id="expirationYearInput"
+                       placeholder="YYYY" min="2023" required>
+              </div>
+            </div>
+          <div class="row">
+              <div class="col-md-6">
+                <label for="securityCodeInput" class="form-label">Security Code</label>
+                <input type="text" name="security_code" class="form-control" id="securityCodeInput"
+                       placeholder="123" pattern="\d{3}" title="Please enter a valid 3-digit security code" required>
+              </div>
+              <div class="col-md-6">
+                <label for="cardTypeInput" class="form-label">Card Type</label>
+                <select name="card_type" class="form-control" id="cardTypeInput" required>
+                  <option value="Visa">Visa</option>
+                  <option value="MasterCard">MasterCard</option>
+                  <option value="Discover">Discover</option>
+                  <option value="American Express">American Express</option>
+                </select>
+              </div>
+            </div>
+              <div class="row">
+                <div class="col-md-4">
                     <label for="streetNumInput" class="form-label">Street Number</label>
-                    <input type="number" name="street_num" class="form-control" id="streetNumInput"
-                           placeholder="123" required>
+                    <input type="number" name="street_num" class="form-control" id="streetNumInput" placeholder="123" required>
                 </div>
-                <div class="mb-3">
+                <div class="col-md-8">
                     <label for="streetNameInput" class="form-label">Street Name</label>
-                    <input type="text" name="street_name" class="form-control" id="streetNameInput"
-                           placeholder="Main St" required>
+                    <input type="text" name="street_name" class="form-control" id="streetNameInput" placeholder="Main St" required>
                 </div>
-                <div class="mb-3">
+            </div>
+            <div class="row">
+                <div class="col-12">
                     <label for="zipInput" class="form-label">ZIP Code</label>
-                    <input type="number" name="zipcode" class="form-control" id="zipInput"
-                           placeholder="12345" required>
+                    <input type="number" name="zipcode" class="form-control" id="zipInput" placeholder="12345" required>
                 </div>
-                <div class="mb-3">
-                    <label for="cityInput" class="form-label">City</label>
-                    <input type="text" name="city" class="form-control" id="cityInput"
-                           placeholder="Your City" required>
-                </div>
-                <div class="mb-3">
-                    <label for="stateInput" class="form-label">State</label>
-                    <input type="text" name="state" class="form-control" id="stateInput"
-                           placeholder="Your State" required>
-                </div>
-                <div class="mb-3">
-                    <label for="businessNameInput" class="form-label">Business Name</label>
-                    <input name="businessName" class="form-control" id="businessNameInput"
-                           placeholder="NittanyBusiness LLC">
-                </div>
-            </fieldset>
+            </div>
+            <div>
+                <label for="businessNameInput" class="form-label">Business Name</label>
+                <input name="businessName" class="form-control" id="businessNameInput" placeholder="NittanyBusiness LLC">
+            </div>
+            <div>
                 <button type="submit" class="btn btn-primary">Done</button>
-            </form>
+            </div>
+          </form>
         </div>
+      </div>
     </div>
 {% endblock %}

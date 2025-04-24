@@ -61,3 +61,9 @@ nav {
 .bg-yellow {
     background-color: #D5B942;
 }
+
+.navbar {
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}

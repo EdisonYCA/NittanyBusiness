@@ -44,3 +44,7 @@ input {
     display:flex;
     flex-direction: column;
 }
+
+.ret {
+    text-align: center;
+}

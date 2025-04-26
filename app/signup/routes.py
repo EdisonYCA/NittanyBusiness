@@ -50,8 +50,7 @@ def signup():
         elif accountType == "buyer":
             return render_template("signup/buyer.html", email=newEmail)
         elif accountType.lower() == "helpdesk":
-            # TODO: route to helpdesk.html
-            return render_template("signup/seller.html", email=newEmail)
+            return render_template("signup/helpdesk.html", email=newEmail)
         else:
             return redirect(url_for("signup.index", signup_failed=True))
     except Exception as e:

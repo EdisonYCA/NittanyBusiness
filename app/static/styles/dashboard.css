@@ -16,3 +16,33 @@
 ul >li {
     list-style-type: none;
 }
+
+.container {
+    display: flex;
+    width: 90vw;
+    margin-top: 15px;
+    justify-content: center;
+}
+
+.img-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.text-container {
+    display:flex;
+    flex-direction: column;
+    text-align: center;
+    justify-content: center;
+    margin-right: 20px;
+}
+
+.text-container > h3 {
+    margin-top: 10px;
+}
+
+.get-started {
+    text-align: center;
+    width: 30%;
+}

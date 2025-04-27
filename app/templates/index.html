@@ -28,102 +28,17 @@
 {% endblock %}
 
 {% block main_content %}
-    <!--
-    <div class="category">
-        <ul>
-            <li class="dropdown">
-                <button class="btn btn-secondary dropdown-toggle category-button" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                Category
-                </button>
-                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                    <a class="dropdown-item" href="#">Sub-Category</a>
-                    <a class="dropdown-item" href="#">Sub-Category</a>
-                    <a class="dropdown-item" href="#">Sub-Category</a>
-                    <div class="dropdown">
-                      <button class="btn btn-secondary dropdown-toggle category-button" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        Category
-                      </button>
-                      <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                        <a class="dropdown-item" href="#">Sub-Sub-Category</a>
-                        <a class="dropdown-item" href="#">Sub-Sub-Category</a>
-                        <a class="dropdown-item" href="#">Sub-Sub-Category</a>
-                          <div class="dropdown">
-                              <button class="btn btn-secondary dropdown-toggle category-button" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                Category
-                              </button>
-                              <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                <a class="dropdown-item" href="#">Sub-Sub-Sub-Category</a>
-                                <a class="dropdown-item" href="#">Sub-Sub-Sub-Category</a>
-                                <a class="dropdown-item" href="#">Sub-Sub-Sub-Category</a>
-                              </div>
-                          </div>
-                      </div>
-                    </div>
-              </div>
-            </li>
-
-            <li class="dropdown">
-                <button class="btn btn-secondary dropdown-toggle category-button" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                Category
-                </button>
-                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                    <a class="dropdown-item" href="#">Sub-Category</a>
-                    <a class="dropdown-item" href="#">Sub-Category</a>
-                    <a class="dropdown-item" href="#">Sub-Category</a>
-                    <div class="dropdown">
-                      <button class="btn btn-secondary dropdown-toggle category-button" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        Category
-                      </button>
-                      <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                        <a class="dropdown-item" href="#">Sub-Sub-Category</a>
-                        <a class="dropdown-item" href="#">Sub-Sub-Category</a>
-                        <a class="dropdown-item" href="#">Sub-Sub-Category</a>
-                          <div class="dropdown">
-                              <button class="btn btn-secondary dropdown-toggle category-button" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                Category
-                              </button>
-                              <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                <a class="dropdown-item" href="#">Sub-Sub-Sub-Category</a>
-                                <a class="dropdown-item" href="#">Sub-Sub-Sub-Category</a>
-                                <a class="dropdown-item" href="#">Sub-Sub-Sub-Category</a>
-                              </div>
-                          </div>
-                      </div>
-                    </div>
-              </div>
-            </li>
-
-            <li class="dropdown">
-                <button class="btn btn-secondary dropdown-toggle category-button" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                Category
-                </button>
-                <div class="dropdown-menu category-button" aria-labelledby="dropdownMenuButton">
-                    <a class="dropdown-item" href="#">Sub-Category</a>
-                    <a class="dropdown-item" href="#">Sub-Category</a>
-                    <a class="dropdown-item" href="#">Sub-Category</a>
-                    <div class="dropdown">
-                      <button class="btn btn-secondary dropdown-toggle category-button" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        Category
-                      </button>
-                      <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                        <a class="dropdown-item" href="#">Sub-Sub-Category</a>
-                        <a class="dropdown-item" href="#">Sub-Sub-Category</a>
-                        <a class="dropdown-item" href="#">Sub-Sub-Category</a>
-                          <div class="dropdown">
-                              <button class="btn btn-secondary dropdown-toggle category-button" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                Category
-                              </button>
-                              <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                <a class="dropdown-item" href="#">Sub-Sub-Sub-Category</a>
-                                <a class="dropdown-item" href="#">Sub-Sub-Sub-Category</a>
-                                <a class="dropdown-item" href="#">Sub-Sub-Sub-Category</a>
-                              </div>
-                          </div>
-                      </div>
-                    </div>
-              </div>
-            </li>
-        </ul>
+    <div class="container">
+        <div class="text-container">
+            <h1>Join Nittany Business And Our Connected Network of Businesses</h1>
+            <h3>Making The Process Of Selling And Buyer Products For Your Business As Easy As Can Be</h3>
+            <form action="{{ url_for('signup.index') }}">
+                <button class="btn btn-primary h3 get-started">Get Started Now</button>
+            </form>
+        </div>
+        <div class="img-container">
+            <img src="/static/img/Earth_clip_art.svg" width="500" height="500"
+             alt="image of penn state logo">
+        </div>
     </div>
-    -->
 {%  endblock %}

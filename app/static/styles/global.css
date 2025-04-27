@@ -66,3 +66,13 @@ nav {
     top: 0;
     z-index: 1000;
 }
+
+.btn-primary {
+    background-color: #041E42;
+    border: none;
+    color: #ffffff;
+}
+
+.btn-primary:hover {
+    background-color: #818181;
+}

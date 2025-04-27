@@ -38,13 +38,14 @@ def get_user_type(email):
 
 
 #gets product info so that front end can leave some fields blank on update
-def update_listing(seller_email, listing_id,*,category=None,product_title=None,product_name=None, product_description=None,quantity=None,product_price=None):
+def update_listing(seller_email, listing_id,*,category=None,product_title=None,product_name=None, product_description=None,status=None,quantity=None,product_price=None):
 
     to_update = {}
     if category is not None: to_update['category'] = category
     if product_title is not None: to_update['product_title'] = product_title
     if product_name is not None: to_update['product_name'] = product_name
     if product_description is not None: to_update['product_description'] = product_description
+    if status is not None: to_update['status'] = status
     if quantity is not None: to_update['quantity'] = quantity
     if product_price is not None: to_update['product_price'] = product_price
 
@@ -134,13 +135,14 @@ def get_child_categories():
 #takes in product specs and creates new product listing
 @bp.route('/add_product', methods=['POST'])
 def add_product():
-
-    seller_id = request.form.get("seller_id")
+    seller_id = session.get("user")
+    if not seller_id:
+        return redirect("api.logout")
     category = request.form.get("category")
     product_name = request.form.get("product_name")
     quantity = request.form.get("quantity")
     price = request.form.get("price")
-    status = request.form.get("status")
+    status = 1
     product_description = request.form.get("product_description")
     product_title = request.form.get("product_title")
     try:
@@ -158,7 +160,7 @@ def add_product():
     except sqlite3.IntegrityError as e:
         print(e)
         return f"Error: {e}"
-    return f"Product {product_id} added to listing {seller_id}"
+    return redirect(url_for('api.get_seller_products'))
 
 
 # gets products of a seller
@@ -189,6 +191,25 @@ def get_seller_products():
     print(products)
 
     return render_template("seller/index.html", products=products, status_filter=status_filter)
+
+# this endpoint grabs top level categories
+@bp.route('/top_level_categories', methods=['POST'])
+def get_top_level_categories():
+    db = get_db()
+    db.row_factory = sqlite3.Row
+    cursor = db.cursor()
+
+    # status 0 is incomplete, 1 is complete - id must be passed as 1 element tuple
+    cursor.execute("SELECT * FROM categories WHERE parent_category = 'Root'")
+    rows = cursor.fetchall()
+    db.close()
+
+    # return render_template('standin_name/some_page.html', result=rows)
+
+    # this return is just for testing with test script
+    result = [dict(row) for row in rows]
+    return jsonify(result)
+
 
 # this endpoint sets a request to inactive
 @bp.route('/complete_request', methods=['POST'])
@@ -228,6 +249,7 @@ def get_active_requests():
 # updates all fields other than key/status
 @bp.route("/product_update", methods=["POST"])
 def product_update():
+    print("💡 product_update received form:", request.form.to_dict())
 
     seller_email = session.get('user')
     listing_id = request.form.get("listing_id")
@@ -240,8 +262,9 @@ def product_update():
                    product_title=request.form.get("product_title"),
                    product_name=request.form.get("product_name"),
                    product_description=request.form.get("product_description"),
+                   status=request.form.get("status"),
                    quantity=request.form.get("quantity"),
-                   product_price=request.form.get("product_price"))
+                   product_price=int(float(request.form.get("product_price", 0)) * 100))
 
 
     # if updated_count:
@@ -250,6 +273,7 @@ def product_update():
     #     print("[DEBUG] update_listing → no rows updated (nothing changed or bad key)")
 
     return redirect(url_for('seller.index'))
+
 
 
 #for placing orders
@@ -442,7 +466,8 @@ def product_to_checkout():
 
     return render_template("checkout/index.html", result=row, quantity=order_quantity, total=total, business_name=business_name, listing_id=listing_id)
 
-@bp.route("/logout", methods=["POST"])
+
+@bp.route("/logout", methods=["POST", "GET"])
 def logout():
     session.clear()
     return redirect(url_for("main.index"))

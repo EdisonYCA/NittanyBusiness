@@ -22,26 +22,26 @@
           <form method="get" action="{{ url_for('api.get_seller_products') }}"
           class="d-flex w-100 h-10 mb-1 justify-content-between">
 
-          <button type="submit"
-                  name="filter" value="active"
-                  class="w-30 btn h-full
-                         {% if status_filter=='active' %}btn-primary{% else %}btn-secondary{% endif %}">
-            Active
-          </button>
+              <button type="submit"
+                      name="filter" value="active"
+                      class="w-30 btn
+                             {% if status_filter=='active' %}btn-primary{% else %}btn-secondary{% endif %}">
+                Active
+              </button>
 
-          <button type="submit"
-                  name="filter" value="inactive"
-                  class="w-30 btn h-full me-2
-                         {% if status_filter=='inactive' %}btn-primary{% else %}btn-secondary{% endif %}">
-            Inactive
-          </button>
+              <button type="submit"
+                      name="filter" value="inactive"
+                      class="w-30 btn me-2
+                             {% if status_filter=='inactive' %}btn-primary{% else %}btn-secondary{% endif %}">
+                Inactive
+              </button>
 
-          <button type="submit"
-                  name="filter" value="soldout"
-                  class="w-30 btn h-full
-                         {% if status_filter=='soldout' %}btn-primary{% else %}btn-secondary{% endif %}">
-            Sold Out
-          </button>
+              <button type="submit"
+                      name="filter" value="soldout"
+                      class="w-30 btn
+                             {% if status_filter=='soldout' %}btn-primary{% else %}btn-secondary{% endif %}">
+                Sold Out
+              </button>
         </form>
 
         <!-- listing products - using status filters on array-->

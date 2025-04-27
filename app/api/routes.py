@@ -57,13 +57,14 @@ def get_user_type(email):
 
 
 #gets product info so that front end can leave some fields blank on update
-def update_listing(seller_email, listing_id,*,category=None,product_title=None,product_name=None, product_description=None,quantity=None,product_price=None):
+def update_listing(seller_email, listing_id,*,category=None,product_title=None,product_name=None, product_description=None,status=None,quantity=None,product_price=None):
 
     to_update = {}
     if category is not None: to_update['category'] = category
     if product_title is not None: to_update['product_title'] = product_title
     if product_name is not None: to_update['product_name'] = product_name
     if product_description is not None: to_update['product_description'] = product_description
+    if status is not None: to_update['status'] = status
     if quantity is not None: to_update['quantity'] = quantity
     if product_price is not None: to_update['product_price'] = product_price
 
@@ -358,8 +359,9 @@ def product_update():
                    product_title=request.form.get("product_title"),
                    product_name=request.form.get("product_name"),
                    product_description=request.form.get("product_description"),
+                   status=request.form.get("status"),
                    quantity=request.form.get("quantity"),
-                   product_price=request.form.get("product_price"))
+                   product_price=int(float(request.form.get("product_price", 0)) * 100))
 
 
     # if updated_count:

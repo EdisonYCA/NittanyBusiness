@@ -32,7 +32,7 @@
         <div class="row">
         <div class="col">
           <form method="POST" action="{{ url_for('signup.signupBuyer') }}">
-            <input type="hidden" name="uid" value="email" />
+            <input type="hidden" name="uid" value="{{ email }}" />
             <div class="row">
               <div class="col-12">
                 <label for="creditCardNumberInput" class="form-label">Card Number</label>

@@ -6,16 +6,10 @@
 {% endblock %}
 
 {% block navbar_content %}
-    <li class="nav-item active">
+    <li class="nav-item">
         <a class="nav-link" href="/">Home <span class="sr-only">(current)</span></a>
     </li>
-    <!--<li class="nav-item">
-        <a class="nav-link" href="#">Contact</a>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link" href="#">About</a>
-    </li>-->
-    <li class="nav-content active">
+    <li class="nav-content">
         <a class="nav-link" href="{{ url_for("login.index") }}">Log In</a>
     </li>
 {% endblock %}
@@ -82,7 +76,7 @@
     </div>
     <div class="w-50 h-100 center">
         <div>
-            <h1>Signup for NittanyBusiness</h1>
+            <h1>Login to NittanyBusiness</h1>
             <h5>Enter your details below</h5>
             <form method="POST" action="{{ url_for("signup.signup") }}">
                 <div class="mb-3">

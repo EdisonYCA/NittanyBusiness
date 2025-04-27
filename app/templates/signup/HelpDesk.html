@@ -1,0 +1,106 @@
+{% extends 'base.html' %}
+
+{% block style %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/signup.css') }}">
+    <style>
+        /* Additional styling for layout adjustments */
+        body {
+            margin: 0;
+            padding: 0;
+        }
+
+        .signup-img-container {
+            text-align: center;
+            margin: 30px 0;
+        }
+
+        .form-container {
+            background-color: #ffffff;
+            border-radius: 6px;
+            padding: 16px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            max-width: 800px;
+            margin: 80px auto; /* Added margin-top to prevent overlapping with the navbar */
+        }
+
+        h1, h5 {
+            text-align: center;
+            margin: 10px 0;
+        }
+
+        fieldset {
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            padding: 15px;
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 400;
+        }
+
+        input, select, button {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 3px;
+            box-sizing: border-box;
+        }
+
+        button {
+            background-color: #007bff;
+            color: #ffffff;
+            border: none;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+{% endblock %}
+
+{% block navbar_content %}
+    <li class="nav-item active">
+        <a class="nav-link" href="/">Home <span class="sr-only">(current)</span></a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" href="#">Contact</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" href="#">About</a>
+    </li>
+    <li class="nav-content">
+        <a class="nav-link" href="{{ url_for("login.index") }}">Log In</a>
+    </li>
+{% endblock %}
+
+{% block main_content %}
+    <div class="signup-img-container center">
+        <img src="/static/img/pppointed.svg" class="img-non-logo"
+             alt="a dashed arrow with curves">
+    </div>
+    <div class="center">
+        <div class="form-container">
+            <h5>Enter Authentication code for Help Desk!</h5>
+            <form method="POST" action="{{ url_for("api.signupHelpDesk") }}">
+
+            <div id="helpdeskAuthContainer" class="hidden">
+                    <label for="authCodeInput" class="form-label">Authentication Code</label>
+                    <input type="text" name="auth_code" id="authCodeInput" class="form-control"
+                           placeholder="Enter your Helpdesk authentication code">
+                </div>
+
+                 {% if auth_failed %}
+                    <p style="color: red;">Please enter a valid Help Desk Code!</p>
+                {% endif %}
+                <button type="submit" class="btn btn-primary">Enter</button>
+
+               </form>
+        </div>
+    </div>
+
+{% endblock %}

@@ -6,11 +6,13 @@
 
 {% block navbar_content %}
     <li class="nav-item active">
-        <a class="nav-link" href="{{ url_for("main.index") }}">Home <span class="sr-only">(current)</span></a>
+        <a class="nav-link" href="{{ url_for("buyer.index") }}">Home <span class="sr-only">(current)</span></a>
     </li>
     <li class="nav-item active">
-        <a class="nav-link" href="{{ url_for("buyer.index") }}">Browse by Category <span class="sr-only">(current)</span></a>
-    </li>
+            <form action="{{ url_for('api.logout') }}" method="POST">
+                <button type="submit" class="nav-link btn btn-link active" style="font-size: 17.6px;">Logout</button>
+            </form>
+        </li>
     <li class="nav-item active">
         <form class="form-inline" method="POST" action="{{ url_for("buyer.search") }}">
             <input class="form-control search-field" type="search" placeholder="Search for Product" aria-label="Search" name="search" id="search">

@@ -1,0 +1,50 @@
+.container {
+    display:flex;
+    flex-direction: column;
+}
+
+.submit-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.input-label > label, .input-label > input {
+    text-align: center;
+}
+
+.card-title {
+    text-align: center;
+}
+
+.input-label > label, input {
+    display: flex;
+    flex-direction: column;
+    margin: auto;
+}
+
+.addcat-container {
+    display:flex;
+    flex-direction: column;
+    align-items:center;
+    justify-content: center;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.addcat-container > input {
+    margin-left: auto;
+}
+
+input {
+    margin-bottom: 10px;
+}
+
+.insert-container {
+    display:flex;
+    flex-direction: column;
+}
+
+.ret {
+    text-align: center;
+}

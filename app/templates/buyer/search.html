@@ -1,0 +1,112 @@
+{% extends 'base.html' %}
+
+{% block style %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/buyer.css') }}">
+{% endblock %}
+
+{% block navbar_content %}
+    <li class="nav-item active">
+        <a class="nav-link" href="{{ url_for("main.index") }}">Home <span class="sr-only">(current)</span></a>
+    </li>
+    <li class="nav-item active">
+        <a class="nav-link" href="{{ url_for("buyer.index") }}">Back <span class="sr-only">(current)</span></a>
+    </li>
+{% endblock %}
+
+{% block main_content %}
+    <div class="container">
+        <div class="search-container">
+            <form class="form-search" method="post" action="{{ url_for("buyer.search") }}">
+                <input class="form-control input-search" type="search" placeholder="Search for Product" aria-label="Search" name="search" id="search" value="{{ search }}">
+                <a onclick="changeCollapsible()" class="btn btn-light" data-toggle="collapse" href="#moreOptions" role="button" aria-expanded="false" id="searchOption">Show More Filter Options</a>
+                <div class="collapse option-container text-center" id="moreOptions">
+                    <label for="minCostRange" class="form-label">Minimum Cost</label>
+                    <input type="range" class="form-range" id="minCostRange" name="minCostRange" min="0" max="1000000" step="1000" value="0">
+                    <label for="maxCostRange" class="form-label">Maximum Cost</label>
+                    <input type="range" class="form-range" id="maxCostRange" name="maxCostRange" min="0" max="1000000" step="1000" value="1000000">
+                    <div class="range-container">
+                        <span id="minValue">0</span>
+                        <span>-</span>
+                        <span id="maxValue">0</span>
+                    </div>
+                </div>
+                <button class="btn btn-light my-2 my-sm-0" type="submit">Search</button>
+            </form>
+        </div>
+        <div class="product-container">
+            {% for i in results %}
+                <div class="individual-product-container">
+                    <form method="POST" action="{{ url_for("api.to_product") }}">
+                        <div class="product-name-container">
+                            <button class="h4" type="submit">{{ i.product_name }}</button>
+                        </div>
+                        <div class="product-inner-container">
+                            <button type="submit">Category: {{ i.category }}</button>
+                        </div>
+                        <div class="product-inner-container">
+                            <button type="submit">Title: {{ i.product_title }}</button>
+                        </div>
+                        <div class="product-inner-container">
+                            <button type="submit">Seller: {{ i.business_name }}</button>
+                        </div>
+                        <div class="product-inner-container">
+                            <button type="submit">Contact: {{ i.seller_email }}</button>
+                        </div>
+                        <div class="product-inner-container">
+                            <button type="submit">Description: {{ i.product_description }}</button>
+                        </div>
+                        <div class="product-inner-container">
+                            <button type="submit">Quantity Available: {{ i.quantity }}</button>
+                        </div>
+                        <div class="product-inner-container">
+                            <button type="submit">Unit Price: {{ i.product_price }}</button>
+                        </div>
+                        <div>
+                            <input type="hidden" name="listing_id" id="listing_id" value="{{ i.listing_id }}">
+                        </div>
+                        <div>
+                            <input type="hidden" name="business_name" id="business_name" value="{{ i.business_name }}">
+                        </div>
+                    </form>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+    <script>
+        let collapsible = document.getElementById("searchOption");
+        let min_slider = document.getElementById("minCostRange");
+        let max_slider = document.getElementById("maxCostRange");
+        let min_val = document.getElementById("minValue");
+        let max_val = document.getElementById("maxValue");
+        let option = document.getElementById("moreOptions");
+
+        function changeCollapsible() {
+            if (collapsible.innerHTML === "Show More Filter Options") {
+                collapsible.innerHTML = "Show Less Filter Options";
+                option.style.display = "flex";
+            } else {
+                collapsible.innerHTML = "Show More Filter Options";
+                option.style.display = "none";
+            }
+        }
+
+        function updateRange() {
+            if (min_slider.value > max_slider.value) {
+                max_slider.value = min_slider.value;
+            }
+
+            min_val.textContent = min_slider.value;
+            max_val.textContent = max_slider.value;
+        }
+
+        min_slider.addEventListener('input', function () {
+            updateRange();
+        });
+
+        max_slider.addEventListener('input', function () {
+            updateRange();
+        });
+
+        window.addEventListener('load', updateRange);
+    </script>
+{% endblock %}

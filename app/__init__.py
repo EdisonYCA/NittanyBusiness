@@ -1,13 +1,14 @@
-from flask import Flask
-from config import Config
-import sqlite3
+from flask import Flask, session
 from flask import g
+from config import Config
 
-DB_PATH = 'database.db'
+DB_PATH = Config.DB_PATH
+secret_key = Config.SECRET_KEY
 
 def create_app(config_class=Config):
     app = Flask(__name__)
     app.config.from_object(config_class)
+    app.config['SECRET_KEY'] = secret_key
 
     # Register blueprints here
     from app.main import bp as main_bp
@@ -19,10 +20,25 @@ def create_app(config_class=Config):
     from app.signup import bp as signup_bp
     app.register_blueprint(signup_bp, url_prefix='/signup')
 
-    from app.api.routes import api_bp
+    from app.api import bp as api_bp
     app.register_blueprint(api_bp, url_prefix='/api')
 
-    #app teardown tells db that connection is closing - refer to flask docs for details
+    from app.helpdesk import bp as helpdesk_bp
+    app.register_blueprint(helpdesk_bp, url_prefix='/helpdesk')
+
+    from app.product import bp as product_bp
+    app.register_blueprint(product_bp, url_prefix='/product')
+
+    from app.checkout import bp as checkout_bp
+    app.register_blueprint(checkout_bp, url_prefix='/checkout')
+
+    from app.seller import bp as seller_bp
+    app.register_blueprint(seller_bp, url_prefix='/seller')
+
+    from app.buyer import bp as buyer_bp
+    app.register_blueprint(buyer_bp, url_prefix='/buyer')
+
+    # app teardown tells db that connection is closing - refer to flask docs for details
     @app.teardown_appcontext
     def close_db(exception):
         db = g.pop('db', None)
@@ -32,8 +48,7 @@ def create_app(config_class=Config):
     return app
 
 
+# trying to bypass import issues during refactoring
 def get_db():
-    if 'db' not in g:
-        g.db = sqlite3.connect(DB_PATH)
-        g.db.row_factory = sqlite3.Row
-    return g.db
+    from app.api.db_util import get_db as _get_db
+    return _get_db()

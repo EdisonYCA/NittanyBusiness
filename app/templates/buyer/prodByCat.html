@@ -1,0 +1,60 @@
+{% extends 'base.html' %}
+
+{% block style %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/productbycat.css') }}">
+{% endblock %}
+
+{% block navbar_content %}
+    <li class="nav-item active">
+        <a class="nav-link" href="{{ url_for("main.index") }}">Home <span class="sr-only">(current)</span></a>
+    </li>
+    <li class="nav-item active">
+        <a class="nav-link" href="{{ url_for("buyer.index") }}">Back <span class="sr-only">(current)</span></a>
+    </li>
+{% endblock %}
+
+{% block main_content %}
+    <div class="page-container">
+        <div class="cat-header">
+            <h1>Category: {{ category }}</h1>
+        </div>
+        <div class="product-container">
+        {% for i in result %}
+            <form method="POST" action="{{ url_for("api.to_product") }}">
+                <div class="single-product-container">
+                    <div class="product-name-container">
+                        <button type="submit">{{ i.product_name }}</button>
+                    </div>
+                    <!--<div class="product-inner-container">
+                        <button type="submit">Category: {{ i.category }}</button>
+                    </div>-->
+                    <div class="product-inner-container">
+                        <button type="submit">Title: {{ i.product_title }}</button>
+                    </div>
+                    <div class="product-inner-container">
+                        <button type="submit">Seller: {{ i.business_name }}</button>
+                    </div>
+                    <div class="product-inner-container">
+                        <button type="submit">Contact: {{ i.seller_email }}</button>
+                    </div>
+                    <div class="product-inner-container">
+                        <button type="submit">Description: {{ i.product_description }}</button>
+                    </div>
+                    <div class="product-inner-container">
+                        <button type="submit">Quantity Available: {{ i.quantity }}</button>
+                    </div>
+                    <div class="product-inner-container">
+                        <button type="submit">Unit Price: ${{ i.product_price }}</button>
+                    </div>
+                    <div>
+                        <input type="hidden" name="listing_id" id="listing_id" value="{{ i.listing_id }}">
+                    </div>
+                    <div>
+                        <input type="hidden" name="business_name" id="business_name" value="{{ i.business_name }}">
+                    </div>
+                </div>
+            </form>
+        {% endfor %}
+        </div>
+    </div>
+{% endblock %}

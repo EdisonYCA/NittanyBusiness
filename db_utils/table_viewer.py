@@ -1,7 +1,7 @@
 import sqlite3
 
 def print_names():
-    connection = sqlite3.connect("../database.db")
+    connection = sqlite3.connect("../../db_backup/database.db")
     cursor = connection.cursor()
 
     cursor.execute("SELECT name FROM sqlite_master WHERE type='table';")
@@ -14,7 +14,7 @@ def print_names():
     connection.close()
 
 def print_schema(table_name):
-    connection = sqlite3.connect("../database.db")
+    connection = sqlite3.connect("../../db_backup/database.db")
     cursor = connection.cursor()
 
     cursor.execute(f"SELECT sql FROM sqlite_master WHERE type='table' AND name='{table_name}';")
@@ -29,7 +29,7 @@ def print_schema(table_name):
     connection.close()
 
 def print_contents(table_name):
-    connection = sqlite3.connect("../database.db")
+    connection = sqlite3.connect("../../db_backup/database.db")
     cursor = connection.cursor()
 
     cursor.execute(f"SELECT * FROM {table_name} LIMIT 10;")

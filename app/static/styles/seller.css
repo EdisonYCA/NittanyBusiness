@@ -1,0 +1,31 @@
+.h-10 {
+    height: 10%
+}
+
+.h-90 {
+    height: 90%
+}
+
+.w-35 {
+    width: 35%;
+}
+
+.fh {
+    height: 500px;
+}
+
+.w-30 {
+    width: 30%;
+}
+
+.bg-gray {
+    background-color: #eee;
+}
+
+.active {
+    background-color: #041E42;
+}
+
+.inactive {
+    background-color: #818181;
+}

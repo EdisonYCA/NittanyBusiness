@@ -1,0 +1,79 @@
+{% extends 'base.html' %}
+
+{% block style %}
+<link rel="stylesheet" href="{{ url_for('static', filename='styles/seller.css') }}">
+{% endblock %}
+
+{% block navbar_content %}
+<li class="nav-item">
+    <a class="nav-link" href="{{ url_for("seller.publish") }}">Publish Product</a>
+</li>
+<li class="nav-item">
+    <a class="nav-link" href="#">Settings</a>
+</li>
+<li class="nav-item">
+    <a class="nav-link" href="{{ url_for('api.logout') }}">Log Out</a>
+</li>
+{% endblock %}
+
+{% block main_content %}
+<div class="w-100 h-100 d-flex justify-content-center">
+      <div class="w-75 mt-2 border rounded d-flex flex-column p-1">
+          <form method="get" action="{{ url_for('api.get_seller_products') }}"
+          class="d-flex w-100 h-10 mb-1 justify-content-between">
+
+          <button type="submit"
+                  name="filter" value="active"
+                  class="w-30 btn h-full
+                         {% if status_filter=='active' %}btn-primary{% else %}btn-secondary{% endif %}">
+            Active
+          </button>
+
+          <button type="submit"
+                  name="filter" value="inactive"
+                  class="w-30 btn h-full me-2
+                         {% if status_filter=='inactive' %}btn-primary{% else %}btn-secondary{% endif %}">
+            Inactive
+          </button>
+
+          <button type="submit"
+                  name="filter" value="soldout"
+                  class="w-30 btn h-full
+                         {% if status_filter=='soldout' %}btn-primary{% else %}btn-secondary{% endif %}">
+            Sold Out
+          </button>
+        </form>
+
+        <!-- listing products - using status filters on array-->
+        <div class="w-10 mh-100 bg-gray border rounded p-2 overflow-y-auto">
+          {% if products %}
+            {% for p in products %}
+              <div class="border rounded p-3 bg-white mb-2">
+                <div class="d-flex justify-content-between">
+                  <h5 class="m-0">{{ p.product_name }}</h5>
+                  <span class="fw-bold">${{ '%.2f'|format(p.product_price / 100 ) }}</span>
+                </div>
+                <p class="mb-2 text-muted">{{ p.category }}</p>
+                <p class="mb-2 text-muted">{{ p.product_description }}</p>
+                <div class="d-flex justify-content-between align-items-center">
+                  {% if p.status == 1 %}
+                   <button class="btn btn-sm btn-primary">
+                      <a href="{{ url_for('seller.change_product_form', listing_id=p.listing_id) }}" class="text-white text-decoration-none">Edit</a>
+                   </button>
+                  {% elif p.status == 0 %}
+                    <button class="btn btn-sm btn-primary">Re‑publish</button>
+                  {% endif %}
+                  {% if p.quantity == 0 %}
+                    <button class="btn btn-sm btn-secondary">Restock</button>
+                  {% endif %}
+                  <span class="text-danger">{{ p.quantity }} Left</span>
+                </div>
+              </div>
+            {% endfor %}
+          {% else %}
+            <p class="text-center">No {{ status_filter }} products.</p>
+          {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

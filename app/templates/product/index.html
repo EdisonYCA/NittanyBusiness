@@ -1,0 +1,63 @@
+{% extends 'base.html' %}
+
+{% block style %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/product.css') }}">
+{% endblock %}
+
+{% block navbar_content %}
+    <li class="nav-item active">
+        <a class="nav-link" href="{{ url_for("main.index") }}">Home <span class="sr-only">(current)</span></a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" href="#">Contact</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" href="#">About</a>
+    </li>
+{% endblock %}
+
+{% block main_content %}
+    <div class="listing-container">
+        <div class="listing-header">
+            <h1>{{ result.product_name }}</h1>
+        </div>
+        <div class="listing-details-container">
+            <div class="product-image">
+                <img src="product.jpg" alt="Where product image would go">
+            </div>
+            <div class="detail-container">
+                <div class="seller-container">
+                    <p class="seller-text">
+                        Seller: {{ business_name }}
+                    </p>
+                    <p class="seller-text">
+                        Contact: {{ result.seller_email }}
+                    </p>
+                </div>
+                <div class="description-container">
+                    <p>
+                        {{ result.product_description }}
+                    </p>
+                </div>
+                <div class="logistic-container">
+                    <div class="quantity">
+                        Quantity Available: {{ result.quantity }}
+                    </div>
+                    <div class="price">
+                        Unit Price: {{ result.product_price }}
+                    </div>
+                </div>
+                <div class="order-container">
+                    <form method="POST" action="{{ url_for("api.product_to_checkout") }}">
+                        <label for="order_quantity"></label>
+                        <input type="number" min="1" max="{{ result.quantity }}" id="order_quantity" name="order_quantity" value="1">
+                        <input type="hidden" value="{{ result.product_price }}" name="product_price" id="product_price">
+                        <input type="hidden" value="{{ result.listing_id }}" name="listing_id" id="listing_id">
+                        <input type="hidden" value="{{ business_name }}" name="business_name" id="business_name">
+                        <input type="submit" value="Order">
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

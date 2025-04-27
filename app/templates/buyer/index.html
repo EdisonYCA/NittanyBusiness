@@ -1,0 +1,128 @@
+{% extends 'base.html' %}
+
+{% block style %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/buyer.css') }}">
+{% endblock %}
+
+{% block navbar_content %}
+    <li class="nav-item active">
+        <a class="nav-link" href="{{ url_for("main.index") }}">Home <span class="sr-only">(current)</span></a>
+    </li>
+    <li class="nav-item active">
+        <a class="nav-link" href="{{ url_for("buyer.index") }}">Browse by Category <span class="sr-only">(current)</span></a>
+    </li>
+    <li class="nav-item active">
+        <form class="form-inline" method="POST" action="{{ url_for("buyer.search") }}">
+            <input class="form-control search-field" type="search" placeholder="Search for Product" aria-label="Search" name="search" id="search">
+            <button class="btn btn-light my-2 my-sm-0" type="submit">Search</button>
+            <input type="hidden" value="0" id="minCostRange" name="minCostRange">
+            <input type="hidden" value="1000000" id="maxCostRange" name="maxCostRange">
+        </form>
+    </li>
+{% endblock %}
+
+{% block main_content %}
+    <!--<form method="post" action="{{ url_for("api.prod_by_cat") }}">
+        <label for="category"></label>
+        <input id="category" name="category">
+        <input type="submit" value="test submit">
+    </form>-->
+    <div class="page-container">
+        <div class="cat-hierarchy-container">
+            <h2>Categories</h2>
+            {% for i in result %}
+                <div class="category-container">
+                    <form method="post" action="{{ url_for("api.prod_by_cat") }}">
+                        <input type="hidden" value="{{ i.category_name }}" name="category" id="category">
+                        <input type="submit" value="{{ i.category_name }}" class="cat-button">
+                    </form>
+                    <button onclick="get_sub_category('{{ i.category_name }}');swap('{{ i.category_name }}')" class="btn" type="button" data-toggle="collapse" data-target="#{{ i.category_name }}"
+                            aria-expanded="false" aria-controls="{{ i.category_name }}" id="{{ i.category_name }} expand">
+                        +
+                    </button>
+                </div>
+                <div class="collapse" id="{{ i.category_name }}" style="margin:0 0 0 30px"></div>
+            {% endfor %}
+        </div>
+    </div>
+    <script>
+        function swap(category) {
+            var button = document.getElementById(category + " expand");
+            if (button.innerHTML === "-") {
+                button.innerHTML = "+"
+            } else {
+                button.innerHTML = "-"
+            }
+        }
+        function get_sub_category(category) {
+            var isEmpty = document.getElementById(category).innerHTML === "";
+            var subCatDiv = document.getElementById(category);
+            if (isEmpty === true) {
+                var parent_cat = {
+                    parent: category
+                }
+
+                fetch(`${window.origin}/buyer/get_sub_cat`, {
+                    method: "POST",
+                    credentials: "include",
+                    body: JSON.stringify(parent_cat),
+                    cache: "no-cache",
+                    headers: new Headers({
+                        "content-type": "application/json"
+                    })
+                })
+                .then(function (response) {
+                    if  (response.status !== 200) {
+                        console.log(`Response status was not 200: ${response.status}`)
+                    }
+
+                    response.json().then(function (data) {
+                        for (const key in data) {
+                            if (data.hasOwnProperty(key)) {
+                                const newDiv = document.createElement("div");
+                                newDiv.className = "category-container";
+
+                                const newForm = document.createElement("FORM");
+                                newForm.method = "post";
+                                newForm.action = "{{ url_for("api.prod_by_cat") }}";
+                                newDiv.appendChild(newForm);
+
+                                const catName = document.createElement("input");
+                                catName.type = "hidden";
+                                catName.value = data[key].category_name;
+                                catName.name = "category";
+                                catName.id = data[key].category_name + "hidden";
+                                newForm.appendChild(catName);
+
+                                const catSubmit = document.createElement("input");
+                                catSubmit.type= "submit"
+                                catSubmit.value = data[key].category_name
+                                catSubmit.className = "cat-button"
+                                newForm.appendChild(catSubmit);
+
+                                const expandButton = document.createElement("button");
+                                expandButton.setAttribute('onclick', 'get_sub_category(\'' + data[key].category_name + '\');swap(\'' + data[key].category_name + '\')');
+                                expandButton.className = "btn"
+                                expandButton.type = "button"
+                                expandButton.setAttribute("data-toggle", "collapse")
+                                expandButton.setAttribute("data-target", "#" + data[key].category_name)
+                                expandButton.innerHTML = "+"
+                                expandButton.id = data[key].category_name + " expand";
+                                newDiv.append(expandButton)
+
+                                const newDiv2 = document.createElement("div")
+                                newDiv2.className = "collapse"
+                                newDiv2.id = data[key].category_name
+                                newDiv2.style.margin = "0 0 0 30px";
+
+
+                                subCatDiv.appendChild(newDiv);
+                                subCatDiv.appendChild(newDiv2);
+                              }
+                        }
+                    })
+                })
+            }
+        }
+    </script>
+{% endblock %}

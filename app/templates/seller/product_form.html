@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+
+{% block style %}
+<link rel="stylesheet" href="{{ url_for('static', filename='styles/seller.css') }}">
+{% endblock %}
+
+{% block navbar_content %}
+<li class="nav-item">
+    <a class="nav-link" href="{{ url_for("seller.index") }}">Dashboard</a>
+</li>
+<li class="nav-item">
+    <a class="nav-link" href="#">Settings</a>
+</li>
+<li class="nav-item">
+    <a class="nav-link" href="{{ url_for('api.logout') }}">Log Out</a>
+</li>
+{% endblock %}
+
+{% block main_content %}
+<div class="container mt-4">
+    <h2>Add New Product</h2>
+    <form method="POST" action="{{ url_for("api.add_product") }}">
+        <div class="form-group">
+            <label for="category">Category</label>
+            <input type="text" class="form-control" id="category" name="category" required>
+        </div>
+        <div class="form-group">
+            <label for="product_title">Product Title</label>
+            <input type="text" class="form-control" id="product_title" name="product_title" required>
+        </div>
+        <div class="form-group">
+            <label for="product_name">Product Name</label>
+            <input type="text" class="form-control" id="product_name" name="product_name" required>
+        </div>
+        <div class="form-group">
+            <label for="product_description">Product Description</label>
+            <textarea class="form-control" id="product_description" name="product_description" required></textarea>
+        </div>
+        <div class="form-group mt-3">
+            <label for="price">Price ($)</label>
+            <input type="number" class="form-control" id="price" name="price" step="0.01" required>
+        </div>
+        <div class="form-group mt-3">
+            <label for="quantity">Quantity</label>
+            <input type="number" class="form-control" id="quantity" name="quantity" required>
+        </div>
+        <button type="submit" class="btn btn-primary mt-3">Add Product</button>
+    </form>
+</div>
+{% endblock %}

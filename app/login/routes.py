@@ -1,8 +1,8 @@
-from flask import render_template
+from flask import render_template, request, session, redirect, url_for, flash
 from app.login import bp
-#if the db doesn't work tell richie
-from app import get_db
+
 
 @bp.route('/')
 def index():
-    return render_template('login/index.html')
+    failed = request.args.get("login_failed", False)
+    return render_template('login/index.html', login_failed=failed)

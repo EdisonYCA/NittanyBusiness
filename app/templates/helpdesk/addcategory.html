@@ -1,0 +1,29 @@
+{% extends 'helpdesk/base.html' %}
+
+{% block main_content %}
+    <div class="addcat-container">
+        <form method="post" action="{{ url_for("helpdesk.addcatfunc") }}"> <!-- Add Action here -->
+            <div class="input-label">
+                <label class="h1" for="category_name">Category Name</label>
+                <input id="category_name" name="category_name">
+            </div>
+            <div class="input-label">
+                <label class="h1" for="parent_category_name">Parent Category Name</label>
+                <input id="parent_category_name" name="parent_category_name">
+            </div>
+            <div class="submit-button-container">
+                <input type="submit" id="submit-change" value="Add Category">
+            </div>
+            {% if ret == 'success' %}
+                <div class="ret">
+                    Category Successfully Added
+                </div>
+            {% else %}
+                <div class="ret">
+                    Category Already Exists
+                </div>
+            {% endif %}
+        </form>
+    </div>
+
+{% endblock %}

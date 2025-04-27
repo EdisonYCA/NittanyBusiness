@@ -317,6 +317,9 @@ def place_order():
     else:
         cursor.execute("UPDATE Product_Listings SET quantity = ? WHERE listing_id = ? AND seller_email = ?", [remainder, listing_id, seller_email])
 
+    #adds money to seller balance
+    cursor.execute("UPDATE Sellers set balance = balance + ? where email = ?", [price, seller_email])
+
     db.commit()
     db.close()
 

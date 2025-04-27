@@ -351,7 +351,6 @@ def product_update():
     listing_id = request.form.get("listing_id")
     # print(f"[DEBUG] product_update(): seller_email={seller_email!r}, listing_id={listing_id!r}")
 
-
     updated_count = update_listing(
                    seller_email,
                    listing_id,
@@ -370,6 +369,7 @@ def product_update():
     #     print("[DEBUG] update_listing → no rows updated (nothing changed or bad key)")
 
     return redirect(url_for('seller.index'))
+
 
 
 #for placing orders

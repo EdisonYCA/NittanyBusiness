@@ -23,7 +23,7 @@
             <h1>Finish your account setup</h1>
             <h5>Enter additional details below</h5>
             <form method="POST" action="{{ url_for("signup.signupSeller") }}">
-                <input name="uid" type="hidden" value="email" />
+                <input type="hidden" name="uid" value="{{ email }}" />
                 <div class="mb-3">
                     <label for="streetNumInput" class="form-label">Street Number</label>
                     <input type="number" name="street_num" class="form-control" id="streetNumInput" placeholder="123" required>

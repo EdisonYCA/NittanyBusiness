@@ -10,7 +10,7 @@
     </li>
 
     {% if active %}
-        <li class="nav-item active">
+        <li class="nav-item">
             <form action="{{ url_for('api.logout') }}" method="POST">
                 <button type="submit" class="nav-link btn btn-link active" style="font-size: 17.6px;">Logout</button>
             </form>

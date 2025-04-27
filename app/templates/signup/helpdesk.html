@@ -20,7 +20,7 @@
     </div>
     <div class="w-50 h-100 center">
             <h4>Enter Authentication code for Help Desk!</h4>
-            <form class="w-55">
+            <form method="POST" action="{{ url_for("signup.signupHelpDesk") }}" class="w-55">
                 <input name="uid" type="hidden" value="email" />
                 <div id="helpdeskAuthContainer" class="hidden">
                     <label for="authCodeInput" class="form-label">Authentication Code</label>

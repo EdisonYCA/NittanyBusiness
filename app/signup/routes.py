@@ -126,3 +126,17 @@ def signupBuyer():
     except Exception as e:
         print(e)
         return render_template("buyer/index.html", error=True)
+
+
+@bp.route('/signupHelpDesk', methods=['POST'])
+def signupHelpDesk():
+    email = request.form.get("email")
+    authCode = request.form.get("auth_code")
+    valid_auth_codes = ["HELP123", "DESK456", "HD789"]
+    session["user"] = email
+    session["user_type"] = "HelpDesk"
+
+    if not authCode or authCode not in valid_auth_codes:
+        return redirect(url_for("signup.signupHelpDesk", auth_failed=True))
+
+    return render_template("helpdesk/index.html", email=email)

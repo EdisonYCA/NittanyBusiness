@@ -20,7 +20,6 @@ ul >li {
 .container {
     display: flex;
     width: 90vw;
-    margin-top: 15px;
     justify-content: center;
 }
 

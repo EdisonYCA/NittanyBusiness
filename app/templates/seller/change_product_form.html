@@ -18,8 +18,10 @@
 
 {% block main_content %}
 <div class="container mt-3">
-    <h2>Edit Product: {{ product.product_name }}</h2>
-    <form>
+    <h2>Edit Product #{{ product.product_name }}</h2>
+
+    <form method="POST" action="{{ url_for('api.product_update') }}">
+        <input type="hidden" name="listing_id" value="{{ product.listing_id }}"/>
         <div class="mb-3">
             <label for="product_name" class="form-label">Product Name</label>
             <input type="text" class="form-control" id="product_name" name="product_name" value="{{ product.product_name }}">

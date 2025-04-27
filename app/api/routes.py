@@ -344,6 +344,7 @@ def signup():
 # updates all fields other than key/status
 @bp.route("/product_update", methods=["POST"])
 def product_update():
+    print("💡 product_update received form:", request.form.to_dict())
 
     seller_email = session.get('user')
     listing_id = request.form.get("listing_id")

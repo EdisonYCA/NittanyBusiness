@@ -34,7 +34,7 @@ ul >li {
     flex-direction: column;
     text-align: center;
     justify-content: center;
-    margin-right: 20px;
+    margin-right: 40px;
 }
 
 .text-container > h3 {

@@ -1,0 +1,68 @@
+{% extends 'base.html' %}
+
+{% block style %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/setting.css') }}">
+{% endblock %}
+
+{% block navbar_content %}
+    <li class="nav-item active">
+        <a class="nav-link" href="{{ url_for("buyer.index") }}">Home <span class="sr-only">(current)</span></a>
+    </li>
+    <li class="nav-item active">
+        <a class="nav-link" href="{{ url_for("buyer.get_setting") }}">Setting <span class="sr-only">(current)</span></a>
+    </li>
+    <li class="nav-item active">
+        <form action="{{ url_for('api.logout') }}" method="POST">
+            <button type="submit" class="nav-link btn btn-link active" style="font-size: 17.6px;">Logout</button>
+        </form>
+    </li>
+{% endblock %}
+
+{% block main_content %}
+    <div class="container">
+            <form method="post" action="{{ url_for("buyer.update_email") }}">
+                <div class="email-container">
+                    <h4>Changes to Email Must Be Approved By HelpDesk</h4>
+                    <label for="email">Current Email</label>
+                    <input id="email" name="email" value="{{ result[0].email }}" readonly>
+                    <label for="new_email">New Email</label>
+                    <input type="email" id="new_email" name="new_email" placeholder="Enter New Email" required>
+                    <input class="submit" type="submit" value="Create Ticket">
+                </div>
+            </form>
+            <form method="post" action="{{ url_for("buyer.update_setting") }}">
+                <div class="other-setting-container">
+                    <h4>Change Settings</h4>
+                    <label for="password">New Password</label>
+                    <input id="password" name="password" type="password">
+
+                    <label for="conf_password">Confirm Password</label>
+                    <input id="conf_password" name="conf_password" type="password">
+                    
+                    <label for="business_name">Business Name</label>
+                    <input id="business_name" name="business_name" value="{{ result[0].business_name }}">
+
+                    <label for="credit_num">Credit Card Number</label>
+                    <input id="credit_num" name="credit_num" value="{{ result[0].credit_card_num }}">
+
+                    <label for="expire_date">Credit Card Expiration Date</label>
+                    <input id="expire_date" name="expire_date" value="{{ result[0].expire_month }}/{{ result[0].expire_year }}">
+
+                    <label for="security_code">Security Number</label>
+                    <input id="security_code" name="security_code" value="{{ result[0].security_code }}">
+
+                    <label for="zip_code">Zip Code</label>
+                    <input id="zip_code" name="zip_code" value="{{ result[0].zipcode }}">
+
+                    <label for="street_name">Street Name</label>
+                    <input id="street_name" name="street_name" value="{{ result[0].street_name }}">
+                    
+                    <label for="street_num">Street Number</label>
+                    <input id="street_num" name="street_num" value="{{ result[0].street_num }}">
+
+                    <input id="address_id" name="address_id" type="hidden" value="{{ result[0].address_id }}">
+                    <input type="submit" value="Update Settings">
+                </div>
+            </form>
+    </div>
+{% endblock %}

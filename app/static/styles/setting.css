@@ -1,0 +1,35 @@
+.container {
+    display: flex;
+    flex-direction: column;
+    margin-left: auto;
+    margin-right: auto;
+    width: 50vw;
+}
+
+.email-container > h4, .other-setting-container >h4 {
+    text-align: center;
+}
+
+.email-container {
+    display:flex;
+    flex-direction: column;
+    margin-bottom: 15px;
+    border: 2px solid black;
+}
+
+.email-container > .submit {
+    width: 30%;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 5px;
+}
+
+.other-setting-container {
+    display:flex;
+    flex-direction: column;
+    border: 2px solid black;
+}
+
+.other-setting-container > input {
+    margin-bottom: 10px;
+}

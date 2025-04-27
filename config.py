@@ -1,5 +1,4 @@
 import os
-from idlelib.multicall import APPLICATION_GONE
 
 from dotenv import load_dotenv
 

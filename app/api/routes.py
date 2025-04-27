@@ -440,7 +440,7 @@ def new_prod_review():
     except Exception as e:
         print(f"Database Error: {e}")
         return f"Error while inserting new review: {e}"
-    return redirect(url_for("main.index"))
+    return redirect(url_for("buyer.index"))
 
 # lets buyer leave rating on product
 @bp.route("/get_listing_reviews", methods=["POST"])

@@ -77,7 +77,7 @@ def prod_by_cat():
     cursor = db.cursor()
 
     try:
-        cursor.execute("SELECT * FROM Product_Listings, Sellers WHERE category = ? and Product_listings.seller_email = Sellers.email", (category,))
+        cursor.execute("SELECT * FROM Product_Listings, Sellers WHERE category = ? and Product_listings.seller_email = Sellers.email and Product_listings.quantity != 0", (category,))
         rows = cursor.fetchall()
         db.close()
     except Exception as e:

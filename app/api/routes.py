@@ -154,13 +154,16 @@ def get_child_categories():
 @bp.route('/add_product', methods=['POST'])
 def add_product():
 
-    seller_id = request.form.get("seller_id")
+    seller_id = session.get("user")
+    if not seller_id:
+        return redirect("api.logout")
+
     # product_id = request.form.get("product_id")
     category = request.form.get("category")
     product_name = request.form.get("product_name")
     quantity = request.form.get("quantity")
     price = request.form.get("price")
-    status = request.form.get("status")
+    status = 1
     product_description = request.form.get("product_description")
     product_title = request.form.get("product_title")
     try:
@@ -178,7 +181,7 @@ def add_product():
     except sqlite3.IntegrityError as e:
         print(e)
         return f"Error: {e}"
-    return f"Product {product_id} added to listing {seller_id}"
+    return redirect(url_for('api.get_seller_products'))
 
 
 # gets products of a seller
@@ -206,9 +209,26 @@ def get_seller_products():
         sql += " AND quantity = 0"
 
     products = db.execute(sql, params).fetchall()
-    print(products)
-
     return render_template("seller/index.html", products=products, status_filter=status_filter)
+
+# this endpoint grabs top level categories
+@bp.route('/top_level_categories', methods=['POST'])
+def get_top_level_categories():
+    db = get_db()
+    db.row_factory = sqlite3.Row
+    cursor = db.cursor()
+
+    # status 0 is incomplete, 1 is complete - id must be passed as 1 element tuple
+    cursor.execute("SELECT * FROM categories WHERE parent_category = 'Root'")
+    rows = cursor.fetchall()
+    db.close()
+
+    # return render_template('standin_name/some_page.html', result=rows)
+
+    # this return is just for testing with test script
+    result = [dict(row) for row in rows]
+    return jsonify(result)
+
 
 # this endpoint sets a request to inactive
 @bp.route('/complete_request', methods=['POST'])
@@ -318,110 +338,6 @@ def signup():
         print(f"Database Error: {e}")
         return redirect(url_for("signup.index", signup_failed=True))
 
-
-# updates all fields other than key/status
-@bp.route("/product_update", methods=["POST"])
-def product_update():
-
-    seller_email = session.get('user')
-    listing_id = request.form.get("listing_id")
-    # print(f"[DEBUG] product_update(): seller_email={seller_email!r}, listing_id={listing_id!r}")
-
-    updated_count = update_listing(
-                   seller_email,
-                   listing_id,
-                   category=request.form.get("category"),
-                   product_title=request.form.get("product_title"),
-                   product_name=request.form.get("product_name"),
-                   product_description=request.form.get("product_description"),
-                   quantity=request.form.get("quantity"),
-                   product_price=request.form.get("product_price"))
-
-
-    # if updated_count:
-    #     print(f"[DEBUG] update_listing → {updated_count} row(s) updated")
-    # else:
-    #     print("[DEBUG] update_listing → no rows updated (nothing changed or bad key)")
-
-    return redirect(url_for('seller.index'))
-
-
-#for placing orders
-@bp.route("/place_order", methods=["POST"])
-def place_order():
-    buyer_id = session.get('user')
-    # form for testing purposes, use session in prod
-    # buyer_id = request.form.get("buyer_id")
-
-    # listing id and seller email need to be grabbed from the page when an order is placed
-    listing_id = request.form.get("listing_id")
-    seller_email = request.form.get("seller_email")
-    order_qty = int(request.form.get("quantity"))
-    price = float(request.form.get("price"))
-    date = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-
-    soldout = 2
-
-    db = get_db()
-    cursor = db.cursor()
-    row = cursor.execute("SELECT * FROM Product_listings WHERE listing_id = ? AND seller_email = ?", [listing_id, seller_email]).fetchone()
-
-    remainder = row["quantity"] - order_qty
-
-    if row is None:
-        return f"ERROR: ITEM DOES NOT EXIST"
-
-    if row["status"] == 0:
-        return f"Item is not available"
-    if row["status"] == 2:
-        return f"Item is sold out!"
-    if remainder < 0:
-        return f"Not enough items to sell"
-
-    #creates order
-    cursor.execute("INSERT INTO Orders (listing_id, seller_email, buyer_email, date, quantity, payment) VALUES (?,?,?,?,?,?)", (listing_id, seller_email, buyer_id, date, order_qty, price))
-
-    #updates product listing/sets status if out of stock
-    if remainder == 0:
-        cursor.execute("UPDATE Product_Listings SET quantity = ?, status = ? WHERE listing_id = ? AND seller_email = ?", [remainder, soldout, listing_id, seller_email])
-    else:
-        cursor.execute("UPDATE Product_Listings SET quantity = ? WHERE listing_id = ? AND seller_email = ?", [remainder, listing_id, seller_email])
-
-    db.commit()
-    db.close()
-
-    # return "Order placed successfully", 200
-    return redirect(url_for("checkout.rate"))
-
-
-#for a buyer to see their orders
-@bp.route("/buyer_orders", methods=["POST"])
-def buyer_orders():
-    buyer_id = session.get('user')
-
-    db = get_db()
-    db.row_factory = sqlite3.Row
-    rows = db.execute("SELECT * FROM Orders WHERE buyer_email = ?", [buyer_id]).fetchall()
-    orders = [dict(row) for row in rows]
-    db.close()
-
-    return jsonify(orders)
-
-# changes status of a product listing
-# 1=active, 0=inactive, 2=soldout
-@bp.route("/product_status_update", methods=["POST"])
-def product_status_update():
-    listing_id = request.form.get("listing_id")
-    seller_email = session.get('user')
-    status = request.form.get("status")
-
-    db = get_db()
-    cursor = db.cursor()
-
-    cursor.execute("UPDATE product_listings SET status = ? WHERE seller_email = ? AND listing_id = ?", (status, seller_email, listing_id))
-    db.commit()
-
-    return redirect(url_for('seller.index'))
 
 # lets buyer leave rating on product
 @bp.route("/new_prod_review", methods=["POST"])
@@ -536,30 +452,8 @@ def product_to_checkout():
 
     return render_template("checkout/index.html", result=row, quantity=order_quantity, total=total, business_name=business_name, listing_id=listing_id)
 
-@bp.route("/logout", methods=["POST"])
+
+@bp.route("/logout", methods=["POST", "GET"])
 def logout():
     session.clear()
     return redirect(url_for("main.index"))
-
-# testing auto-key on address table
-
-@bp.route("/add_address", methods=["POST"])
-def add_address():
-    zipcode     = request.form.get("zipcode")
-    street_num  = request.form.get("street_num")
-    street_name = request.form.get("street_name")
-
-    if not zipcode or not street_num or not street_name:
-        return "Missing address fields", 400
-
-    db     = get_db()
-    cursor = db.cursor()
-    cursor.execute(
-        "INSERT INTO Address (zipcode, street_num, street_name) VALUES (?, ?, ?)",
-        (zipcode, street_num, street_name)
-    )
-    db.commit()
-    address_id = cursor.lastrowid
-    db.close()
-
-    return jsonify({"address_id": address_id}), 201

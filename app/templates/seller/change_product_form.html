@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+
+{% block style %}
+<link rel="stylesheet" href="{{ url_for('static', filename='styles/seller.css') }}">
+{% endblock %}
+
+{% block navbar_content %}
+<li class="nav-item">
+    <a class="nav-link" href="{{ url_for("seller.publish") }}">Publish Product</a>
+</li>
+<li class="nav-item">
+    <a class="nav-link" href="#">Settings</a>
+</li>
+<li class="nav-item">
+    <a class="nav-link" href="{{ url_for('api.logout') }}">Log Out</a>
+</li>
+{% endblock %}
+
+{% block main_content %}
+<div class="container mt-3">
+    <h2>Edit Product: {{ product.product_name }}</h2>
+    <form>
+        <div class="mb-3">
+            <label for="product_name" class="form-label">Product Name</label>
+            <input type="text" class="form-control" id="product_name" name="product_name" value="{{ product.product_name }}">
+        </div>
+        <div class="mb-3">
+            <label for="product_price" class="form-label">Price ($)</label>
+            <input type="number" class="form-control" id="product_price" name="product_price" value="{{ product.product_price / 100 }}">
+        </div>
+        <div class="mb-3">
+            <label for="category" class="form-label">Category</label>
+            <input type="text" class="form-control" id="category" name="category" value="{{ product.category }}">
+        </div>
+        <div class="mb-3">
+            <label for="product_description" class="form-label">Product Description</label>
+            <textarea class="form-control" id="product_description" name="product_description" rows="4">{{ product.product_description }}</textarea>
+        </div>
+        <div class="mb-3">
+            <label for="status" class="form-label">Status</label>
+            <select class="form-control" id="status" name="status">
+                <option value="1" {% if product.status == 1 %}selected{% endif %}>Active</option>
+                <option value="0" {% if product.status == 0 %}selected{% endif %}>Inactive</option>
+            </select>
+        </div>
+        <div class="mb-3">
+            <label for="quantity" class="form-label">Quantity</label>
+            <input type="number" class="form-control" id="quantity" name="quantity" value="{{ product.quantity }}">
+        </div>
+        <button type="submit" class="btn btn-primary">Save Changes</button>
+    </form>
+</div>
+{% endblock %}

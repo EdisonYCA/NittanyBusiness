@@ -11,77 +11,94 @@
         <link rel="stylesheet" href="{{ url_for('static', filename='styles/profile.css') }}">
     </head>
     <body>
-    <div class="profile-setup-container center">
-        <div class="form-container">
-            <h1>Profile Setup</h1>
-            <h5>Update your details below</h5>
-            <form method="POST" action="{{ url_for('profile.update') }}">
-                <!-- Password Section -->
-                <fieldset>
-                    <legend>Change Password</legend>
-                    <div class="mb-3">
-                        <label for="oldPasswordInput" class="form-label">Old Password</label>
-                        <input type="password" name="old_password" class="form-control" id="oldPasswordInput"
-                               placeholder="Enter your old password" required>
-                    </div>
-                    <div class="mb-3">
-                        <label for="newPasswordInput" class="form-label">New Password</label>
-                        <input type="password" name="new_password" class="form-control" id="newPasswordInput"
-                               placeholder="Enter your new password" required>
-                    </div>
-                    <div class="mb-3">
-                        <label for="confirmPasswordInput" class="form-label">Confirm New Password</label>
-                        <input type="password" name="confirm_password" class="form-control" id="confirmPasswordInput"
-                               placeholder="Re-enter your new password" required>
-                    </div>
-                </fieldset>
+<div class="profile-img-container center">
+    <img src="/static/img/pppointed.svg" class="img-non-logo" alt="Profile Icon">
+</div>
 
-                <fieldset>
-                    <legend>Credit Card Information</legend>
-                    <div class="mb-3">
-                        <label for="creditCardNumberInput" class="form-label">Card Number</label>
-                        <input type="text" name="card_number" class="form-control" id="creditCardNumberInput"
-                               placeholder="1234 5678 9012 3456" required>
-                    </div>
-                    <div class="mb-3">
-                        <label for="expirationDateInput" class="form-label">Expiration Date</label>
-                        <input type="text" name="expiration_date" class="form-control" id="expirationDateInput"
-                               placeholder="MM/YY" required>
-                    </div>
-                    <div class="mb-3">
-                        <label for="cardTypeInput" class="form-label">Card Type</label>
-                        <select name="card_type" class="form-control" id="cardTypeInput" required>
-                            <option value="Visa">Visa</option>
-                            <option value="MasterCard">MasterCard</option>
-                            <option value="Discover">Discover</option>
-                            <option value="American Express">American Express</option>
-                        </select>
-                    </div>
-                </fieldset>
+<div class="profile-setup-container center">
+    <div class="form-container">
+        <h1>Seller Profile</h1>
+        <h5>Update your information below</h5>
 
-                <fieldset>
-                    <legend>Address Information</legend>
-                    <div class="mb-3">
-                        <label for="addressInput" class="form-label">Street Address</label>
-                        <input type="text" name="address" class="form-control" id="addressInput"
-                               placeholder="123 Main St" required>
-                    </div>
-                    <div class="mb-3">
-                        <label for="cityInput" class="form-label">City</label>
-                        <input type="text" name="city" class="form-control" id="cityInput"
-                               placeholder="Your City" required>
-                    </div>
-                    <div class="mb-3">
-                        <label for="stateInput" class="form-label">State</label>
-                        <input type="text" name="state" class="form-control" id="stateInput"
-                               placeholder="Your State" required>
-                    </div>
-                    <div class="mb-3">
-                        <label for="zipInput" class="form-label">ZIP Code</label>
-                        <input type="text" name="zip" class="form-control" id="zipInput"
-                               placeholder="12345" required>
-                    </div>
-                </fieldset>
+        <!-- Change Password Section -->
+        <form method="POST" action="{{ url_for('profile.update_seller_profile') }}">
+            <fieldset>
+                <legend>Change Password</legend>
+                <div class="mb-3">
+                    <label for="oldPasswordInput" class="form-label">Old Password</label>
+                    <input type="password" name="old_password" class="form-control" id="oldPasswordInput"
+                           placeholder="Enter your old password" required>
+                </div>
+                <div class="mb-3">
+                    <label for="newPasswordInput" class="form-label">New Password</label>
+                    <input type="password" name="new_password" class="form-control" id="newPasswordInput"
+                           placeholder="Enter your new password" required>
+                </div>
+                <div class="mb-3">
+                    <label for="confirmPasswordInput" class="form-label">Confirm New Password</label>
+                    <input type="password" name="confirm_password" class="form-control" id="confirmPasswordInput"
+                           placeholder="Re-enter your new password" required>
+                </div>
+            </fieldset>
+        </form>
+
+        <!-- Update Business Address Section -->
+            <fieldset>
+                <legend>Update Business Address</legend>
+                <div class="mb-3">
+                    <label for="streetNumInput" class="form-label">Street Number</label>
+                    <input type="number" name="street_num" class="form-control" id="streetNumInput"
+                           value="{{ address.street_num }}" placeholder="123" required>
+                </div>
+                <div class="mb-3">
+                    <label for="streetNameInput" class="form-label">Street Name</label>
+                    <input type="text" name="street_name" class="form-control" id="streetNameInput"
+                           value="{{ address.street_name }}" placeholder="Main St" required>
+                </div>
+                <div class="mb-3">
+                    <label for="zipInput" class="form-label">ZIP Code</label>
+                    <input type="number" name="zipcode" class="form-control" id="zipInput"
+                           value="{{ address.zipcode }}" placeholder="12345" required>
+                </div>
+                <div class="mb-3">
+                    <label for="cityInput" class="form-label">City</label>
+                    <input type="text" name="city" class="form-control" id="cityInput"
+                           value="{{ address.city }}" placeholder="Your City" required>
+                </div>
+                <div class="mb-3">
+                    <label for="stateInput" class="form-label">State</label>
+                    <input type="text" name="state" class="form-control" id="stateInput"
+                           value="{{ address.state }}" placeholder="Your State" required>
+                </div>
+            </fieldset>
+        </form>
+
+            <fieldset>
+                <legend>Update Bank Account Details</legend>
+                <div class="mb-3">
+                    <label for="bankRoutingInput" class="form-label">Bank Routing Number</label>
+                    <input type="number" name="bank_routing_number" class="form-control" id="bankRoutingInput"
+                           value="{{ bank_info.security_code }}" placeholder="123456789" required>
+                </div>
+                <div class="mb-3">
+                    <label for="bankAccountInput" class="form-label">Bank Account Number</label>
+                    <input type="number" name="bank_account_number" class="form-control" id="bankAccountInput"
+                           value="{{ bank_info.security_code }}" placeholder="987654321" required>
+                </div>
+            </fieldset>
+                    <button type="submit" class="btn btn-primary">Update!</button>
+        </form>
+
+        <!-- Additional Profile Options -->
+        <form method="POST" action="{{ url_for('profile.logOut') }}">
+            <button type="submit" class="btn btn-secondary">Log Out</button>
+        </form>
+        <form method="POST" action="{{ url_for('profile.delete_user') }}">
+            <button type="submit" class="btn btn-danger">Delete User</button>
+        </form>
+        <form method="POST" action="{{ url_for('profile.switch_account_type') }}">
+            <button type="submit" class="btn btn-warning">Switch Account Type</button>
+        </form>
                {% if password_match_failed %}
                     <p style="color: red;">Passwords do not match! </p>
                 {% endif %}
@@ -92,18 +109,11 @@
                 {% if oldMatchingPassword %}
                     <p style="color: red;">Old and New Passwords can't be the same!</p>
                 {% endif %}
-                <button type="submit" class="btn btn-primary">Update Profile</button>
-            </form>
-         <form method="POST" action="{{ url_for('profile.logOut') }}">
-                <button type="submit" class="btn btn-secondary">Log Out</button>
-            </form>
-            <form method="POST" action="{{ url_for('profile.delete_user') }}">
-                <button type="submit" class="btn btn-danger">Delete User</button>
-            </form>
-            <form method="POST" action="{{ url_for('profile.switch_account_type') }}">
-                <button type="submit" class="btn btn-danger">Switch Account Type</button>
             </form>
         </div>
     </div>
 </body>
 </html>
+
+
+{% endblock %}

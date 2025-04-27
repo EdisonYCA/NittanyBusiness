@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+
+{% block style %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/auth.css') }}">
+{% endblock %}
+
+{% block navbar_content %}
+    <li class="nav-item">
+        <a class="nav-link" href="/">Home <span class="sr-only">(current)</span></a>
+    </li>
+    <li class="nav-content">
+        <a class="nav-link" href="{{ url_for("login.index") }}">Log In</a>
+    </li>
+{% endblock %}
+
+{% block main_content %}
+    <div class="w-50 h-100 bg-yellow center">
+        <img src="/static/img/pppointed.svg" class="w-80 h-80"
+             alt="a dashed arrow with curves">
+    </div>
+    <div class="w-50 h-100 center">
+            <h4>Enter Authentication code for Help Desk!</h4>
+            <form method="POST" action="{{ url_for("signup.signupHelpDesk") }}" class="w-55">
+                <input name="uid" type="hidden" value="email" />
+                <div id="helpdeskAuthContainer" class="hidden">
+                    <label for="authCodeInput" class="form-label">Authentication Code</label>
+                    <input type="text" name="auth_code" id="authCodeInput" class="form-control"
+                           placeholder="Enter your Helpdesk authentication code">
+                </div>
+                {% if auth_failed %}
+                    <p style="color: red;">Please enter a valid Help Desk Code!</p>
+                {% endif %}
+                <button type="submit" class="btn btn-primary">Enter</button>
+            </form>
+    </div>
+{% endblock %}

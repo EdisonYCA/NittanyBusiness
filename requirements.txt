@@ -1,1 +1,3 @@
+Flask
+python-dotenv
 pandas==2.2.2

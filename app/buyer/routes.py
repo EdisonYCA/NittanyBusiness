@@ -1,5 +1,5 @@
 from app.buyer import bp
-from flask import render_template, request, make_response, jsonify
+from flask import render_template, request, make_response, jsonify, session
 from app.utils.auth import login_required
 import sqlite3
 from app import get_db
@@ -48,7 +48,7 @@ def search():
                                  from Product_Listings
                                  join Sellers
                                  on seller_email = email
-                                 where ((category LIKE ?) or (product_title LIKE ?) or (product_description LIKE ?) or (business_name = ?)) and (product_price >= ? and product_price <= ?)
+                                 where ((category LIKE ?) or (product_title LIKE ?) or (product_description LIKE ?) or (business_name = ?)) and (product_price >= ? and product_price <= ?) and (quantity != 0)
                               """,(search_val_query, search_val_query, search_val_query, search_val_query, min_cost_range, max_cost_range)).fetchall()
     except Exception as e:
         print(e)

@@ -2,33 +2,34 @@
 
 {% block style %}
     <link rel="stylesheet" href="{{ url_for('static', filename='styles/login.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/auth.css') }}">
 {% endblock %}
 
 {% block navbar_content %}
     <li class="nav-item active">
         <a class="nav-link" href="{{ url_for("main.index") }}">Home <span class="sr-only">(current)</span></a>
     </li>
-    <li class="nav-item">
+    <!--<li class="nav-item">
         <a class="nav-link" href="#">Contact</a>
     </li>
     <li class="nav-item">
         <a class="nav-link" href="#">About</a>
-    </li>
+    </li>-->
     <li class="nav-content active">
         <a class="nav-link" href="{{ url_for("signup.index") }}">Sign Up</a>
     </li>
 {% endblock %}
 
 {% block main_content %}
-    <div class="login-img-container center">
-        <img src="/static/img/pppointed.svg" class="img-non-logo"
+    <div class="w-50 h-100 bg-yellow center">
+        <img src="/static/img/pppointed.svg" class="w-80 h-80"
              alt="a dashed arrow with curves">
     </div>
-    <div class="login-form-container center">
-        <div class="form-container">
+    <div class="w-50 h-100 center">
+        <div>
             <h1>Login to NittanyBusiness</h1>
             <h5>Enter your details below</h5>
-            <form method="POST" action="{{ url_for("api.login") }}">
+            <form method="POST" action="{{ url_for("login.login") }}">
                 <div class="mb-3">
                     <label for="exampleInputEmail1" class="form-label">Email address</label>
                     <input name="email" type="email" class="form-control" id="exampleInputEmail1"
@@ -40,7 +41,7 @@
                            id="exampleInputPassword1">
                 </div>
                 {% if login_failed %}
-                    <p style="color: red;">Please enter a valid email address and password.</p>
+                    <p class="text-danger">Please enter a valid email address and password.</p>
                 {% endif %}
                 <button type="submit" class="btn btn-primary">Log In</button>
             </form>

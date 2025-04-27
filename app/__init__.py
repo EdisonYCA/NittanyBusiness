@@ -47,7 +47,6 @@ def create_app(config_class=Config):
 
     return app
 
-
 # trying to bypass import issues during refactoring
 def get_db():
     from app.api.db_util import get_db as _get_db

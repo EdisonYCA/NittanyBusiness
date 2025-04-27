@@ -8,25 +8,6 @@ from datetime import datetime
 import hashlib
 import re
 
-
-def hash_password(password):
-    if not password:
-        return ""
-
-    sha256 = hashlib.new("SHA256")
-    sha256.update(password.encode())
-    hashed_password = sha256.hexdigest()
-    return hashed_password
-
-
-def validate_email(email):
-    if not email:
-        return False
-
-    regex = re.compile("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$")
-    return regex.match(email) is not None
-
-
 # calculates incremented product_id per requirements analysis
 def get_prod_id(email):
     db = get_db()
@@ -97,7 +78,7 @@ def prod_by_cat():
     cursor = db.cursor()
 
     try:
-        cursor.execute("SELECT * FROM Product_Listings, Sellers WHERE category = ? and Product_listings.seller_email = Sellers.email", (category,))
+        cursor.execute("SELECT * FROM Product_Listings, Sellers WHERE category = ? and Product_listings.seller_email = Sellers.email and Product_listings.quantity != 0", (category,))
         rows = cursor.fetchall()
         db.close()
     except Exception as e:
@@ -154,12 +135,9 @@ def get_child_categories():
 #takes in product specs and creates new product listing
 @bp.route('/add_product', methods=['POST'])
 def add_product():
-
     seller_id = session.get("user")
     if not seller_id:
         return redirect("api.logout")
-
-    # product_id = request.form.get("product_id")
     category = request.form.get("category")
     product_name = request.form.get("product_name")
     quantity = request.form.get("quantity")
@@ -266,80 +244,6 @@ def get_active_requests():
     db.close()
 
     return render_template('helpdesk/index.html', result=rows)
-
-
-# login checks if email and password match any row in the database
-@bp.route("/users", methods=["POST"])
-def login():
-    emailS = request.form.get("email")
-    password = hash_password(request.form.get("password"))
-
-    if not validate_email(emailS) or not password:
-        return redirect(url_for("login.index", login_failed=True))
-
-    db = get_db()
-    user = db.execute("SELECT * FROM Users WHERE email = ?", [emailS]).fetchone()
-
-    if user is None or user["password"] != password:
-        return redirect(url_for("login.index", login_failed=True))
-
-    user_type = get_user_type(emailS)
-    session["user"] = emailS
-    session["user_type"] = user_type
-
-    if user_type == "Buyer":
-        return redirect(url_for("buyer.index"))
-    elif user_type == "Seller":
-        return redirect(url_for("seller.index"))
-    else:
-        return redirect(url_for("helpdesk.index"))
-
-    return redirect(url_for("login.index", login_failed=True))
-
-
-# Signup route for new user registration
-@bp.route("/signup", methods=["POST"])
-def signup():
-    newEmail = request.form.get("email")
-    newPassword = request.form.get("password")
-    confirmPassowrd = request.form.get("passwordConf")
-    accountType = request.form.get("accountType")
-
-    if not validate_email(newEmail) or not newPassword or not confirmPassowrd:
-        # if not newPassword or not confirmPassowrd:
-        return redirect(url_for("signup.index", signup_failed=True))
-    # match password
-    if newPassword != confirmPassowrd:
-        return redirect(url_for("signup.index", password_match_failed=True))
-
-    if len(newPassword) < 8 or not any(char.isupper() for char in newPassword):
-        return redirect(url_for("signup.index", password_requirements=True))
-
-    db = get_db()
-
-    try:
-        # Check if the email already exists
-        existing_user = db.execute("SELECT * FROM Users WHERE email = ?", [newEmail]).fetchone()
-        if existing_user is not None:
-            return redirect(url_for("signup.index", signup_exists=True))
-
-        # Insert new user into the database
-        hashed_password = hash_password(newPassword)
-        db.execute("INSERT INTO Users (email, password) VALUES (?, ?)", [newEmail, hashed_password])
-        db.commit()
-
-        # Render different templates based on accountType
-        if accountType == "seller":
-            return render_template("signup/seller.html", email=newEmail)
-        elif accountType == "buyer":
-            return render_template("profile/buyerProfile.html", email=newEmail)
-        else:
-            return redirect(url_for("signup.index", signup_failed=True))
-
-
-    except Exception as e:
-        print(f"Database Error: {e}")
-        return redirect(url_for("signup.index", signup_failed=True))
 
 
 # updates all fields other than key/status

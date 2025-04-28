@@ -33,3 +33,7 @@
 .other-setting-container > input {
     margin-bottom: 10px;
 }
+
+.response {
+    text-align: center;
+}

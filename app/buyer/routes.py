@@ -120,8 +120,6 @@ def update_setting():
     password = request.form.get('password')
     conf_password = request.form.get('conf_password')
 
-    print(address_id, zipcode, street_name, street_num)
-
     db = get_db()
     db.row_factory = sqlite3.Row
     cursor = db.cursor()
@@ -171,5 +169,25 @@ def update_email():
     cursor.execute("INSERT INTO Requests (request_id, sender_email, helpdesk_staff_email, request_type, request_desc, request_status) VALUES (?, ?, ?, ?, ?, ?)",
                    [random.randint(1, 100000000), user, 'helpdeskteam@nittybiz.com', 'ChangeID', 'Please change my ID to ' + new_email, 0])
     db.commit()
+
+    user = session.get('user')
+
+    db = get_db()
+    db.row_factory = sqlite3.Row
+    cursor = db.cursor()
+
+    cursor.execute("""SELECT BUYERS.email, BUYERS.business_name,
+                            CREDIT_CARDS.credit_card_num, CREDIT_CARDS.card_type, CREDIT_CARDS.expire_month, CREDIT_CARDS.expire_year, CREDIT_CARDS.security_code,
+                            ADDRESS.address_id, ADDRESS.zipcode, ADDRESS.street_num, ADDRESS.street_name from Buyers
+                            JOIN USERS on Buyers.email = USERS.email
+                            JOIN Credit_Cards on Buyers.email = Credit_Cards.owner_email
+                            JOIN ADDRESS on Buyers.buyer_address_id = ADDRESS.address_id
+                            WHERE BUYERS.email = ?""", (user,))
+    rows = cursor.fetchall()
+
     db.close()
-    return redirect(url_for('buyer.get_setting'))
+    #return redirect(url_for('buyer.get_setting', ticket_created = 'true'))
+
+    ret = [dict(row) for row in rows]
+
+    return render_template('buyer/setting.html', result=ret, ticket_created = 'true')

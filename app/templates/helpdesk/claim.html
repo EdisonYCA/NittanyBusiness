@@ -2,7 +2,7 @@
 
 {% block main_content %}
     <div class="container">
-        <form method="post"> <!-- Add action here -->
+        <form method="post" action="{{ url_for("helpdesk.claim_request") }}">
             <div class="submit-container">
                 <div class="input-label">
                     <label for="request_id">Request ID to Claim</label>

@@ -30,10 +30,10 @@ def login():
     session["user_type"] = user_type
 
     if user_type == "Buyer":
-        return render_template("buyer/index.html")
+        return redirect(url_for("buyer.index"))
     elif user_type == "Seller":
         return render_template("seller/index.html")
     else:
-        return render_template("helpdesk/index.html")
+        return redirect(url_for("helpdesk.index"))
 
     return redirect(url_for("login.index", login_failed=True))

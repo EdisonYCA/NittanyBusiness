@@ -103,6 +103,8 @@ def signupBuyer():
     security_code = request.form.get('security_code')
     business_name = request.form.get("business_name")
 
+    print(email)
+
     db = get_db()
     try:
         # Insert Address and Zipcode_Info
@@ -122,7 +124,7 @@ def signupBuyer():
         session["user"] = email
         session["user_type"] = "Buyer"
 
-        return render_template("buyer/index.html", email=email)
+        return redirect(url_for("buyer.index"))
     except Exception as e:
         print(e)
         return render_template("buyer/index.html", error=True)

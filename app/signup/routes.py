@@ -141,4 +141,4 @@ def signupHelpDesk():
     if not authCode or authCode not in valid_auth_codes:
         return redirect(url_for("signup.signupHelpDesk", auth_failed=True))
 
-    return render_template("helpdesk/index.html", email=email)
+    return redirect(url_for("helpdesk.index"))
